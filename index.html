@@ -46,6 +46,8 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
 .sr{position:absolute;left:-9999px}
 .num{font-variant-numeric:tabular-nums}
 .banner{background:#1E2A2A;color:#fff;font-size:13px;padding:8px 16px;text-align:center}
+.banner .qs{display:block;margin-top:4px}
+.banner .qs button{margin:0 2px;padding:2px 4px}
 .banner button{background:none;border:0;color:var(--sun);font-weight:700;text-decoration:underline;padding:0 4px}
 
 /* login */
@@ -175,7 +177,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
 </style>
 </head>
 <body>
-<div class="banner"><span>Test prototype with fake data. Nothing leaves this browser.</span> <button type="button" data-a="reset">Reset demo data</button></div>
+<div class="banner"><span>Test prototype with fake data. Nothing leaves this browser.</span> <button type="button" data-a="reset">Reset demo data</button><span class="qs">Switch to: <button type="button" data-a="as" data-i="2">Priya (educator)</button><button type="button" data-a="as" data-i="0">Daniel (Maya's dad)</button><button type="button" data-a="as" data-i="1">Hannah (Noah's mom)</button><button type="button" data-a="as" data-i="3">Karen (director)</button></span></div>
 <div id="app"></div>
 
 <script>
@@ -554,12 +556,12 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     const names = ui.photoKids.map(id => kid(id).first).join(', ');
     const host = location.hostname;
     const hostNote = SH ? '<div class="small muted">Your phone needs to be signed in to claude.ai. Photos appear here and for the family as soon as they are sent.</div>'
-      : '<div class="small" style="color:#6B5412">On this copy, photos stay on the phone that took them. To see them on the computer and in the parent\'s account, use the claude.ai test link.</div>';
+      : '<div class="small" style="color:#6B5412">Test copy with no server: photos stay in the browser that sends them. To try the whole flow, use one device. On a phone, tap Choose photos on this device instead. On a computer, open the upload page in a new tab. Scanning with a second device needs the real server.</div>';
     const qrBox = live
       ? '<div class="qrwrap"><div id="qr" class="qr" aria-label="QR code to upload photos of ' + esc(names) + '"></div><div class="stack" style="gap:8px"><b style="font-size:20px">Scan to upload photos of ' + esc(names) + '</b>' +
         '<ol class="steps small"><li>Open your phone camera and point it at the code.</li><li>Tap the link, then choose the photos.</li><li>Tap Send. They go only to ' + esc(names) + (ui.photoKids.length === 1 ? '\'s family.' : '\'s families.') + '</li></ol>' +
         '<div class="small muted">This code only works for the Sunflower Room and stops working at ' + fmtT(new Date(ui.qrExp * 60000)) + '.</div>' + hostNote +
-        '<div class="row" style="flex-wrap:wrap"><button class="btn small ghost" data-a="openup">Choose photos on this device instead</button><button class="btn small ghost" data-a="qrnew">New code</button></div></div></div>'
+        '<div class="row" style="flex-wrap:wrap"><button class="btn small ghost" data-a="openup">Choose photos on this device instead</button>' + (SH ? '' : '<a class="btn small ghost" target="_blank" rel="noopener" href="' + esc(uploadUrl(ui.photoKids, ui.qrExp)) + '">Open upload page in a new tab</a>') + '<button class="btn small ghost" data-a="qrnew">New code</button></div></div></div>'
       : '<div class="qrwrap empty"><div class="qr placeholder">QR</div><div class="stack" style="gap:6px"><b>Pick who is in the photos first</b><span class="small muted">Then a code appears here. One code per child, or per group for group photos.</span></div></div>';
     const recent = (D.uploads || []).slice().reverse().slice(0, 18);
     return '<div class="wrap"><div class="stack"><section class="card stack"><b>1. Who is in the photos?</b><div class="row" style="flex-wrap:wrap;gap:8px">' + chips + '</div>' +
@@ -579,7 +581,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     else if (p.exp < nowMin) body = '<div class="card stack"><b>This code has expired</b><div>Codes stop working after 15 minutes so an old photo of the screen can\'t be used. Ask the educator for a new code.</div></div>';
     else if (kids.some(noPhotos)) body = '<div class="card">One of these children\'s families said no to photos, so this link cannot be used.</div>';
     else if (ui.up.stage === 'done') body = '<div class="card stack" style="text-align:center;align-items:center"><div class="donecheck" aria-hidden="true">✓</div><b style="font-size:20px">' + ui.up.sent + ' photos sent</b><div>They are now on ' + esc(names) + (kids.length === 1 ? '\'s' : '\'s families\'') + ' day.</div>' +
-      '<div class="row"><button class="btn" data-a="upmore">Upload more of ' + esc(names) + '</button></div>' + (user && user.role === 'educator' ? '<button class="btn ghost" data-a="upback">Back to the room</button>' : '<div class="small muted">You can close this page.</div>') + '</div>';
+      '<div class="row"><button class="btn" data-a="upmore">Upload more of ' + esc(names) + '</button></div>' + (user && user.role === 'educator' ? '<button class="btn ghost" data-a="upback">Back to the room</button>' : '') + kids.map(k => { const i = ACCOUNTS.findIndex(x => x.child === k.id); return i < 0 ? '' : '<button class="btn ghost" data-a="as" data-i="' + i + '">See it as ' + esc(k.first) + '\'s parent</button>'; }).join('') + '</div>';
     else {
       const files = ui.up.files;
       body = '<section class="card stack"><div class="small muted">Photos of</div><div class="row" style="flex-wrap:wrap;gap:8px">' + kids.map(k => '<span class="chip on">' + esc(k.first) + '</span>').join('') + '</div></section>' +
@@ -761,6 +763,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     if (!b) return;
     const a = b.dataset.a;
     if (a === 'reset') { const oldUps = (D.uploads || []).slice(); D = freshData(); if (SH) oldUps.forEach(u => { if (u.id) SH.doc('uploads/' + u.id).delete().catch(() => {}); if (u.asset && AS) AS.delete(u.asset).catch(() => {}); }); save(); ui.sel = ['maya', 'noah', 'aria']; ui.photoKids = []; ui.noteSel = []; ui.keep = {}; ui.qrExp = 0; toast('Demo data reset'); render(); }
+    if (a === 'as') { const acc = ACCOUNTS[+b.dataset.i]; const st = D.staff.find(x => x.email === acc.email); if (st && st.status !== 'Active') { toast('The director turned off this account'); return; } user = { email: acc.email, role: acc.role, name: acc.name, child: acc.child }; saveUser(user); ui.tab = 'today'; ui.dtab = 'today'; ui.light = null; if (parseUpload()) history.replaceState(null, '', location.pathname + location.search); render(); window.scrollTo(0, 0); toast('Now signed in as ' + acc.name); }
     if (a === 'fill') { const acc = ACCOUNTS[+b.dataset.i]; ui.email = acc.email; ui.pw = acc.password; ui.err = ''; render(); }
     if (a === 'logout') { user = null; saveUser(null); ui.tab = 'today'; ui.dtab = 'today'; ui.email = ''; ui.pw = ''; render(); }
     if (a === 'tab') { ui.tab = b.dataset.t; render(); window.scrollTo(0, 0); }
@@ -911,6 +914,16 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     for (const f of picked.slice(0, 30)) { const src = await shrink(f); if (src) ui.up.files.push({ src, pct: 0, file: f }); }
     if (picked.length > 30) toast('The test takes up to 30 photos at a time');
     ui.up.busy = false; render();
+  });
+
+  window.addEventListener('storage', e => {
+    if (SH || e.key !== KEY) return;
+    const fresh = load(); if (!fresh) return;
+    const before = (D.uploads || []).length;
+    D = fresh; if (!D.staff) D.staff = freshStaff(); if (!D.uploads) D.uploads = [];
+    const added = D.uploads.length - before;
+    if (added > 0 && user && user.role === 'educator') toast(added + (added === 1 ? ' new photo' : ' new photos') + ' just arrived');
+    render();
   });
 
   window.addEventListener('hashchange', () => { ui.up = { files: [], stage: 'pick', sent: 0, busy: false }; render(); });
