@@ -7,21 +7,21 @@
 <title>Nestday prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
 /* Test prototype only: accounts, data and "login" all live in this file. Not real security. */
 :root{
-  --bg:#F2F4F1; --surface:#FFFFFF; --ink:#1E2A2A; --muted:#56625F; --line:#DCE2DC; --line2:#C9D1C8;
-  --brand:#1F6F5C; --brand-dark:#16312A; --brand-soft:#E3F1EA; --brand-ink:#1B5E4A;
-  --sun:#F2B632; --sun-soft:#FFF6DC; --sky:#E3EEF6; --warn:#8E3512; --warn-soft:#FBEDE6;
-  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
-  --body:"Nunito Sans","Segoe UI",system-ui,sans-serif;
+  --bg:#F4EEE2; --surface:#FFFCF6; --ink:#1D2A23; --muted:#58625A; --line:#E2D9C6; --line2:#D6CCB6;
+  --brand:#2D5B4B; --brand-dark:#1F4538; --brand-soft:#DCE8E0; --brand-ink:#1F4538;
+  --sun:#E8A73A; --sun-soft:#FBEBC8; --sky:#E3EEF6; --warn:#7A2816; --warn-soft:#F8E0D6;
+  --display:"Young Serif",Georgia,serif;
+  --body:"Hanken Grotesk",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
-h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.1;margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;margin:0}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:var(--brand)}
@@ -29,13 +29,13 @@ a{color:var(--brand)}
 .btn{height:46px;padding:0 18px;border-radius:12px;border:0;background:var(--brand);color:#fff;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line2)}
 .btn.small{height:38px;padding:0 12px;font-size:14px;border-radius:10px}
-.btn.warn{background:var(--warn-soft);color:var(--warn);border:1px solid #E8B9A4}
+.btn.warn{background:var(--warn-soft);color:var(--warn);border:1px solid #EBC3B2}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
 .pill{display:inline-block;font-size:12px;font-weight:700;border-radius:20px;padding:3px 10px;white-space:nowrap}
 .pill.ok{background:var(--brand-soft);color:var(--brand-ink)}
-.pill.wait{background:var(--sun-soft);color:#6B5412}
+.pill.wait{background:var(--sun-soft);color:#6B4A0E}
 .pill.bad{background:var(--warn-soft);color:var(--warn)}
-.pill.grey{background:#EEF1ED;color:#3C4846}
+.pill.grey{background:#F1ECE1;color:#3E4740}
 .muted{color:var(--muted)}
 .small{font-size:14px}
 .stack{display:flex;flex-direction:column;gap:12px}
@@ -45,7 +45,7 @@ label.field{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size
 label.field input,label.field select{height:46px;border:1px solid var(--line2);border-radius:10px;padding:0 12px;font-weight:400;font-size:16px;background:#fff}
 .sr{position:absolute;left:-9999px}
 .num{font-variant-numeric:tabular-nums}
-.banner{background:#1E2A2A;color:#fff;font-size:13px;padding:8px 16px;text-align:center}
+.banner{background:#1D2A23;color:#fff;font-size:13px;padding:8px 16px;text-align:center}
 .banner .qs{display:block;margin-top:4px}
 .banner .qs button{margin:0 2px;padding:2px 4px}
 .banner button{background:none;border:0;color:var(--sun);font-weight:700;text-decoration:underline;padding:0 4px}
@@ -54,24 +54,24 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
 .login{min-height:calc(100vh - 36px);display:grid;grid-template-columns:1fr 1fr}
 .login .hero{background:var(--brand);color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
 .login .hero h1{font-size:clamp(34px,4.5vw,52px)}
-.login .hero p{color:#D7EAE3;font-size:18px;max-width:30em;margin:14px 0 0}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:24px}
+.login .hero p{color:#D5E4DA;font-size:18px;max-width:30em;margin:14px 0 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:400;font-size:24px}
 .login .form{display:flex;align-items:center;justify-content:center;padding:40px 20px}
 .login form{width:100%;max-width:420px;display:flex;flex-direction:column;gap:16px}
 .err{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700}
 .testbox{border:2px dashed var(--line2);border-radius:14px;padding:14px;background:#fff}
 .testbox table{width:100%;border-collapse:collapse;font-size:14px}
-.testbox td{padding:6px 4px;border-top:1px solid #EEF1ED;vertical-align:middle}
+.testbox td{padding:6px 4px;border-top:1px solid #F1ECE1;vertical-align:middle}
 .testbox code{font-family:Consolas,"SF Mono",monospace;font-size:13px}
 
 /* parent */
 .phone{max-width:480px;margin:0 auto;min-height:calc(100vh - 36px);display:flex;flex-direction:column;background:var(--bg)}
 .phead{background:var(--brand);color:#fff;padding:18px 18px 20px;display:flex;flex-direction:column;gap:14px}
-.phead a,.phead .link{color:#D7EAE3;background:none;border:0;font-size:14px;text-decoration:underline;padding:0}
-.avatar{width:52px;height:52px;border-radius:50%;background:var(--sun);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:20px;flex-shrink:0}
+.phead a,.phead .link{color:#D5E4DA;background:none;border:0;font-size:14px;text-decoration:underline;padding:0}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--sun);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:400;font-size:20px;flex-shrink:0}
 .statusbar{background:rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .pbody{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1}
-.tl div{display:grid;grid-template-columns:70px 84px 1fr;gap:8px;padding:11px 0;border-bottom:1px solid #EEF1ED;font-size:15px}
+.tl div{display:grid;grid-template-columns:70px 84px 1fr;gap:8px;padding:11px 0;border-bottom:1px solid #F1ECE1;font-size:15px}
 .tl div:last-child{border-bottom:0}
 .tl .t{font-size:13px;color:var(--muted)}
 .tl .k{font-weight:700}
@@ -85,12 +85,12 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
 .bubble .b{border-radius:16px 16px 16px 4px;padding:10px 14px;background:#fff;border:1px solid var(--line);font-size:15px}
 .bubble.me{align-self:flex-end;align-items:flex-end}
 .bubble.me .b{background:var(--brand);color:#fff;border:0;border-radius:16px 16px 4px 16px}
-.bubble .w{font-size:12px;font-weight:700;color:#3C4846}
+.bubble .w{font-size:12px;font-weight:700;color:#3E4740}
 .bubble .tm{font-size:12px;color:var(--muted)}
 .lightbox{position:fixed;inset:0;background:rgba(20,30,30,.85);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
 .lightbox .inner{background:#fff;border-radius:14px;padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;gap:10px}
 .lightbox svg{width:100%;aspect-ratio:1;border-radius:10px;display:block}
-.frow{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #EEF1ED;font-size:15px}
+.frow{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #F1ECE1;font-size:15px}
 
 /* staff + director */
 .topbar{background:#fff;border-bottom:1px solid var(--line);padding:14px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
@@ -99,90 +99,90 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
 .kids{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .kid{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center;text-align:left;min-height:68px}
 .kid.sel{border-color:var(--brand)}
-.kid.out{background:#EEF1ED}
-.kid .ini{width:42px;height:42px;border-radius:50%;background:#E4E9E3;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.kid.out{background:#F1ECE1}
+.kid .ini{width:42px;height:42px;border-radius:50%;background:#EAE3D3;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
 .kid.sel .ini{background:var(--brand);color:#fff}
-.kid .flag{font-size:12px;font-weight:700;color:#B5461A;margin-left:auto;text-align:right}
+.kid .flag{font-size:12px;font-weight:700;color:#9A3A1E;margin-left:auto;text-align:right}
 .logbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.logbtns button{height:54px;border-radius:12px;border:1px solid var(--line2);background:#F7F9F6;font-weight:700}
+.logbtns button{height:54px;border-radius:12px;border:1px solid var(--line2);background:#F1ECE1;font-weight:700}
 .feed{max-height:300px;overflow:auto;font-size:14px}
-.feed div{padding:8px 0;border-bottom:1px solid #EEF1ED}
+.feed div{padding:8px 0;border-bottom:1px solid #F1ECE1}
 .tile{align-items:flex-start;min-height:84px}
 .tile .tb{display:flex;flex-direction:column;gap:4px;min-width:0}
 .tile.sel .ini{font-size:20px}
-.flagt{font-size:11px;font-weight:700;color:#8E3512;background:var(--warn-soft);border-radius:10px;padding:1px 6px;margin-left:2px}
+.flagt{font-size:11px;font-weight:700;color:#7A2816;background:var(--warn-soft);border-radius:10px;padding:1px 6px;margin-left:2px}
 .badges{display:flex;flex-wrap:wrap;gap:4px}
-.bd{font-size:12px;background:#EEF1ED;color:#3C4846;border-radius:10px;padding:2px 8px;white-space:nowrap}
-.bd.miss{background:var(--sun-soft);color:#6B5412}
+.bd{font-size:12px;background:#F1ECE1;color:#3E4740;border-radius:10px;padding:2px 8px;white-space:nowrap}
+.bd.miss{background:var(--sun-soft);color:#6B4A0E}
 .bd.napb{background:#E3EEF6;color:#2C4F8A;font-weight:700}
 .bd.off{background:transparent;color:var(--muted);padding-left:0}
 .due{display:flex;gap:12px;align-items:center;justify-content:space-between;border-radius:14px;padding:12px 16px;border:1px solid}
-.due.meds{background:var(--sun-soft);border-color:#F2D27A}
+.due.meds{background:var(--sun-soft);border-color:#EFD39A}
 .due.nap{background:#E3EEF6;border-color:#BCD3EA}
-.due.late{background:var(--warn-soft);border-color:#E8B9A4;color:var(--warn)}
+.due.late{background:var(--warn-soft);border-color:#EBC3B2;color:var(--warn)}
 .due .btn{flex-shrink:0}
 .actionbar{position:sticky;bottom:0;z-index:5;background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.06);padding:10px 24px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .actionbar .abl{font-weight:700;margin-right:auto}
-.ab{height:52px;min-width:92px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:#F7F9F6;font-weight:700}
-.ab.warnb{background:var(--warn-soft);color:var(--warn);border-color:#E8B9A4}
+.ab{height:52px;min-width:92px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:#F1ECE1;font-weight:700}
+.ab.warnb{background:var(--warn-soft);color:var(--warn);border-color:#EBC3B2}
 .sheetbg{position:fixed;inset:0;background:rgba(20,30,30,.45);z-index:20}
 .sheet{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(640px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:18px 18px 0 0;padding:20px;z-index:21;display:flex;flex-direction:column;gap:14px}
 .srow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .srow .sl{width:100%;font-size:13px;font-weight:700;color:var(--muted)}
-.undobar{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1E2A2A;color:#fff;border-radius:12px;padding:10px 12px 10px 16px;display:flex;gap:14px;align-items:center;z-index:30;font-size:15px}
-.undobar button{background:var(--sun);color:#1E2A2A;border:0;border-radius:8px;padding:8px 14px;font-weight:700}
+.undobar{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1D2A23;color:#fff;border-radius:12px;padding:10px 12px 10px 16px;display:flex;gap:14px;align-items:center;z-index:30;font-size:15px}
+.undobar button{background:var(--sun);color:#1D2A23;border:0;border-radius:8px;padding:8px 14px;font-weight:700}
 .etabs{display:flex;gap:4px;padding:10px 24px 0;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto}
 .etabs button{border:0;background:none;padding:10px 14px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
 .etabs button[aria-current="page"]{color:var(--brand);border-bottom-color:var(--brand)}
-.segs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#E4E9E3;padding:5px;border-radius:12px}
+.segs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#EAE3D3;padding:5px;border-radius:12px}
 .seg{border:0;background:none;height:44px;border-radius:9px;font-weight:700;color:var(--muted)}
 .seg.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .chip{border:1px solid var(--line2);background:#fff;border-radius:20px;padding:0 14px;height:38px;font-weight:700;font-size:14px;display:inline-flex;align-items:center}
 .chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
-.chip.off{background:#EEF1ED;color:#6B746F;border-style:dashed}
-.noterow{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:12px;align-items:start;padding:10px 0;border-top:1px solid #EEF1ED}
+.chip.off{background:#F1ECE1;color:#6E766F;border-style:dashed}
+.noterow{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:12px;align-items:start;padding:10px 0;border-top:1px solid #F1ECE1}
 .noterow .who{display:flex;gap:10px;align-items:center}
-.noterow .ini{width:38px;height:38px;border-radius:50%;background:#E4E9E3;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.noterow .ini{width:38px;height:38px;border-radius:50%;background:#EAE3D3;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
 textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10px 12px;font-weight:400;font-size:16px;background:#fff;resize:vertical}
 .qrwrap{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center}
 .qr{width:220px;height:220px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;align-items:center;justify-content:center}
 .qr svg{width:100%;height:100%;display:block}
-.qr.placeholder{color:#B8C2BC;font-family:var(--display);font-weight:800;font-size:40px;border-style:dashed}
+.qr.placeholder{color:#B8C2BC;font-family:var(--display);font-weight:400;font-size:40px;border-style:dashed}
 .steps{margin:0;padding-left:20px}
-.pickbig{border:2px dashed #9DB5AA;border-radius:14px;background:#fff;padding:24px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--brand);cursor:pointer}
+.pickbig{border:2px dashed #B7AC93;border-radius:14px;background:#fff;padding:24px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--brand);cursor:pointer}
 .pickbig .small{color:var(--muted)}
 .thumb{position:relative}
 .thumb img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
 .thumb .x{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(20,30,30,.75);color:#fff;font-size:18px;line-height:1}
 .thumb .bar{position:absolute;left:6px;right:6px;bottom:6px;height:6px;background:rgba(255,255,255,.7);border-radius:4px;overflow:hidden}
 .thumb .bar span{display:block;height:100%;background:var(--brand)}
-.donecheck{width:64px;height:64px;border-radius:50%;background:var(--brand-soft);color:var(--brand-ink);font-size:34px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.donecheck{width:64px;height:64px;border-radius:50%;background:var(--brand-soft);color:var(--brand-ink);font-size:34px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .ph img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
 .sumrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:12px;color:var(--muted)}
 .sumrow span{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 4px}
 .sumrow b{display:block;font-family:var(--display);font-size:20px;color:var(--ink)}
 .flabel{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand-ink)}
 .fcap{font-size:16px;line-height:1.45}
-.feeditem.note{background:#FFFDF6;border-color:#F2E3B3}
+.feeditem.note{background:#FFFCF6;border-color:#EFD39A}
 .fnote{font-size:17px;line-height:1.5}
 .lightbox img{width:100%;border-radius:10px;display:block;max-height:70vh;object-fit:contain;background:#111}
 .dir{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:calc(100vh - 36px)}
 .side{background:var(--brand-dark);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px}
-.side button{background:none;border:0;color:#D5E3DD;text-align:left;padding:11px 12px;border-radius:10px;font-size:15px}
+.side button{background:none;border:0;color:#D5E4DA;text-align:left;padding:11px 12px;border-radius:10px;font-size:15px}
 .side button[aria-current="page"]{background:rgba(255,255,255,.12);color:#fff;font-weight:700}
 .main{padding:26px 30px;display:flex;flex-direction:column;gap:18px;min-width:0}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.kpi .v{font-family:var(--display);font-weight:800;font-size:32px}
+.kpi .v{font-family:var(--display);font-weight:400;font-size:32px}
 .tbl{width:100%;border-collapse:collapse;font-size:15px}
 .tbl th{text-align:left;font-size:12px;letter-spacing:.06em;color:var(--muted);padding:10px 8px;border-bottom:1px solid var(--line)}
-.tbl td{padding:12px 8px;border-bottom:1px solid #EEF1ED;vertical-align:middle}
+.tbl td{padding:12px 8px;border-bottom:1px solid #F1ECE1;vertical-align:middle}
 .tblbox{overflow-x:auto}
 .two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
-.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1E2A2A;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:20}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1D2A23;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:20}
 
 /* Powered by Dantia.ca: same lockup as the Mesura demo (mark + wordmark from ai-automation-agency/marca-dantia.md). Font is a Playfair Display subset covering only the letters of Dantia.ca. */
 @font-face{font-family:"Dantia Marca";font-style:normal;font-weight:700;font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAAAZAABAAAAAADBAAAAXjAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGiIbglQcgUoGYD9TVEFURABsEQgKh1iGEQsaAAE2AiQDMAQgBYVgByAMBxsZCsjEh2dTe/9DaEpIm/VIRYmvVHRiTieems88uXOYqmU7iZy4c99+rZ5YPfB4lgqRmJbZ3X8yN5gt7stHRDqliCW36pFHK6SceFgMNw/WaTRrZG90fxAAAqzeFAwIWJRxMJpeHjycvJ+HE4WgPXsPVBBT753eiHyw5xufjdq6iqmNehwb6WAR3ZvBrwhCML0UUBS+Fu37sRxRggsbFev/wqN/mon+j0f/o0D/q17tm14VBZWLQXGIVtFLEK0Y0ANmFgZEgTPJIGaQksOpwIACGDBODAjaaNR/PSWIaadIRfwBO1W8/ldO/9CZXI+DztHnAoZuY3tJ6N5juIK09gO6jU0rVLopabIyfADZySbWdzJOmkNuhnFjGHRDfVNZPdrm9kJ7tt2NkgrihkEk5BdKQ9/VBgixEAAlkCMRmI+lCr08FlSlowEMKHchEyGS4pm3bO/Su0Kau1neW+m7p7eE6Wx73cD0l/CPBKyba53S2wCkRxFGA3lQzC3OullV1dOn0atmureemC2rCEKVlMTIL9JOEJZevnUMyLQHESjzWUiq4mC58U9JyEVPeFGGGjRiOmUz776of62/o1/Rd+jb9U36Bn01WTNEOgHRdcQy8UrFE+t8UviMyM0c8VHMMuFmyRvHpf6fzLIZse3N2Ukd0gRhHidEeQXWXKeF4AsGefXuXV4NOsm+fdsI49961k32hNqci2Sqh0F9R0xaJEL84XCJ+uQk8d96Gnl0iRD/0Yu8elrccwS+y7x6lfiPZe2LmLRQ5oEQqG+DSduXkLT/Pq9ePEoOB4u0Sylk9f7z5w/Dd6VOC7n2HIHvMq9eJf5rnrV7efXy8SB8oYBJO3ctz7U5GOTVcJj4I5FJ1HfAhL1hXg06iXaIMP6jPNlj0iJ12oOkDTtw7KC2HuTV88fRZKQHpyKTYAJvvla7lOHaHOTVh/LBMGF4YiJaZJR25WL+zq7N0wLwPebVJ8T/NKOMZS+ya9Km3p+KkbfuXDu5r2HCzpNjFlgKmuOzFfjFn/7Z5fzRtVP4UPQpdHn+WHIj90Txr8U3cpXJgzPXNTRnr/T2xQ4u58R5e1bFaz2tn9YnDE42ulLFuY8vfJls/0JyDpTS7iy/NrhFbm6/uJcrzd2LLEkrhejotcu7ldpdpx2JM3rIk0T6WWDpH23NHTI8VqTEebpaBm57kuG47HCss0tz1875T8z4RLeUFA1yj7ple+bRJ/mG3QX9huS271bdtvPMiWO7zm3qhC9iT8kBh9UygHo8Q2i+1RGQO+QcdFl/Tpf7ctDi5J4f/fxNkVkOOKzSAOpy96WSNX2B3CZp9erklMBuW7y8JM1q6Uld7iE03+oIyC2//fOxz5Zk4uP9u2eKM1enj46Pa/+q8d+u7draLCgxdy0erojK83LvGLyoed50Ot/05FeAK4qSjU6nUV6MBNwwtQHlnn1YObsSf883k5ZMVMnv60eK/uw1V7wzKbbjb0aG+fKcunDakIHsxve67vzr/591M/sbu/TtIp9j8W44tIH8//P/uexvT9zrBFqIjowRdsohjfwIJ+mAxNRDK68gk3WdxKAQXwGNXBewDlF46Y0+LSL2RGztW2IcGw0QJ3GvQgQS4eBtTv8jxKAjboZYyFgfMiAZC0McWmJkMAbFsMfIOBSPJWx/JmKGAB4YM5tfH44mNMCLRvTDdHhRjxqUYRQqUIMqVGN62ns6mtEeecZF01CGqahBM6bzaK7P8HP1yEUTpqIKeRiC3hiIoaiHF3NQCS9qMBU9UYNpaD7QmoPuaIJejpGowNT2v92ERkgoQC4KkY8iYyUJbmmK+OnpgN5Q0BcdxjbYvEaK9jBUM+YoLQhBaTxfAdpA2mw1KiDJWzYUU3l7LSpQ1l51wwxygbjuaZDQkmiaZqoq1Jwsm4FSD8tulMpDWW+tMzANFZyqCFw5b/SMcsyZyIaEWf21SxiOivbeqZgZLWfY+yaAXNHBHBtUWp/djNo5MX9KtPkbNFPU9zzRXzjOLgEAAA==) format("woff2")}
-.dantia{display:inline-flex;flex-direction:column;gap:6px;--dtMark:#1F4622;--dtInk:#1C1913;--dtL:#56625F}
+.dantia{display:inline-flex;flex-direction:column;gap:6px;--dtMark:#1F4622;--dtInk:#1C1913;--dtL:#58625A}
 .dantia .dtL{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dtL);line-height:1}
 .dantia .dtLogo{display:inline-flex;align-items:center;gap:8px;color:var(--dtInk)}
 .dantia .dtMark{width:20px;height:20px;color:var(--dtMark);flex:none;display:block}
@@ -209,6 +209,108 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
   .two{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:no-preference){.toast{animation:up .2s ease-out}@keyframes up{from{opacity:0;transform:translate(-50%,8px)}}}
+
+/* ---- Claude Design visual language (claude-design/nestday-prototype/README.md, "Design basics") ---- */
+:root{--hair:#EDE6D6;--chipbg:#F1ECE1;--sky:#E6EDF0}
+h1,h2,h3,.logo,.kpi .v,.sumrow b,.ckbig,.fnote{font-weight:400}
+.btn{height:48px;border-radius:999px;padding:0 20px}
+.btn.small{height:40px;border-radius:999px;padding:0 14px}
+.btn.ghost{background:transparent;border:1px solid var(--line2)}
+.btn.warn{border-radius:999px}
+.card{border-radius:22px;border-color:transparent}
+.chip{height:40px;border-radius:999px;background:var(--surface);border:1px solid var(--line2);padding:0 16px}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#FFFCF6}
+.chip.off{background:transparent;border:1px dashed #B7AC93}
+label.field input,label.field select,textarea{border-radius:14px;border:1.5px solid var(--line2);background:#fff}
+.segs{border-radius:999px;background:var(--chipbg)}
+.seg{border-radius:999px}
+.pill{border-radius:999px}
+.banner{background:#1D2A23}
+.login .hero{background:var(--brand)}
+.testbox{border-radius:18px;background:var(--surface)}
+.phone{background:var(--bg)}
+.phdr{padding:20px 20px 8px;display:flex;flex-direction:column;gap:12px}
+.phdr .row{gap:12px}
+.phdr .avatar{width:48px;height:48px;background:var(--sun);color:var(--ink);font-family:var(--display);font-weight:400;font-size:18px}
+.phdr .nm{font-family:var(--display);font-size:24px;line-height:1.1}
+.phdr .who{flex:1;min-width:0}
+.heredot{display:flex;align-items:center;gap:6px;color:var(--brand-ink);font-weight:600}
+.heredot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brand)}
+.pbody{padding:8px 16px 24px;gap:16px}
+.ckcard{background:var(--brand);color:#FFFCF6;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:6px}
+.ckcard .ckd{font-size:14px;color:#D5E4DA}
+.ckcard .ckbig{font-family:var(--display);font-size:28px;line-height:1.15;margin-top:6px}
+.sunp{background:var(--sun);color:#1D2A23;font-size:13px;padding:5px 12px}
+.sumrow{gap:8px}
+.sumrow span{background:var(--surface);border:0;border-radius:16px;padding:12px 8px;font-size:13px}
+.sumrow b{font-size:26px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;padding:8px 4px 0}
+.sechead h2{font-size:22px}
+.ptitle{font-size:26px;padding:4px 4px 0}
+.chead{display:flex;align-items:center;gap:10px}
+.chead b{flex:1;font-size:16px}
+.ic{width:32px;height:32px;border-radius:50%;background:var(--chipbg);color:#3E4740;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.ic.big{width:36px;height:36px}
+.ic.sun{background:var(--sun-soft);color:#6B4A0E}
+.ic.pine{background:var(--brand-soft);color:var(--brand-ink)}
+.ic.warn{background:var(--warn-soft);color:var(--warn)}
+.crows{padding:6px 16px}
+.crow{display:grid;grid-template-columns:64px 32px minmax(0,1fr);gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--hair);font-size:15px;line-height:1.35}
+.crow:last-child{border-bottom:0}
+.crow .t{font-size:14px;color:var(--muted)}
+.fnote{font-family:var(--display);font-size:18px;line-height:1.45}
+.feeditem.note{background:var(--surface);border-color:transparent}
+.remind{background:var(--sun-soft);border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B4A0E}
+.ph{border-radius:12px;overflow:hidden}
+.grid3{gap:6px}
+.bubble .b{border-radius:18px 18px 18px 6px;background:var(--surface);border:0}
+.bubble.me .b{border-radius:18px 18px 6px 18px}
+.tabs{background:var(--surface);border-top:1px solid var(--line);height:auto;padding:8px 8px calc(12px + env(safe-area-inset-bottom,0px))}
+.tabs button{gap:4px;min-height:52px;font-weight:500}
+.tabs .tbi{width:56px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center}
+.tabs button[aria-current="page"]{color:var(--brand-ink);font-weight:700}
+.tabs button[aria-current="page"] .tbi{background:var(--brand-soft)}
+.topbar{background:var(--bg);border-bottom:0}
+.topbar h1{font-size:26px}
+.etabs{background:var(--bg);border-bottom:1px solid var(--line);gap:6px;padding:4px 24px 10px}
+.etabs button{border-radius:999px;border:0;padding:8px 16px;color:var(--muted)}
+.etabs button[aria-current="page"]{background:var(--brand);color:#FFFCF6;border-bottom:0}
+.kid{border-radius:18px;background:var(--surface);border:2px solid transparent}
+.kid.sel{border-color:var(--brand);background:#F7FAF6}
+.kid.out{background:transparent;border:2px dashed var(--line2)}
+.kid .ini{background:var(--chipbg)}
+.kid.sel .ini{background:var(--brand);color:#FFFCF6}
+.bd{background:var(--chipbg)}
+.bd.napb{background:var(--brand-soft);color:var(--brand-ink)}
+.due{border-radius:20px;border:0}
+.due.nap{background:var(--brand-soft)}
+.actionbar{background:var(--surface);border-top:1px solid var(--line);box-shadow:none}
+.ab{width:86px;height:66px;min-width:0;border-radius:16px;border:0;background:var(--chipbg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;padding:0}
+.ab.warnb{background:var(--warn-soft);color:var(--warn)}
+.sheet{background:var(--surface);border-radius:24px 24px 0 0}
+.undobar{background:#1D2A23;border-radius:999px}
+.undobar button{border-radius:999px}
+.qr{border-radius:18px}
+.pickbig{border-radius:22px;background:var(--surface)}
+.thumb img{border-radius:12px}
+.side{background:#1F4538}
+.side button{border-radius:999px}
+.kpi{border-radius:20px}
+@media (max-width:860px){
+  .topbar{padding:12px 16px;gap:8px}
+  .topbar h1{font-size:22px}
+  .etabs{padding:4px 12px 10px}
+  .wrap{padding:12px}
+  .kids{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .tile{padding:10px;min-height:0;gap:8px}
+  .tile .ini{width:34px;height:34px;font-size:13px}
+  .actionbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:8px 10px calc(10px + env(safe-area-inset-bottom,0px));gap:6px}
+  .actionbar .abl{display:none}
+  .ab{width:auto;height:58px;padding:0;font-size:12px}
+  .sheet{max-height:92vh;padding:16px}
+  .login .hero{padding:24px 20px}
+}
 </style>
 </head>
 <body>
@@ -229,16 +331,16 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
 
   // ---------- illustrated fake photos ----------
   const ART = {
-    tower: ['Block tower', '<rect width="100" height="100" fill="#F7DE9C"/><rect y="82" width="100" height="18" fill="#D9B45A"/><rect x="36" y="66" width="28" height="16" fill="#1F6F5C"/><rect x="40" y="50" width="22" height="16" fill="#C8551B"/><rect x="38" y="34" width="24" height="16" fill="#2C4F8A"/><rect x="42" y="20" width="18" height="14" fill="#1F6F5C"/>'],
-    leaf: ['Leaf painting', '<rect width="100" height="100" fill="#CFE3DA"/><rect x="14" y="16" width="72" height="62" rx="3" fill="#fff"/><ellipse cx="36" cy="40" rx="12" ry="7" transform="rotate(-30 36 40)" fill="#E07A4F"/><ellipse cx="62" cy="36" rx="11" ry="6" transform="rotate(20 62 36)" fill="#F2B632"/><ellipse cx="50" cy="60" rx="13" ry="7" transform="rotate(-10 50 60)" fill="#C8551B"/>'],
-    slide: ['Playground slide', '<rect width="100" height="100" fill="#DCE6F2"/><circle cx="78" cy="22" r="10" fill="#F2B632"/><rect y="72" width="100" height="28" fill="#8DBF7A"/><path d="M22 72 L22 36 L34 36 L64 72" fill="none" stroke="#C8551B" stroke-width="5"/><path d="M18 36 H38" stroke="#2C4F8A" stroke-width="4"/>'],
+    tower: ['Block tower', '<rect width="100" height="100" fill="#F7DE9C"/><rect y="82" width="100" height="18" fill="#D9B45A"/><rect x="36" y="66" width="28" height="16" fill="#2D5B4B"/><rect x="40" y="50" width="22" height="16" fill="#C8551B"/><rect x="38" y="34" width="24" height="16" fill="#2C4F8A"/><rect x="42" y="20" width="18" height="14" fill="#2D5B4B"/>'],
+    leaf: ['Leaf painting', '<rect width="100" height="100" fill="#CFE3DA"/><rect x="14" y="16" width="72" height="62" rx="3" fill="#fff"/><ellipse cx="36" cy="40" rx="12" ry="7" transform="rotate(-30 36 40)" fill="#E07A4F"/><ellipse cx="62" cy="36" rx="11" ry="6" transform="rotate(20 62 36)" fill="#E8A73A"/><ellipse cx="50" cy="60" rx="13" ry="7" transform="rotate(-10 50 60)" fill="#C8551B"/>'],
+    slide: ['Playground slide', '<rect width="100" height="100" fill="#DCE6F2"/><circle cx="78" cy="22" r="10" fill="#E8A73A"/><rect y="72" width="100" height="28" fill="#8DBF7A"/><path d="M22 72 L22 36 L34 36 L64 72" fill="none" stroke="#C8551B" stroke-width="5"/><path d="M18 36 H38" stroke="#2C4F8A" stroke-width="4"/>'],
     story: ['Story time', '<rect width="100" height="100" fill="#EADCF0"/><rect x="28" y="30" width="44" height="32" rx="2" fill="#2C4F8A"/><path d="M50 30 V62" stroke="#fff" stroke-width="2"/><circle cx="22" cy="76" r="9" fill="#8A5A3C"/><circle cx="78" cy="76" r="9" fill="#E0B090"/>'],
-    sand: ['Sand table', '<rect width="100" height="100" fill="#F4E6C8"/><rect x="12" y="40" width="76" height="34" rx="4" fill="#D9B45A"/><circle cx="38" cy="52" r="6" fill="#C8551B"/><rect x="56" y="46" width="14" height="10" fill="#1F6F5C"/>'],
-    snack: ['Snack time', '<rect width="100" height="100" fill="#FBEDE6"/><circle cx="50" cy="54" r="30" fill="#fff"/><circle cx="40" cy="48" r="7" fill="#C8551B"/><circle cx="58" cy="46" r="6" fill="#8DBF7A"/><circle cx="52" cy="62" r="7" fill="#F2B632"/>'],
+    sand: ['Sand table', '<rect width="100" height="100" fill="#F4E6C8"/><rect x="12" y="40" width="76" height="34" rx="4" fill="#D9B45A"/><circle cx="38" cy="52" r="6" fill="#C8551B"/><rect x="56" y="46" width="14" height="10" fill="#2D5B4B"/>'],
+    snack: ['Snack time', '<rect width="100" height="100" fill="#F8E0D6"/><circle cx="50" cy="54" r="30" fill="#fff"/><circle cx="40" cy="48" r="7" fill="#C8551B"/><circle cx="58" cy="46" r="6" fill="#8DBF7A"/><circle cx="52" cy="62" r="7" fill="#E8A73A"/>'],
     music: ['Music circle', '<rect width="100" height="100" fill="#E3EEF6"/><ellipse cx="50" cy="44" rx="24" ry="8" fill="#C8551B"/><rect x="26" y="44" width="48" height="26" fill="#E07A4F"/><ellipse cx="50" cy="70" rx="24" ry="8" fill="#C8551B"/><path d="M30 20 L44 38 M70 20 L56 38" stroke="#8A5A3C" stroke-width="4" stroke-linecap="round"/>'],
-    puzzle: ['Puzzle', '<rect width="100" height="100" fill="#E4F0E6"/><rect x="20" y="20" width="28" height="28" fill="#2C4F8A"/><rect x="52" y="20" width="28" height="28" fill="#F2B632"/><rect x="20" y="52" width="28" height="28" fill="#1F6F5C"/><rect x="54" y="54" width="28" height="28" fill="#C8551B"/>'],
-    bubbles: ['Bubbles outside', '<rect width="100" height="100" fill="#DCEBF5"/><rect y="78" width="100" height="22" fill="#8DBF7A"/><circle cx="34" cy="36" r="12" fill="none" stroke="#2C4F8A" stroke-width="2"/><circle cx="62" cy="28" r="8" fill="none" stroke="#6B3F7A" stroke-width="2"/><circle cx="70" cy="54" r="10" fill="none" stroke="#1F6F5C" stroke-width="2"/>'],
-    garden: ['Planting seeds', '<rect width="100" height="100" fill="#F1EBDD"/><rect x="18" y="56" width="64" height="26" rx="3" fill="#8A5A3C"/><path d="M34 56 V40 M50 56 V34 M66 56 V42" stroke="#1F6F5C" stroke-width="4" stroke-linecap="round"/><circle cx="34" cy="38" r="5" fill="#8DBF7A"/><circle cx="50" cy="32" r="5" fill="#8DBF7A"/><circle cx="66" cy="40" r="5" fill="#8DBF7A"/>']
+    puzzle: ['Puzzle', '<rect width="100" height="100" fill="#E4F0E6"/><rect x="20" y="20" width="28" height="28" fill="#2C4F8A"/><rect x="52" y="20" width="28" height="28" fill="#E8A73A"/><rect x="20" y="52" width="28" height="28" fill="#2D5B4B"/><rect x="54" y="54" width="28" height="28" fill="#C8551B"/>'],
+    bubbles: ['Bubbles outside', '<rect width="100" height="100" fill="#DCEBF5"/><rect y="78" width="100" height="22" fill="#8DBF7A"/><circle cx="34" cy="36" r="12" fill="none" stroke="#2C4F8A" stroke-width="2"/><circle cx="62" cy="28" r="8" fill="none" stroke="#6B3F7A" stroke-width="2"/><circle cx="70" cy="54" r="10" fill="none" stroke="#2D5B4B" stroke-width="2"/>'],
+    garden: ['Planting seeds', '<rect width="100" height="100" fill="#F1EBDD"/><rect x="18" y="56" width="64" height="26" rx="3" fill="#8A5A3C"/><path d="M34 56 V40 M50 56 V34 M66 56 V42" stroke="#2D5B4B" stroke-width="4" stroke-linecap="round"/><circle cx="34" cy="38" r="5" fill="#8DBF7A"/><circle cx="50" cy="32" r="5" fill="#8DBF7A"/><circle cx="66" cy="40" r="5" fill="#8DBF7A"/>']
   };
   const svg = k => '<svg viewBox="0 0 100 100" role="img" aria-label="Photo: ' + ART[k][0] + '">' + ART[k][1] + '</svg>';
 
@@ -337,7 +439,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
   if (!D.staff) { D.staff = freshStaff(); save(); } // older saved demo data had no staff list
   let user = loadUser();
   if (!D.uploads) D.uploads = [];
-  let ui = { role: 'parent', err: '', tab: 'today', dtab: 'today', sel: ['maya', 'noah', 'aria'], light: null, email: '', pw: '',
+  let ui = { role: 'parent', err: '', tab: 'today', dtab: 'today', sel: [], light: null, email: '', pw: '',
     etab: 'room', sheet: null, undo: null, noteMode: 'each', noteSel: [], photoKids: [], qrExp: 0, keep: {}, up: { files: [], stage: 'pick', sent: 0, busy: false } };
 
   // ---------- shared storage (claude.ai copy only) ----------
@@ -413,7 +515,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     return '<div class="login">' +
       '<div class="hero"><div class="logo">' + sunIcon() + 'Nestday</div>' +
       '<div><h1>Their day, while you\'re at work.</h1><p>Photos, meals, naps and notes from your child\'s room, in any web browser. No app to install.</p></div>' +
-      '<div class="stack" style="gap:18px">' + dantia('onbrand big') + '<div class="small" style="color:#D7EAE3">Sunflower Early Learning Centre (fictional) · Airdrie AB · 403-555-0142<br>Data stored in Canada</div></div></div>' +
+      '<div class="stack" style="gap:18px">' + dantia('onbrand big') + '<div class="small" style="color:#D5E4DA">Sunflower Early Learning Centre (fictional) · Airdrie AB · 403-555-0142<br>Data stored in Canada</div></div></div>' +
       '<div class="form"><form id="loginForm" novalidate>' +
       '<div><h2 style="font-size:32px">Sign in</h2><div class="muted">Parents, educators and directors all sign in here.</div></div>' +
       (ui.err ? '<div class="err" role="alert">' + esc(ui.err) + '</div>' : '') +
@@ -431,8 +533,35 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       '<span class="dtName">Dantia.ca</span></span></div>';
   }
 
+  const ICO = {
+    meal: '<path d="M7 3v18M5 3v5a2 2 0 0 0 4 0V3M17 21V3c-2 0-3 2-3 6s1 4 3 4"/>',
+    nap: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+    diaper: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    note: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+    photo: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+    checkin: '<path d="M14 4h5v16h-5M3 12h11M10 8l4 4-4 4"/>',
+    incident: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
+    meds: '<rect x="3" y="9" width="18" height="6" rx="3"/><path d="M12 9v6"/>',
+    outside: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/>',
+    activity: '<path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.8 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/>'
+  };
+  function ico(k, size) { const z = size || 18; return '<svg width="' + z + '" height="' + z + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICO[k] || ICO.note) + '</svg>'; }
+  function kindOf(k) {
+    if (['Breakfast', 'AM snack', 'Lunch', 'PM snack', 'Meal', 'Snack'].includes(k)) return ['meal', ''];
+    if (k === 'Nap') return ['nap', 'pine'];
+    if (k === 'Diaper' || k === 'Toilet') return ['diaper', ''];
+    if (k === 'Note') return ['note', 'pine'];
+    if (k === 'Photos') return ['photo', 'sun'];
+    if (k === 'Incident') return ['incident', 'warn'];
+    if (k === 'Medication') return ['meds', 'pine'];
+    if (k === 'Outside') return ['outside', ''];
+    return ['activity', ''];
+  }
+  const todayLong = () => { const d = new Date(); return d.toLocaleDateString('en-CA', { weekday: 'long' }) + ' ' + d.getDate() + ' ' + d.toLocaleDateString('en-CA', { month: 'long' }); };
+
   function sunIcon() {
-    return '<svg width="32" height="32" viewBox="0 0 36 36" fill="none" stroke="#F2B632" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="18" cy="18" r="7"/><path d="M18 3v5M18 28v5M3 18h5M28 18h5M7.4 7.4l3.5 3.5M25.1 25.1l3.5 3.5M7.4 28.6l3.5-3.5M25.1 10.9l3.5-3.5"/></svg>';
+    return '<svg width="32" height="32" viewBox="0 0 36 36" fill="none" stroke="#E8A73A" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="18" cy="18" r="7"/><path d="M18 3v5M18 28v5M3 18h5M28 18h5M7.4 7.4l3.5 3.5M25.1 25.1l3.5 3.5M7.4 28.6l3.5-3.5M25.1 10.9l3.5-3.5"/></svg>';
   }
 
   function viewParent() {
@@ -443,14 +572,11 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     if (ui.tab === 'photos') body = parentPhotos(c);
     if (ui.tab === 'messages') body = parentMessages(c);
     if (ui.tab === 'fees') body = parentFees(c);
-    return '<div class="phone"><div class="phead">' +
-      '<div class="row"><span class="logo" style="font-size:18px">Nestday</span><span class="spacer"></span><button class="link" data-a="logout">Sign out</button></div>' +
-      '<div class="row"><div class="avatar">' + esc(c.ini) + '</div><div><h1 style="font-size:24px">' + esc(c.first) + '</h1><div class="small" style="color:#D7EAE3">Sunflower Room · Toddlers · signed in as ' + esc(user.name) + '</div></div></div>' +
-      '<div class="statusbar"><div><div class="small" style="color:#D7EAE3">Thursday, 24 September</div><b>' +
-      (c.here ? 'Checked in ' + esc(c.inAt) + (c.by ? ' by ' + esc(c.by) : '') : esc(c.note || 'Not checked in yet')) + '</b></div>' +
-      '<span class="pill" style="background:' + (c.here ? '#F2B632;color:#1E2A2A' : '#EEF1ED;color:#3C4846') + '">' + (c.here ? 'Here now' : 'Not here') + '</span></div></div>' +
+    return '<div class="phone"><header class="phdr">' +
+      '<div class="row"><div class="avatar">' + esc(c.ini) + '</div><div class="who"><div class="nm">' + esc(c.name) + '</div><div class="small muted">Sunflower Room · 19 mo to 3 yrs</div></div><button class="btn small ghost" data-a="logout">Sign out</button></div>' +
+      '<div class="row small muted"><span>Signed in as ' + esc(user.name.split(' ')[0]) + '</span><span class="spacer"></span>' + (c.here ? '<span class="heredot">Here since ' + esc(c.inAt) + '</span>' : '<span>' + esc(c.note || 'Not checked in yet') + '</span>') + '</div></header>' +
       '<main class="pbody">' + body + '<div class="pfoot">' + dantia() + '</div></main>' +
-      '<nav class="tabs" aria-label="Parent menu">' + tabs.map(([id, l]) => '<button data-a="tab" data-t="' + id + '"' + (ui.tab === id ? ' aria-current="page"' : '') + '>' + tabIcon(id) + l + '</button>').join('') + '</nav>' +
+      '<nav class="tabs" aria-label="Parent menu">' + tabs.map(([id, l]) => '<button data-a="tab" data-t="' + id + '"' + (ui.tab === id ? ' aria-current="page"' : '') + '><span class="tbi">' + tabIcon(id) + '</span>' + l + '</button>').join('') + '</nav>' +
       (ui.light ? lightbox() : '') + '</div>';
   }
 
@@ -484,7 +610,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
   }
 
   function photoCard(c, b) {
-    return '<section class="card stack feeditem"><div class="row"><span class="flabel">Photos · ' + b.items.length + '</span><span class="spacer"></span><span class="small muted">' + esc(b.t) + '</span></div>' +
+    return '<section class="card stack feeditem"><div class="chead"><span class="ic big sun">' + ico('photo', 20) + '</span><b>Photos · ' + b.items.length + '</b><span class="small muted">' + esc(b.t) + '</span></div>' +
       '<div class="grid3">' + b.items.map(x => '<button class="ph" data-a="photo" data-k="up:' + x.i + '"><img src="' + uploadSrc(x.u) + '" alt="Photo of ' + esc(c.first) + (b.cap ? ': ' + esc(b.cap) : '') + '"></button>').join('') + '</div>' +
       (b.cap ? '<div class="fcap">' + esc(b.cap) + '</div>' : '') + '<div class="small muted">From ' + esc(b.by) + '</div></section>';
   }
@@ -503,27 +629,28 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     feed.push({ m: mins('10:42 am'), o: -1, type: 'seed' });
     feed.sort((a, b) => (b.m - a.m) || (b.o - a.o));
     let html = '', care = [];
-    const flush = () => { if (care.length) { html += '<section class="card tl feeditem" style="padding:4px 16px">' + care.map(l => '<div><span class="t num">' + esc(l.t) + '</span><span class="k">' + esc(l.k) + '</span><span>' + esc(l.v) + '</span></div>').join('') + '</section>'; care = []; } };
+    const flush = () => { if (care.length) { html += '<section class="card crows feeditem" aria-label="Care entries">' + care.map(l => { const [ik, tone] = kindOf(l.k); return '<div class="crow"><span class="t num">' + esc(l.t) + '</span><span class="ic ' + tone + '">' + ico(ik) + '</span><span><b>' + esc(l.k) + ':</b> ' + esc(l.v) + '</span></div>'; }).join('') + '</section>'; care = []; } };
     feed.forEach(f => {
       if (f.type === 'care') { care.push(f.l); return; }
       flush();
-      if (f.type === 'note') html += '<section class="card stack feeditem note"><div class="row"><span class="flabel">Note from ' + esc(f.l.by || 'Priya K.') + '</span><span class="spacer"></span><span class="small muted">' + esc(f.l.t) + '</span></div><div class="fnote">' + esc(f.l.v) + '</div></section>';
+      if (f.type === 'note') html += '<section class="card stack feeditem note"><div class="chead"><span class="ic big pine">' + ico('note', 20) + '</span><b>Note from ' + esc(f.l.by || 'Priya K.') + '</b><span class="small muted">' + esc(f.l.t) + '</span></div><div class="fnote">' + esc(f.l.v) + '</div></section>';
       if (f.type === 'photos') html += photoCard(c, f.b);
-      if (f.type === 'seed') html += '<section class="card stack feeditem"><div class="row"><span class="flabel">Photos · ' + first.length + '</span><span class="spacer"></span><span class="small muted">10:42 am</span></div><div class="grid3">' + first.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div><div class="fcap">' + esc(D.notes[c.id]) + '</div><div class="small muted">From Priya K.</div></section>';
+      if (f.type === 'seed') html += '<section class="card stack feeditem"><div class="chead"><span class="ic big sun">' + ico('photo', 20) + '</span><b>Photos · ' + first.length + '</b><span class="small muted">10:42 am</span></div><div class="grid3">' + first.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div><div class="fcap">' + esc(D.notes[c.id]) + '</div><div class="small muted">From Priya K.</div></section>';
     });
     flush();
-    return '<div class="sumrow" aria-label="Today so far"><span><b class="num">' + (count('Meal') + count('Breakfast') + count('Lunch') + count('AM snack') + count('PM snack')) + '</b> meals</span><span><b class="num">' + nPhotos + '</b> photos</span><span><b class="num">' + count('Note') + '</b> notes</span><span><b class="num">' + (count('Diaper') + count('Toilet')) + '</b> changes</span></div>' +
-      html +
-      '<section class="card" style="background:var(--sky);border:0"><b>Reminder from the Sunflower Room</b><div>Please send a spare set of clothes on Friday. We\'re doing water play.</div></section>' +
+    return '<section class="ckcard" aria-label="Check-in"><div class="row"><span class="ckd">' + esc(todayLong()) + '</span><span class="spacer"></span><span class="pill sunp">' + (c.here ? 'Here now' : 'Not here') + '</span></div><div class="ckbig">' + (c.here ? 'Checked in ' + esc(c.inAt) : esc(c.note || 'Not checked in yet')) + '</div>' + (c.here && c.by ? '<div class="ckd">by ' + esc(c.by) + '</div>' : '') + '</section>' +
+      '<div class="sumrow" aria-label="Today so far"><span><b class="num">' + (count('Meal') + count('Breakfast') + count('Lunch') + count('AM snack') + count('PM snack')) + '</b> meals</span><span><b class="num">' + nPhotos + '</b> photos</span><span><b class="num">' + count('Note') + '</b> notes</span><span><b class="num">' + (count('Diaper') + count('Toilet')) + '</b> changes</span></div>' +
+      '<div class="sechead"><h2>' + esc(c.first) + '\'s day</h2><span class="small muted">Newest first</span></div>' + html +
+      '<section class="remind"><div class="eyebrow">Room reminder</div><div>Please send a spare set of clothes on Friday. We\'re doing water play.</div></section>' +
       '<section class="card"><div class="row"><b>Latest message</b><span class="spacer"></span><span class="small muted">' + esc(lastMsg.t) + '</span></div><div>' + (lastMsg.me ? '<b>You:</b> ' : '<b>' + esc(lastMsg.w) + ':</b> ') + esc(lastMsg.v) + '</div></section>' +
-      '<div class="row"><button class="btn" style="flex:1" data-a="tab" data-t="messages">Message the room</button>' +
+      '<div class="row"><button class="btn" style="flex:1;height:54px" data-a="tab" data-t="messages">' + ico('chat', 20) + 'Message the room</button>' +
       (c.here ? '' : '<button class="btn ghost" style="flex:1" data-a="absent">Report absence</button>') + '</div>';
   }
 
   function kidUploads(id) { return (D.uploads || []).map((u, i) => ({ u, i })).filter(x => x.u.kids.includes(id)); }
 
   function parentPhotos(c) {
-    return '<div class="card" style="background:var(--sun-soft);border-color:#F2D27A;font-size:14px">Full-size downloads are free. Tap a photo to open it. Children whose families said no to photos are never shown.</div>' +
+    return '<h2 class="ptitle">Photos</h2>' + '<div class="card" style="background:var(--sun-soft);border-color:#EFD39A;font-size:14px">Full-size downloads are free. Tap a photo to open it. Children whose families said no to photos are never shown.</div>' +
       batches(c.id).slice().reverse().map(b => photoCard(c, b)).join('') +
       D.photos[c.id].map(([label, keys]) => '<section class="stack" style="gap:8px"><div class="row"><b>' + esc(label) + '</b><span class="spacer"></span><span class="small muted">' + keys.length + ' photos</span></div>' +
         '<div class="grid3">' + keys.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div></section>').join('');
@@ -543,7 +670,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
   function parentMessages(c) {
     const list = D.messages[c.id].map(m => '<div class="bubble' + (m.me ? ' me' : '') + '">' + (m.me ? '' : '<span class="w">' + esc(m.w) + '</span>') +
       '<div class="b">' + esc(m.v) + '</div><span class="tm">' + esc(m.t) + '</span></div>').join('');
-    return '<div class="card" style="background:var(--sky);border:0"><div class="small" style="font-weight:700;color:#2C4F8A">ANNOUNCEMENT · KAREN O., DIRECTOR</div>We\'re closed Monday 12 October for Thanksgiving.</div>' +
+    return '<h2 class="ptitle">Messages</h2><div class="card" style="background:var(--sky);border:0"><div class="small" style="font-weight:700;color:#2C4F8A">ANNOUNCEMENT · KAREN O., DIRECTOR</div>We\'re closed Monday 12 October for Thanksgiving.</div>' +
       '<div class="stack" id="thread" aria-live="polite">' + list + '</div>' +
       '<div class="small muted" style="text-align:center">Educators usually reply within an hour during care hours.</div>' +
       '<form id="msgForm" class="row"><label for="msg" class="sr">Write a message</label><input id="msg" autocomplete="off" placeholder="Write to the Sunflower Room" style="flex:1;height:48px;border:1px solid var(--line2);border-radius:24px;padding:0 16px;background:#fff"><button class="btn" type="submit">Send</button></form>';
@@ -551,7 +678,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
 
   function parentFees() {
     const past = ['1 Sep 2026', '1 Aug 2026', '1 Jul 2026', '1 Jun 2026'];
-    return '<section class="card"><div class="small muted">Balance owing</div><div style="font-family:var(--display);font-weight:800;font-size:34px" class="num">$0.00</div><div class="small" style="color:var(--brand-ink);font-weight:700">You\'re all paid up</div></section>' +
+    return '<h2 class="ptitle">Fees</h2><section class="card"><div class="small muted">Balance owing</div><div style="font-family:var(--display);font-weight:400;font-size:34px" class="num">$0.00</div><div class="small" style="color:var(--brand-ink);font-weight:700">You\'re all paid up</div></section>' +
       '<section class="card"><div class="row"><b>Next payment</b><span class="spacer"></span><span class="small muted">Thu 1 Oct</span></div>' +
       '<div class="frow"><span>Parent fee, full-time (Alberta flat rate)</span><span class="num">$326.25</span></div>' +
       '<div class="frow muted"><span>Optional services</span><span class="num">$0.00</span></div>' +
@@ -573,9 +700,9 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     const need = Math.max(1, Math.ceil(here / 6));
     const ok = D.educators >= need;
     const missing = hereKids().filter(k => !notedToday(k.id)).length;
-    const tabs = [['room', 'Room'], ['notes', 'Notes' + (missing ? ' · ' + missing + ' to write' : '')], ['photos', 'Photos · QR upload']];
+    const tabs = [['room', 'Room'], ['notes', 'Notes' + (missing ? ' · ' + missing + ' to write' : '')], ['photos', 'Photos']];
     const body = ui.etab === 'notes' ? eduNotes() : ui.etab === 'photos' ? eduPhotos() : eduRoom();
-    return '<header class="topbar"><h1>Sunflower Room</h1><span class="muted">Toddlers · Thu 24 Sep</span><span class="spacer"></span>' +
+    return '<header class="topbar"><h1>Sunflower Room</h1><span class="muted">Toddlers · ' + esc(todayLong()) + '</span><span class="spacer"></span>' +
       '<span class="pill ' + (ok ? 'ok' : 'bad') + '" style="font-size:14px;padding:6px 12px" role="status">' + (ok ? 'In ratio' : 'OUT OF RATIO') + ' · ' + here + ' children, ' + D.educators + (D.educators === 1 ? ' educator' : ' educators') + ' (1:6 needs ' + need + ')</span>' +
       '<span class="row small">Educators <button class="btn small ghost" data-a="edu" data-d="-1" aria-label="One fewer educator">−</button><button class="btn small ghost" data-a="edu" data-d="1" aria-label="One more educator">+</button></span>' +
       '<span>' + esc(user.name) + '</span><button class="btn small ghost" data-a="logout">Sign out</button></header>' +
@@ -590,7 +717,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     let main;
     if (ui.noteMode === 'each') {
       main = '<section class="card stack"><div class="row"><b>Write a note for each child</b><span class="spacer"></span><span class="small muted">Empty boxes are skipped</span></div>' +
-        kids.map(k => { const n = lastNote(k.id); return '<div class="noterow"><div class="who"><span class="ini">' + esc(k.ini) + '</span><div><b>' + esc(k.first) + '</b><div class="small ' + (n ? 'muted' : '') + '" style="' + (n ? '' : 'color:#8E3512;font-weight:700') + '">' + (n ? 'Sent ' + esc(n.t) + ': ' + esc(n.v.length > 40 ? n.v.slice(0, 40) + '…' : n.v) : 'No note yet today') + '</div></div></div>' +
+        kids.map(k => { const n = lastNote(k.id); return '<div class="noterow"><div class="who"><span class="ini">' + esc(k.ini) + '</span><div><b>' + esc(k.first) + '</b><div class="small ' + (n ? 'muted' : '') + '" style="' + (n ? '' : 'color:#7A2816;font-weight:700') + '">' + (n ? 'Sent ' + esc(n.t) + ': ' + esc(n.v.length > 40 ? n.v.slice(0, 40) + '…' : n.v) : 'No note yet today') + '</div></div></div>' +
           '<label class="sr" for="note-' + k.id + '">Note for ' + esc(k.first) + '</label><textarea id="note-' + k.id + '" data-keep rows="2" placeholder="What did ' + esc(k.first) + ' do today?"></textarea></div>'; }).join('') +
         '<div class="row"><span class="spacer"></span><button class="btn" data-a="sendeach">Send notes to families</button></div></section>';
     } else {
@@ -624,7 +751,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     const names = ui.photoKids.map(id => kid(id).first).join(', ');
     const host = location.hostname;
     const hostNote = SH ? '<div class="small muted">Your phone needs to be signed in to claude.ai. Photos appear here and for the family as soon as they are sent.</div>'
-      : '<div class="small" style="color:#6B5412">Test copy with no server: photos stay in the browser that sends them. To try the whole flow, use one device. On a phone, tap Choose photos on this device instead. On a computer, open the upload page in a new tab. Scanning with a second device needs the real server.</div>';
+      : '<div class="small" style="color:#6B4A0E">Test copy with no server: photos stay in the browser that sends them. To try the whole flow, use one device. On a phone, tap Choose photos on this device instead. On a computer, open the upload page in a new tab. Scanning with a second device needs the real server.</div>';
     const qrBox = live
       ? '<div class="qrwrap"><div id="qr" class="qr" aria-label="QR code to upload photos of ' + esc(names) + '"></div><div class="stack" style="gap:8px"><b style="font-size:20px">Scan to upload photos of ' + esc(names) + '</b>' +
         '<ol class="steps small"><li>Open your phone camera and point it at the code.</li><li>Tap the link, then choose the photos.</li><li>Tap Send. They go only to ' + esc(names) + (ui.photoKids.length === 1 ? '\'s family.' : '\'s families.') + '</li></ol>' +
@@ -648,7 +775,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     if (!kids.length) body = '<div class="card">This upload link is not valid. Ask the educator to show the code again.</div>';
     else if (p.exp < nowMin) body = '<div class="card stack"><b>This code has expired</b><div>Codes stop working after 15 minutes so an old photo of the screen can\'t be used. Ask the educator for a new code.</div></div>';
     else if (kids.some(noPhotos)) body = '<div class="card">One of these children\'s families said no to photos, so this link cannot be used.</div>';
-    else if (ui.up.stage === 'done') body = '<div class="card stack" style="text-align:center;align-items:center"><div class="donecheck" aria-hidden="true">✓</div><b style="font-size:20px">' + ui.up.sent + ' photos sent</b><div>They are now on ' + esc(names) + (kids.length === 1 ? '\'s' : '\'s families\'') + ' day.</div>' +
+    else if (ui.up.stage === 'done') body = '<div class="card stack" style="text-align:center;align-items:center"><div class="donecheck" aria-hidden="true">✓</div><b style="font-size:20px">' + ui.up.sent + (ui.up.sent === 1 ? ' photo sent' : ' photos sent') + '</b><div>They are now on ' + esc(names) + (kids.length === 1 ? '\'s' : '\'s families\'') + ' day.</div>' +
       '<div class="row"><button class="btn" data-a="upmore">Upload more of ' + esc(names) + '</button></div>' + (user && user.role === 'educator' ? '<button class="btn ghost" data-a="upback">Back to the room</button>' : '') + kids.map(k => { const i = ACCOUNTS.findIndex(x => x.child === k.id); return i < 0 ? '' : '<button class="btn ghost" data-a="as" data-i="' + i + '">See it as ' + esc(k.first) + '\'s parent</button>'; }).join('') + '</div>';
     else {
       const files = ui.up.files;
@@ -662,7 +789,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
           '<button class="btn" style="height:54px;font-size:17px"' + (ui.up.stage === 'sending' ? ' disabled' : '') + ' data-a="upsend">' + (ui.up.stage === 'sending' ? 'Sending…' : 'Send ' + files.length + (files.length === 1 ? ' photo' : ' photos')) + '</button>' : '') +
         '<div class="small muted">Test prototype: the photos stay in this phone\'s browser. In the real product they go to the centre\'s private storage, the same way the wedding photo site works.</div>';
     }
-    return '<div class="phone"><div class="phead"><div class="row"><span class="logo" style="font-size:18px">Nestday</span><span class="spacer"></span><span class="small" style="color:#D7EAE3">Sunflower Room</span></div><h1 style="font-size:26px">Upload photos</h1></div><main class="pbody">' + body + '<div class="pfoot">' + dantia() + '</div></main></div>';
+    return '<div class="phone"><div class="phead"><div class="row"><span class="logo" style="font-size:18px">Nestday</span><span class="spacer"></span><span class="small" style="color:#D5E4DA">Sunflower Room</span></div><h1 style="font-size:26px">Upload photos</h1></div><main class="pbody">' + body + '<div class="pfoot">' + dantia() + '</div></main></div>';
   }
 
   // ---------- educator room: roster first, tap children, then one action ----------
@@ -714,8 +841,8 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       '<section class="card"><b>Room log</b><div class="feed" aria-live="polite">' + (feed || '<div class="muted">Nothing yet.</div>') + '</div></section>' +
       '<div style="padding:8px 4px">' + dantia() + '</div></aside></div>' +
       '<div class="actionbar" role="toolbar" aria-label="Log for selected children"><span class="abl">' + (n ? 'For ' + n + (n === 1 ? ' child' : ' children') : 'Pick an action, or tap children first') + '</span>' +
-      '<button class="ab" data-a="checkin">Check in / out</button>' +
-      acts.map(([t, l]) => '<button class="ab' + (t === 'incident' ? ' warnb' : '') + '" data-a="sheet" data-t="' + t + '">' + l + '</button>').join('') + '</div>' +
+      '<button class="ab" data-a="checkin">' + ico('checkin', 20) + 'Check in/out</button>' +
+      acts.map(([t, l]) => '<button class="ab' + (t === 'incident' ? ' warnb' : '') + '" data-a="sheet" data-t="' + t + '">' + ico(t === 'meal' ? 'meal' : t === 'nap' ? 'nap' : t === 'diaper' ? 'diaper' : t === 'note' ? 'note' : t === 'photo' ? 'photo' : 'incident', 20) + l + '</button>').join('') + '</div>' +
       (ui.sheet ? sheetView() : '') + undoBar();
   }
 
@@ -758,7 +885,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     const nav = [['today', 'Today'], ['families', 'Families and logins'], ['staff', 'Staff accounts']];
     const body = ui.dtab === 'today' ? dirToday(present, sun, openInc, pending, attention, expiring) : ui.dtab === 'staff' ? dirStaff() : dirFamilies();
     return '<div class="dir"><nav class="side" aria-label="Director menu"><div class="logo" style="font-size:20px;padding:0 12px 4px">Nestday</div>' +
-      '<div class="small" style="color:#A9C4BA;padding:0 12px 14px">Sunflower Early Learning · Airdrie</div>' +
+      '<div class="small" style="color:#B9CFC3;padding:0 12px 14px">Sunflower Early Learning · Airdrie</div>' +
       nav.map(([id, l]) => '<button data-a="dtab" data-t="' + id + '"' + (ui.dtab === id ? ' aria-current="page"' : '') + '>' + l + '</button>').join('') +
       '<button data-a="nope">Fees and billing</button><button data-a="nope">Reports and grant claim</button>' +
       '<span class="spacer"></span><div style="padding:14px 12px">' + dantia('onbrand') + '</div><button data-a="logout">Sign out</button></nav><main class="main">' + body + '</main></div>';
@@ -781,7 +908,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       (expiring.length ? '<div class="card"><b>First aid expiring for ' + expiring.length + (expiring.length === 1 ? ' educator' : ' educators') + '</b><div class="small muted">' + expiring.map(s => esc(s.name) + ' (' + fmtDate(s.firstAid) + ')').join(', ') + '</div><div><button class="btn small ghost" style="margin-top:8px" data-a="dtab" data-t="staff">Open staff accounts</button></div></div>' : '') +
       '</section></div>' +
       '<div class="two"><section class="card"><div class="small muted" style="font-weight:700">REPORTS</div><b>September affordability grant claim</b><div class="small">Attendance complete to yesterday: 16 of 21 operating days.</div></section>' +
-      '<section class="card"><div class="small muted" style="font-weight:700">SEPTEMBER PARENT FEES</div><div style="font-family:var(--display);font-weight:800;font-size:26px" class="num">$18,922.50 <span class="small muted">of $20,880.00</span></div><div class="small">58 of 64 paid · 6 outstanding</div></section></div>';
+      '<section class="card"><div class="small muted" style="font-weight:700">SEPTEMBER PARENT FEES</div><div style="font-family:var(--display);font-weight:400;font-size:26px" class="num">$18,922.50 <span class="small muted">of $20,880.00</span></div><div class="small">58 of 64 paid · 6 outstanding</div></section></div>';
   }
 
   function dirFamilies() {
@@ -798,7 +925,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       '<label class="field">Full name<input id="gname" required placeholder="e.g. Rosa Reyes"></label>' +
       '<label class="field">Email for login<input id="gemail" type="email" required placeholder="rosa@example.com"></label>' +
       '<fieldset style="border:0;padding:0;margin:0" class="stack"><legend style="font-weight:700;font-size:14px;margin-bottom:8px">This person can</legend>' +
-      ['See photos and daily reports', 'Pick up the child', 'Get incident alerts', 'See and pay fees'].map((t, i) => '<label class="row" style="font-size:15px"><input type="checkbox"' + (i < 3 ? ' checked' : '') + ' style="width:18px;height:18px;accent-color:#1F6F5C">' + t + '</label>').join('') +
+      ['See photos and daily reports', 'Pick up the child', 'Get incident alerts', 'See and pay fees'].map((t, i) => '<label class="row" style="font-size:15px"><input type="checkbox"' + (i < 3 ? ' checked' : '') + ' style="width:18px;height:18px;accent-color:#2D5B4B">' + t + '</label>').join('') +
       '</fieldset><button class="btn" type="submit">Email login invite</button><div class="small muted">In the prototype no email is sent. The guardian appears in the list as "Invite sent".</div></form></section></div>';
   }
 
@@ -832,7 +959,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       '<label class="field">Alberta certification<select id="slevel"><option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Not certified yet</option></select></label>' +
       '<label class="field">First aid valid until<input id="said" type="date" value="2027-09-24"></label>' +
       '<fieldset style="border:0;padding:0;margin:0" class="stack"><legend style="font-weight:700;font-size:14px;margin-bottom:8px">This person can</legend>' +
-      ['Log daily reports and photos', 'Give and record medication', 'Check children in and out', 'Message families', 'See fees and billing'].map((t, i) => '<label class="row" style="font-size:15px"><input type="checkbox"' + (i < 4 ? ' checked' : '') + ' style="width:18px;height:18px;accent-color:#1F6F5C">' + t + '</label>').join('') +
+      ['Log daily reports and photos', 'Give and record medication', 'Check children in and out', 'Message families', 'See fees and billing'].map((t, i) => '<label class="row" style="font-size:15px"><input type="checkbox"' + (i < 4 ? ' checked' : '') + ' style="width:18px;height:18px;accent-color:#2D5B4B">' + t + '</label>').join('') +
       '</fieldset><button class="btn" type="submit">Email login invite</button><div class="small muted">In the prototype no email is sent. The person appears in the list as "Invite sent" and sets their own password and PIN.</div></form></section></div>';
   }
 
@@ -894,7 +1021,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     const b = e.target.closest('[data-a]');
     if (!b) return;
     const a = b.dataset.a;
-    if (a === 'reset') { const oldUps = (D.uploads || []).slice(); D = freshData(); if (SH) oldUps.forEach(u => { if (u.id) SH.doc('uploads/' + u.id).delete().catch(() => {}); if (u.asset && AS) AS.delete(u.asset).catch(() => {}); }); save(); ui.sel = ['maya', 'noah', 'aria']; ui.photoKids = []; ui.noteSel = []; ui.keep = {}; ui.qrExp = 0; toast('Demo data reset'); render(); }
+    if (a === 'reset') { const oldUps = (D.uploads || []).slice(); D = freshData(); if (SH) oldUps.forEach(u => { if (u.id) SH.doc('uploads/' + u.id).delete().catch(() => {}); if (u.asset && AS) AS.delete(u.asset).catch(() => {}); }); save(); ui.sel = []; ui.photoKids = []; ui.noteSel = []; ui.keep = {}; ui.qrExp = 0; toast('Demo data reset'); render(); }
     if (a === 'as') { const acc = ACCOUNTS[+b.dataset.i]; const st = D.staff.find(x => x.email === acc.email); if (st && st.status !== 'Active') { toast('The director turned off this account'); return; } user = { email: acc.email, role: acc.role, name: acc.name, child: acc.child }; saveUser(user); ui.tab = 'today'; ui.dtab = 'today'; ui.light = null; if (parseUpload()) history.replaceState(null, '', location.pathname + location.search); render(); window.scrollTo(0, 0); toast('Now signed in as ' + acc.name); }
     if (a === 'fill') { const acc = ACCOUNTS[+b.dataset.i]; ui.email = acc.email; ui.pw = acc.password; ui.err = ''; render(); }
     if (a === 'logout') { user = null; saveUser(null); ui.tab = 'today'; ui.dtab = 'today'; ui.email = ''; ui.pw = ''; render(); }
