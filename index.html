@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
 /* Test prototype only: accounts, data and "login" all live in this file. Not real security. */
 :root{
@@ -104,6 +105,34 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
 .logbtns button{height:54px;border-radius:12px;border:1px solid var(--line2);background:#F7F9F6;font-weight:700}
 .feed{max-height:300px;overflow:auto;font-size:14px}
 .feed div{padding:8px 0;border-bottom:1px solid #EEF1ED}
+.etabs{display:flex;gap:4px;padding:10px 24px 0;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto}
+.etabs button{border:0;background:none;padding:10px 14px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+.etabs button[aria-current="page"]{color:var(--brand);border-bottom-color:var(--brand)}
+.segs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#E4E9E3;padding:5px;border-radius:12px}
+.seg{border:0;background:none;height:44px;border-radius:9px;font-weight:700;color:var(--muted)}
+.seg.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.chip{border:1px solid var(--line2);background:#fff;border-radius:20px;padding:0 14px;height:38px;font-weight:700;font-size:14px;display:inline-flex;align-items:center}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.chip.off{background:#EEF1ED;color:#6B746F;border-style:dashed}
+.noterow{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:12px;align-items:start;padding:10px 0;border-top:1px solid #EEF1ED}
+.noterow .who{display:flex;gap:10px;align-items:center}
+.noterow .ini{width:38px;height:38px;border-radius:50%;background:#E4E9E3;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10px 12px;font-weight:400;font-size:16px;background:#fff;resize:vertical}
+.qrwrap{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center}
+.qr{width:220px;height:220px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;align-items:center;justify-content:center}
+.qr svg{width:100%;height:100%;display:block}
+.qr.placeholder{color:#B8C2BC;font-family:var(--display);font-weight:800;font-size:40px;border-style:dashed}
+.steps{margin:0;padding-left:20px}
+.pickbig{border:2px dashed #9DB5AA;border-radius:14px;background:#fff;padding:24px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--brand);cursor:pointer}
+.pickbig .small{color:var(--muted)}
+.thumb{position:relative}
+.thumb img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
+.thumb .x{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(20,30,30,.75);color:#fff;font-size:18px;line-height:1}
+.thumb .bar{position:absolute;left:6px;right:6px;bottom:6px;height:6px;background:rgba(255,255,255,.7);border-radius:4px;overflow:hidden}
+.thumb .bar span{display:block;height:100%;background:var(--brand)}
+.donecheck{width:64px;height:64px;border-radius:50%;background:var(--brand-soft);color:var(--brand-ink);font-size:34px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ph img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.lightbox img{width:100%;border-radius:10px;display:block;max-height:70vh;object-fit:contain;background:#111}
 .dir{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:calc(100vh - 36px)}
 .side{background:var(--brand-dark);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px}
 .side button{background:none;border:0;color:#D5E3DD;text-align:left;padding:11px 12px;border-radius:10px;font-size:15px}
@@ -137,6 +166,9 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
   .side{flex-direction:row;flex-wrap:wrap;padding:10px}
   .main{padding:18px 16px}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .qrwrap{grid-template-columns:1fr;justify-items:center}
+  .noterow{grid-template-columns:1fr}
+  .etabs{padding:6px 12px 0}
   .two{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:no-preference){.toast{animation:up .2s ease-out}@keyframes up{from{opacity:0;transform:translate(-50%,8px)}}}
@@ -226,7 +258,8 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
         { child: 'Jonah F.', room: 'Oak', name: 'Tom Fischer', email: 'tom.f@example.com', status: 'Locked', last: '5 failed tries' },
         { child: 'Ava B.', room: 'Sunflower', name: 'Chloe Brown', email: 'chloe.b@example.com', status: 'Invite sent', last: 'Sent 23 Sep' }
       ],
-      staff: freshStaff()
+      staff: freshStaff(),
+      uploads: []
     };
   }
 
@@ -266,10 +299,13 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
   let D = load() || freshData();
   if (!D.staff) { D.staff = freshStaff(); save(); } // older saved demo data had no staff list
   let user = loadUser();
-  let ui = { role: 'parent', err: '', tab: 'today', dtab: 'today', sel: ['maya', 'noah', 'aria'], light: null, email: '', pw: '' };
+  if (!D.uploads) D.uploads = [];
+  let ui = { role: 'parent', err: '', tab: 'today', dtab: 'today', sel: ['maya', 'noah', 'aria'], light: null, email: '', pw: '',
+    etab: 'room', noteMode: 'each', noteSel: [], photoKids: [], qrExp: 0, keep: {}, up: { files: [], stage: 'pick', sent: 0, busy: false } };
 
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const now = () => new Date().toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' }).replace('a.m.', 'am').replace('p.m.', 'pm');
+  const fmtT = d => d.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' }).replace('a.m.', 'am').replace('p.m.', 'pm');
+  const now = () => fmtT(new Date());
   const kid = id => D.kids.find(k => k.id === id);
   const app = document.getElementById('app');
 
@@ -343,7 +379,12 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
     const items = D.log.filter(l => l.kid === c.id);
     const first = D.photos[c.id][0][1];
     const lastMsg = D.messages[c.id][D.messages[c.id].length - 1];
-    return '<section class="card stack"><div class="row"><b>' + first.length + ' new photos</b><span class="spacer"></span><span class="small muted">10:42 am</span></div>' +
+    const mine = kidUploads(c.id);
+    const lastUp = mine.length ? mine[mine.length - 1].u : null;
+    const upCard = lastUp ? '<section class="card stack"><div class="row"><b>' + mine.length + (mine.length === 1 ? ' photo' : ' photos') + ' from the room</b><span class="spacer"></span><span class="small muted">' + esc(lastUp.t) + '</span></div>' +
+      '<div class="grid3">' + mine.slice(-6).reverse().map(x => '<button class="ph" data-a="photo" data-k="up:' + x.i + '"><img src="' + x.u.src + '" alt="Photo of ' + esc(c.first) + '"></button>').join('') + '</div>' +
+      (lastUp.cap ? '<div>' + esc(lastUp.cap) + '</div>' : '') + '<div class="row small"><span class="muted">From ' + esc(lastUp.by) + '</span><span class="spacer"></span><button class="btn small ghost" data-a="tab" data-t="photos">All photos</button></div></section>' : '';
+    return upCard + '<section class="card stack"><div class="row"><b>' + first.length + ' new photos</b><span class="spacer"></span><span class="small muted">10:42 am</span></div>' +
       '<div class="grid3">' + first.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div>' +
       '<div>' + esc(D.notes[c.id]) + '</div><div class="row small"><span class="muted">From Priya K., educator</span><span class="spacer"></span><button class="btn small ghost" data-a="tab" data-t="photos">All photos</button></div></section>' +
       '<section class="card tl" style="padding:4px 16px" aria-label="Today\'s timeline">' +
@@ -355,15 +396,25 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
       (c.here ? '' : '<button class="btn ghost" style="flex:1" data-a="absent">Report absence</button>') + '</div>';
   }
 
+  function kidUploads(id) { return (D.uploads || []).map((u, i) => ({ u, i })).filter(x => x.u.kids.includes(id)); }
+
   function parentPhotos(c) {
+    const mine = kidUploads(c.id);
     return '<div class="card" style="background:var(--sun-soft);border-color:#F2D27A;font-size:14px">Full-size downloads are free. Tap a photo to open it. Children whose families said no to photos are never shown.</div>' +
+      (mine.length ? '<section class="stack" style="gap:8px"><div class="row"><b>Just uploaded</b><span class="spacer"></span><span class="small muted">' + mine.length + ' photos</span></div><div class="grid3">' +
+        mine.slice().reverse().map(x => '<button class="ph" data-a="photo" data-k="up:' + x.i + '"><img src="' + x.u.src + '" alt="Photo of ' + esc(c.first) + '"></button>').join('') + '</div></section>' : '') +
       D.photos[c.id].map(([label, keys]) => '<section class="stack" style="gap:8px"><div class="row"><b>' + esc(label) + '</b><span class="spacer"></span><span class="small muted">' + keys.length + ' photos</span></div>' +
         '<div class="grid3">' + keys.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div></section>').join('');
   }
 
   function lightbox() {
-    return '<div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo"><div class="inner">' + svg(ui.light) +
-      '<div class="row"><b>' + esc(ART[ui.light][0]) + '</b><span class="spacer"></span><span class="small muted">Sunflower Room</span></div>' +
+    const upI = /^up:(\d+)$/.exec(ui.light);
+    const u = upI ? D.uploads[+upI[1]] : null;
+    if (upI && !u) { ui.light = null; return ''; }
+    const pic = u ? '<img src="' + u.src + '" alt="Photo from the Sunflower Room">' : svg(ui.light);
+    const title = u ? (u.cap || 'Photo from the room') : ART[ui.light][0];
+    return '<div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo"><div class="inner">' + pic +
+      '<div class="row"><b>' + esc(title) + '</b><span class="spacer"></span><span class="small muted">' + (u ? esc(u.t) : 'Sunflower Room') + '</span></div>' +
       '<div class="row"><button class="btn" style="flex:1" data-a="savephoto">Save full size</button><button class="btn ghost" data-a="closephoto">Close</button></div></div></div>';
   }
 
@@ -390,26 +441,121 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
       '<section class="card row" style="background:var(--sky);border:0"><div><b>2025 child care receipt</b><div class="small">For your income tax return</div></div><span class="spacer"></span><button class="btn small ghost" data-a="nope">Save PDF</button></section>';
   }
 
+  // ---------- educator ----------
+  const hereKids = () => D.kids.filter(k => k.here);
+  const noPhotos = k => k.flag === 'No photos';
+  const notedToday = id => D.log.some(l => l.kid === id && l.k === 'Note');
+
   function viewEducator() {
-    const here = D.kids.filter(k => k.here).length;
+    const here = hereKids().length;
     const need = Math.max(1, Math.ceil(here / 6));
     const ok = D.educators >= need;
-    const selNames = ui.sel.map(id => kid(id).first).join(', ') || 'no one selected';
-    const feed = D.log.slice().reverse().slice(0, 12).map(l => '<div><b>' + esc(l.t) + '</b> · ' + esc(kid(l.kid).first) + ' · ' + esc(l.k) + ': ' + esc(l.v) + '</div>').join('');
+    const missing = hereKids().filter(k => !notedToday(k.id)).length;
+    const tabs = [['room', 'Room'], ['notes', 'Notes' + (missing ? ' · ' + missing + ' to write' : '')], ['photos', 'Photos']];
+    const body = ui.etab === 'notes' ? eduNotes() : ui.etab === 'photos' ? eduPhotos() : eduRoom();
     return '<header class="topbar"><h1>Sunflower Room</h1><span class="muted">Toddlers · Thu 24 Sep</span><span class="spacer"></span>' +
       '<span class="pill ' + (ok ? 'ok' : 'bad') + '" style="font-size:14px;padding:6px 12px" role="status">' + (ok ? 'In ratio' : 'OUT OF RATIO') + ' · ' + here + ' children, ' + D.educators + (D.educators === 1 ? ' educator' : ' educators') + ' (1:6 needs ' + need + ')</span>' +
       '<span class="row small">Educators <button class="btn small ghost" data-a="edu" data-d="-1" aria-label="One fewer educator">−</button><button class="btn small ghost" data-a="edu" data-d="1" aria-label="One more educator">+</button></span>' +
       '<span>' + esc(user.name) + '</span><button class="btn small ghost" data-a="logout">Sign out</button></header>' +
-      '<div class="wrap"><div class="stack">' +
+      '<nav class="etabs" aria-label="Educator sections">' + tabs.map(([id, l]) => '<button data-a="etab" data-t="' + id + '"' + (ui.etab === id ? ' aria-current="page"' : '') + '>' + esc(l) + '</button>').join('') + '</nav>' +
+      body;
+  }
+
+  function eduNotes() {
+    const kids = hereKids();
+    const modeBtn = (id, label) => '<button class="seg' + (ui.noteMode === id ? ' on' : '') + '" data-a="nmode" data-m="' + id + '" aria-pressed="' + (ui.noteMode === id) + '">' + label + '</button>';
+    const lastNote = id => { const n = D.log.filter(l => l.kid === id && l.k === 'Note'); return n.length ? n[n.length - 1] : null; };
+    let main;
+    if (ui.noteMode === 'each') {
+      main = '<section class="card stack"><div class="row"><b>Write a note for each child</b><span class="spacer"></span><span class="small muted">Empty boxes are skipped</span></div>' +
+        kids.map(k => { const n = lastNote(k.id); return '<div class="noterow"><div class="who"><span class="ini">' + esc(k.ini) + '</span><div><b>' + esc(k.first) + '</b><div class="small ' + (n ? 'muted' : '') + '" style="' + (n ? '' : 'color:#8E3512;font-weight:700') + '">' + (n ? 'Sent ' + esc(n.t) + ': ' + esc(n.v.length > 40 ? n.v.slice(0, 40) + '…' : n.v) : 'No note yet today') + '</div></div></div>' +
+          '<label class="sr" for="note-' + k.id + '">Note for ' + esc(k.first) + '</label><textarea id="note-' + k.id + '" data-keep rows="2" placeholder="What did ' + esc(k.first) + ' do today?"></textarea></div>'; }).join('') +
+        '<div class="row"><span class="spacer"></span><button class="btn" data-a="sendeach">Send notes to families</button></div></section>';
+    } else {
+      const chips = kids.map(k => '<button class="chip' + (ui.noteSel.includes(k.id) ? ' on' : '') + '" data-a="nsel" data-id="' + k.id + '" aria-pressed="' + ui.noteSel.includes(k.id) + '">' + esc(k.first) + '</button>').join('');
+      const phrases = ['Had a great day', 'Played outside in the morning', 'We did a craft for Thanksgiving', 'Needs more diapers, please', 'Was a bit tired today'];
+      main = '<section class="card stack"><b>One note for several children</b>' +
+        '<div class="row" style="flex-wrap:wrap;gap:8px"><span class="small muted">Send to:</span>' + chips + '<button class="btn small ghost" data-a="nall">All here</button><button class="btn small ghost" data-a="nnone">None</button></div>' +
+        '<label class="field">Note (' + ui.noteSel.length + (ui.noteSel.length === 1 ? ' child' : ' children') + ')<textarea id="gnote" data-keep rows="4" placeholder="e.g. Today we planted seeds in the garden and talked about how plants grow."></textarea></label>' +
+        '<div class="row" style="flex-wrap:wrap;gap:8px"><span class="small muted">Quick add:</span>' + phrases.map(p => '<button class="chip" data-a="phrase" data-p="' + esc(p) + '">+ ' + esc(p) + '</button>').join('') + '</div>' +
+        '<div class="row"><span class="small muted">Each family sees it as a note on their own child\'s day.</span><span class="spacer"></span><button class="btn" data-a="sendgroup">Send to ' + ui.noteSel.length + (ui.noteSel.length === 1 ? ' family' : ' families') + '</button></div></section>';
+    }
+    const recent = D.log.filter(l => l.k === 'Note').slice().reverse().slice(0, 8);
+    return '<div class="wrap"><div class="stack"><div class="segs">' + modeBtn('each', 'A note for each child') + modeBtn('group', 'One note for several children') + '</div>' + main + '</div>' +
+      '<aside class="stack"><section class="card stack"><b>Still need a note today</b>' +
+      (kids.filter(k => !notedToday(k.id)).map(k => '<div class="row"><span>' + esc(k.name) + '</span></div>').join('') || '<div class="small" style="color:var(--brand-ink);font-weight:700">Every child here has a note. Nice work.</div>') + '</section>' +
+      '<section class="card"><b>Notes sent today</b><div class="feed">' + (recent.map(l => '<div><b>' + esc(l.t) + '</b> · ' + esc(kid(l.kid).first) + ': ' + esc(l.v) + '</div>').join('') || '<div class="muted">None yet.</div>') + '</div></section>' +
+      '<div style="padding:8px 4px">' + dantia() + '</div></aside></div>';
+  }
+
+  // The QR opens this same page with a short-lived upload link: #up-<expiry minute>-<child ids>.
+  function uploadHash(kids, exp) { return '#up-' + exp + '-' + kids.join('.'); }
+  function uploadUrl(kids, exp) { return location.href.split('#')[0] + uploadHash(kids, exp); }
+
+  function eduPhotos() {
+    const kids = hereKids();
+    const chips = kids.map(k => noPhotos(k)
+      ? '<span class="chip off" title="Family said no to photos">' + esc(k.first) + ' · no photos</span>'
+      : '<button class="chip' + (ui.photoKids.includes(k.id) ? ' on' : '') + '" data-a="pkid" data-id="' + k.id + '" aria-pressed="' + ui.photoKids.includes(k.id) + '">' + esc(k.first) + '</button>').join('');
+    const nowMin = Math.floor(Date.now() / 60000);
+    const live = ui.photoKids.length && ui.qrExp > nowMin;
+    const names = ui.photoKids.map(id => kid(id).first).join(', ');
+    const host = location.hostname;
+    const hostNote = /github\.io$/.test(host) ? '' : '<div class="small" style="color:#6B5412">Tip: scanning works best from the GitHub test link. Other copies of this test page may need a login on the phone.</div>';
+    const qrBox = live
+      ? '<div class="qrwrap"><div id="qr" class="qr" aria-label="QR code to upload photos of ' + esc(names) + '"></div><div class="stack" style="gap:8px"><b style="font-size:20px">Scan to upload photos of ' + esc(names) + '</b>' +
+        '<ol class="steps small"><li>Open your phone camera and point it at the code.</li><li>Tap the link, then choose the photos.</li><li>Tap Send. They go only to ' + esc(names) + (ui.photoKids.length === 1 ? '\'s family.' : '\'s families.') + '</li></ol>' +
+        '<div class="small muted">This code only works for the Sunflower Room and stops working at ' + fmtT(new Date(ui.qrExp * 60000)) + '.</div>' + hostNote +
+        '<div class="row" style="flex-wrap:wrap"><button class="btn small ghost" data-a="openup">Choose photos on this device instead</button><button class="btn small ghost" data-a="qrnew">New code</button></div></div></div>'
+      : '<div class="qrwrap empty"><div class="qr placeholder">QR</div><div class="stack" style="gap:6px"><b>Pick who is in the photos first</b><span class="small muted">Then a code appears here. One code per child, or per group for group photos.</span></div></div>';
+    const recent = (D.uploads || []).slice().reverse().slice(0, 18);
+    return '<div class="wrap"><div class="stack"><section class="card stack"><b>1. Who is in the photos?</b><div class="row" style="flex-wrap:wrap;gap:8px">' + chips + '</div>' +
+      '<div class="small muted">Children whose families said no to photos cannot be picked.</div></section>' +
+      '<section class="card stack"><b>2. Scan and upload</b>' + qrBox + '</section></div>' +
+      '<aside class="stack"><section class="card stack"><b>Uploaded today</b>' +
+      (recent.length ? '<div class="grid3">' + recent.map(u => '<img src="' + u.src + '" alt="Photo of ' + esc(u.kids.map(id => kid(id).first).join(', ')) + '" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px">').join('') + '</div><div class="small muted">' + D.uploads.length + ' photos from this room</div>' : '<div class="small muted">Nothing yet. Photos you upload from your phone show up here.</div>') +
+      '</section><div style="padding:8px 4px">' + dantia() + '</div></aside></div>';
+  }
+
+  function viewUpload(p) {
+    const kids = p.kids.map(kid).filter(Boolean);
+    const names = kids.map(k => k.first).join(', ');
+    const nowMin = Math.floor(Date.now() / 60000);
+    let body;
+    if (!kids.length) body = '<div class="card">This upload link is not valid. Ask the educator to show the code again.</div>';
+    else if (p.exp < nowMin) body = '<div class="card stack"><b>This code has expired</b><div>Codes stop working after 15 minutes so an old photo of the screen can\'t be used. Ask the educator for a new code.</div></div>';
+    else if (kids.some(noPhotos)) body = '<div class="card">One of these children\'s families said no to photos, so this link cannot be used.</div>';
+    else if (ui.up.stage === 'done') body = '<div class="card stack" style="text-align:center;align-items:center"><div class="donecheck" aria-hidden="true">✓</div><b style="font-size:20px">' + ui.up.sent + ' photos sent</b><div>They are now on ' + esc(names) + (kids.length === 1 ? '\'s' : '\'s families\'') + ' day.</div>' +
+      '<div class="row"><button class="btn" data-a="upmore">Upload more of ' + esc(names) + '</button></div>' + (user && user.role === 'educator' ? '<button class="btn ghost" data-a="upback">Back to the room</button>' : '<div class="small muted">You can close this page.</div>') + '</div>';
+    else {
+      const files = ui.up.files;
+      body = '<section class="card stack"><div class="small muted">Photos of</div><div class="row" style="flex-wrap:wrap;gap:8px">' + kids.map(k => '<span class="chip on">' + esc(k.first) + '</span>').join('') + '</div></section>' +
+        '<label class="pickbig"><input id="upfiles" type="file" accept="image/*" multiple class="sr">' +
+        '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>' +
+        '<b>' + (files.length ? 'Add more photos' : 'Choose photos') + '</b><span class="small">From your camera roll. Pick as many as you like.</span></label>' +
+        (ui.up.busy ? '<div class="small muted" role="status">Preparing photos…</div>' : '') +
+        (files.length ? '<div class="grid3">' + files.map((f, i) => '<div class="thumb"><img src="' + f.src + '" alt="Selected photo ' + (i + 1) + '"><button class="x" data-a="uprm" data-i="' + i + '" aria-label="Remove photo ' + (i + 1) + '">×</button>' + (ui.up.stage === 'sending' ? '<span class="bar"><span style="width:' + (f.pct || 0) + '%"></span></span>' : '') + '</div>').join('') + '</div>' +
+          '<label class="field">Caption (optional)<input id="upcap" data-keep placeholder="e.g. Painting leaves in the art corner"></label>' +
+          '<button class="btn" style="height:54px;font-size:17px"' + (ui.up.stage === 'sending' ? ' disabled' : '') + ' data-a="upsend">' + (ui.up.stage === 'sending' ? 'Sending…' : 'Send ' + files.length + (files.length === 1 ? ' photo' : ' photos')) + '</button>' : '') +
+        '<div class="small muted">Test prototype: the photos stay in this phone\'s browser. In the real product they go to the centre\'s private storage, the same way the wedding photo site works.</div>';
+    }
+    return '<div class="phone"><div class="phead"><div class="row"><span class="logo" style="font-size:18px">Nestday</span><span class="spacer"></span><span class="small" style="color:#D7EAE3">Sunflower Room</span></div><h1 style="font-size:26px">Upload photos</h1></div><main class="pbody">' + body + '<div class="pfoot">' + dantia() + '</div></main></div>';
+  }
+
+  function eduRoom() {
+    const selNames = ui.sel.map(id => kid(id).first).join(', ') || 'no one selected';
+    const feed = D.log.slice().reverse().slice(0, 12).map(l => '<div><b>' + esc(l.t) + '</b> · ' + esc(kid(l.kid).first) + ' · ' + esc(l.k) + ': ' + esc(l.v) + '</div>').join('');
+    return '<div class="wrap"><div class="stack">' +
       '<div class="row"><b>Children · ' + ui.sel.length + ' selected</b><span class="spacer"></span><button class="btn small ghost" data-a="selall">Select all here</button><button class="btn small" data-a="checkin">Check in / out selected</button></div>' +
       '<div class="kids">' + D.kids.map(k => '<button class="kid' + (ui.sel.includes(k.id) ? ' sel' : '') + (k.here ? '' : ' out') + '" data-a="pick" data-id="' + k.id + '" aria-pressed="' + ui.sel.includes(k.id) + '">' +
         '<span class="ini">' + esc(k.ini) + '</span><span><b>' + esc(k.name) + '</b><br><span class="small muted">' + (k.here ? 'In ' + esc(k.inAt) : esc(k.note || 'Checked out')) + '</span></span><span class="flag">' + esc(k.flag) + '</span></button>').join('') + '</div>' +
       '<section class="card"><b>Room log</b><div class="feed" aria-live="polite">' + feed + '</div></section></div>' +
       '<aside class="stack"><section class="card stack"><b>Log for ' + esc(selNames) + '</b>' +
-      '<label class="field">Details (optional)<input id="detail" placeholder="e.g. ate all, pasta and peas"></label>' +
-      '<div class="logbtns">' + ['Meal', 'Nap', 'Diaper', 'Note', 'Photo'].map(t => '<button data-a="log" data-k="' + t + '">' + t + '</button>').join('') +
+      '<label class="field">Details (optional)<input id="detail" data-keep placeholder="e.g. ate all, pasta and peas"></label>' +
+      '<div class="logbtns">' + ['Meal', 'Nap', 'Diaper', 'Activity', 'Outside'].map(t => '<button data-a="log" data-k="' + t + '">' + t + '</button>').join('') +
       '<button data-a="incident" style="background:var(--warn-soft);color:var(--warn);border-color:#E8B9A4">Incident</button></div>' +
-      '<div class="small muted">One tap logs the same entry for every selected child who is here.</div></section>' +
+      '<div class="small muted">One tap logs the same entry for every selected child who is here.</div>' +
+      '<div class="row"><button class="btn small ghost" style="flex:1" data-a="gonotes">Write notes</button><button class="btn small ghost" style="flex:1" data-a="gophotos">Upload photos</button></div></section>' +
       (D.medsDone ? '<section class="card" style="background:var(--brand-soft);border:0"><b>Leo S. · Salbutamol given</b><div class="small">Recorded by ' + esc(user.name) + '</div></section>' :
         '<section class="card stack" style="background:var(--sun-soft);border-color:#F2D27A"><span class="small" style="font-weight:700;color:#6B5412">DUE AT 11:00 AM</span><b>Leo S. · Salbutamol, 2 puffs</b><span class="small">Parent consent on file until 30 Nov.</span><button class="btn" style="background:#1E2A2A" data-a="meds">Record dose</button></section>') +
       '<div style="padding:8px 4px">' + dantia() + '</div></aside></div>';
@@ -503,13 +649,56 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
       '</fieldset><button class="btn" type="submit">Email login invite</button><div class="small muted">In the prototype no email is sent. The person appears in the list as "Invite sent" and sets their own password and PIN.</div></form></section></div>';
   }
 
+  function parseUpload() {
+    const m = /^#up-(\d+)-([a-z.]+)$/.exec(location.hash);
+    return m ? { exp: +m[1], kids: m[2].split('.') } : null;
+  }
+
   function render() {
-    if (!user) app.innerHTML = viewLogin();
+    // Keep what people have typed when the screen redraws.
+    document.querySelectorAll('[data-keep]').forEach(el => { ui.keep[el.id] = el.value; });
+    const up = parseUpload();
+    if (up) app.innerHTML = viewUpload(up);
+    else if (!user) app.innerHTML = viewLogin();
     else if (user.role === 'parent') app.innerHTML = viewParent();
     else if (user.role === 'educator') app.innerHTML = viewEducator();
     else app.innerHTML = viewDirector();
+    document.querySelectorAll('[data-keep]').forEach(el => { if (ui.keep[el.id] != null) el.value = ui.keep[el.id]; });
     const thread = document.getElementById('thread');
     if (thread) thread.lastElementChild && thread.lastElementChild.scrollIntoView({ block: 'nearest' });
+    const qrEl = document.getElementById('qr');
+    if (qrEl) {
+      const url = uploadUrl(ui.photoKids, ui.qrExp);
+      if (window.qrcode) { const q = window.qrcode(0, 'M'); q.addData(url); q.make(); qrEl.innerHTML = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }); }
+      else qrEl.innerHTML = '<span class="small" style="word-break:break-all">' + esc(url) + '</span>';
+    }
+  }
+
+  // Shrinks a chosen photo for the demo. The real product would upload the full photo (compressed like the wedding site).
+  function shrink(file) {
+    return new Promise(resolve => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const max = 480, sc = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * sc); c.height = Math.round(img.naturalHeight * sc);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        resolve(c.toDataURL('image/jpeg', 0.72));
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+      img.src = url;
+    });
+  }
+
+  // Demo photos live in browser storage, so keep only the newest ones if space runs out.
+  function saveUploads() {
+    for (let i = 0; i < 40; i++) {
+      try { localStorage.setItem(KEY, JSON.stringify(D)); return true; }
+      catch (e) { if (!D.uploads.length) return false; D.uploads.shift(); }
+    }
+    return false;
   }
 
   // ---------- events ----------
@@ -517,7 +706,7 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
     const b = e.target.closest('[data-a]');
     if (!b) return;
     const a = b.dataset.a;
-    if (a === 'reset') { D = freshData(); save(); ui.sel = ['maya', 'noah', 'aria']; toast('Demo data reset'); render(); }
+    if (a === 'reset') { D = freshData(); save(); ui.sel = ['maya', 'noah', 'aria']; ui.photoKids = []; ui.noteSel = []; ui.keep = {}; ui.qrExp = 0; toast('Demo data reset'); render(); }
     if (a === 'fill') { const acc = ACCOUNTS[+b.dataset.i]; ui.email = acc.email; ui.pw = acc.password; ui.err = ''; render(); }
     if (a === 'logout') { user = null; saveUser(null); ui.tab = 'today'; ui.dtab = 'today'; ui.email = ''; ui.pw = ''; render(); }
     if (a === 'tab') { ui.tab = b.dataset.t; render(); window.scrollTo(0, 0); }
@@ -547,6 +736,52 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
     if (a === 'meds') { D.medsDone = true; D.log.push({ kid: 'leo', t: now(), k: 'Medication', v: 'Salbutamol, 2 puffs' }); save(); render(); }
     if (a === 'sign') { D.incidents[+b.dataset.n].signed = true; save(); render(); }
     if (a === 'announce') { toast('Announcement drafts are not built in the prototype yet'); }
+    // educator tabs, notes and photos
+    if (a === 'etab') { ui.etab = b.dataset.t; render(); }
+    if (a === 'gonotes') { ui.etab = 'notes'; render(); }
+    if (a === 'gophotos') { ui.etab = 'photos'; render(); }
+    if (a === 'nmode') { ui.noteMode = b.dataset.m; if (ui.noteMode === 'group' && !ui.noteSel.length) ui.noteSel = hereKids().map(k => k.id); render(); }
+    if (a === 'nsel') { const id = b.dataset.id; ui.noteSel = ui.noteSel.includes(id) ? ui.noteSel.filter(x => x !== id) : ui.noteSel.concat(id); render(); }
+    if (a === 'nall') { ui.noteSel = hereKids().map(k => k.id); render(); }
+    if (a === 'nnone') { ui.noteSel = []; render(); }
+    if (a === 'phrase') { const t = document.getElementById('gnote'); t.value = (t.value.trim() ? t.value.trim() + ' ' : '') + b.dataset.p + '.'; t.focus(); }
+    if (a === 'sendeach') {
+      let n = 0;
+      hereKids().forEach(k => { const el = document.getElementById('note-' + k.id); const v = el && el.value.trim(); if (v) { D.log.push({ kid: k.id, t: now(), k: 'Note', v }); ui.keep['note-' + k.id] = ''; n++; } });
+      if (!n) { toast('Write at least one note first'); return; }
+      save(); toast(n + (n === 1 ? ' note sent' : ' notes sent') + ' to families'); render();
+    }
+    if (a === 'sendgroup') {
+      const v = document.getElementById('gnote').value.trim();
+      if (!ui.noteSel.length) { toast('Pick at least one child'); return; }
+      if (!v) { toast('Write the note first'); return; }
+      ui.noteSel.forEach(id => D.log.push({ kid: id, t: now(), k: 'Note', v }));
+      ui.keep.gnote = ''; save(); toast('Note sent to ' + ui.noteSel.length + (ui.noteSel.length === 1 ? ' family' : ' families')); render();
+    }
+    if (a === 'pkid') { const id = b.dataset.id; ui.photoKids = ui.photoKids.includes(id) ? ui.photoKids.filter(x => x !== id) : ui.photoKids.concat(id); ui.qrExp = Math.floor(Date.now() / 60000) + 15; render(); }
+    if (a === 'qrnew') { ui.qrExp = Math.floor(Date.now() / 60000) + 15; render(); toast('New code, good for 15 minutes'); }
+    if (a === 'openup') { ui.up = { files: [], stage: 'pick', sent: 0, busy: false }; location.hash = uploadHash(ui.photoKids, ui.qrExp).slice(1); }
+    if (a === 'upback') { ui.up = { files: [], stage: 'pick', sent: 0, busy: false }; history.replaceState(null, '', location.pathname + location.search); ui.etab = 'photos'; render(); }
+    if (a === 'upmore') { ui.up = { files: [], stage: 'pick', sent: 0, busy: false }; render(); }
+    if (a === 'uprm') { ui.up.files.splice(+b.dataset.i, 1); render(); }
+    if (a === 'upsend') {
+      const p = parseUpload(); if (!p || ui.up.stage === 'sending') return;
+      if (p.exp < Math.floor(Date.now() / 60000)) { render(); return; }
+      const cap = (document.getElementById('upcap') || {}).value || '';
+      ui.up.stage = 'sending'; render();
+      const files = ui.up.files.slice();
+      let i = 0;
+      const step = () => {
+        if (i >= files.length) {
+          files.forEach(f => D.uploads.push({ kids: p.kids, src: f.src, t: now(), cap: cap.trim(), by: user && user.role === 'educator' ? user.name : 'Room phone' }));
+          p.kids.forEach(id => D.log.push({ kid: id, t: now(), k: 'Photos', v: files.length + (files.length === 1 ? ' new photo' : ' new photos') + (cap.trim() ? ' · ' + cap.trim() : '') }));
+          if (!saveUploads()) toast('This browser is out of space for demo photos');
+          ui.up = { files: [], stage: 'done', sent: files.length, busy: false }; ui.keep.upcap = ''; render(); return;
+        }
+        files[i].pct = 100; i++; render(); setTimeout(step, 180);
+      };
+      setTimeout(step, 250);
+    }
     if (a === 'sact') {
       const s = D.staff[+b.dataset.i], op = b.dataset.op;
       if (op === 'pin') { s.pin = false; toast(s.name + ' will set a new PIN at the next tablet sign-in'); }
@@ -599,6 +834,18 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
   });
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && ui.light) { ui.light = null; render(); } });
+
+  document.addEventListener('change', async e => {
+    if (e.target.id !== 'upfiles') return;
+    const picked = Array.from(e.target.files || []).filter(f => /^image\//.test(f.type));
+    if (!picked.length) return;
+    ui.up.busy = true; render();
+    for (const f of picked.slice(0, 30)) { const src = await shrink(f); if (src) ui.up.files.push({ src, pct: 0 }); }
+    if (picked.length > 30) toast('The test takes up to 30 photos at a time');
+    ui.up.busy = false; render();
+  });
+
+  window.addEventListener('hashchange', () => { ui.up = { files: [], stage: 'pick', sent: 0, busy: false }; render(); });
 
   render();
 })();
