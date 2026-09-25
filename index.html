@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nestday prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+/* Test prototype only: accounts, data and "login" all live in this file. Not real security. */
+:root{
+  --bg:#F2F4F1; --surface:#FFFFFF; --ink:#1E2A2A; --muted:#56625F; --line:#DCE2DC; --line2:#C9D1C8;
+  --brand:#1F6F5C; --brand-dark:#16312A; --brand-soft:#E3F1EA; --brand-ink:#1B5E4A;
+  --sun:#F2B632; --sun-soft:#FFF6DC; --sky:#E3EEF6; --warn:#8E3512; --warn-soft:#FBEDE6;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Nunito Sans","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.1;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--brand)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.btn{height:46px;padding:0 18px;border-radius:12px;border:0;background:var(--brand);color:#fff;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line2)}
+.btn.small{height:38px;padding:0 12px;font-size:14px;border-radius:10px}
+.btn.warn{background:var(--warn-soft);color:var(--warn);border:1px solid #E8B9A4}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:20px;padding:3px 10px;white-space:nowrap}
+.pill.ok{background:var(--brand-soft);color:var(--brand-ink)}
+.pill.wait{background:var(--sun-soft);color:#6B5412}
+.pill.bad{background:var(--warn-soft);color:var(--warn)}
+.pill.grey{background:#EEF1ED;color:#3C4846}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:10px;align-items:center}
+.spacer{flex:1}
+label.field{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:14px}
+label.field input,label.field select{height:46px;border:1px solid var(--line2);border-radius:10px;padding:0 12px;font-weight:400;font-size:16px;background:#fff}
+.sr{position:absolute;left:-9999px}
+.num{font-variant-numeric:tabular-nums}
+.banner{background:#1E2A2A;color:#fff;font-size:13px;padding:8px 16px;text-align:center}
+.banner button{background:none;border:0;color:var(--sun);font-weight:700;text-decoration:underline;padding:0 4px}
+
+/* login */
+.login{min-height:calc(100vh - 36px);display:grid;grid-template-columns:1fr 1fr}
+.login .hero{background:var(--brand);color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+.login .hero h1{font-size:clamp(34px,4.5vw,52px)}
+.login .hero p{color:#D7EAE3;font-size:18px;max-width:30em;margin:14px 0 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:24px}
+.login .form{display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.login form{width:100%;max-width:420px;display:flex;flex-direction:column;gap:16px}
+.err{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700}
+.testbox{border:2px dashed var(--line2);border-radius:14px;padding:14px;background:#fff}
+.testbox table{width:100%;border-collapse:collapse;font-size:14px}
+.testbox td{padding:6px 4px;border-top:1px solid #EEF1ED;vertical-align:middle}
+.testbox code{font-family:Consolas,"SF Mono",monospace;font-size:13px}
+
+/* parent */
+.phone{max-width:480px;margin:0 auto;min-height:calc(100vh - 36px);display:flex;flex-direction:column;background:var(--bg)}
+.phead{background:var(--brand);color:#fff;padding:18px 18px 20px;display:flex;flex-direction:column;gap:14px}
+.phead a,.phead .link{color:#D7EAE3;background:none;border:0;font-size:14px;text-decoration:underline;padding:0}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--sun);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:20px;flex-shrink:0}
+.statusbar{background:rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pbody{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.tl div{display:grid;grid-template-columns:70px 84px 1fr;gap:8px;padding:11px 0;border-bottom:1px solid #EEF1ED;font-size:15px}
+.tl div:last-child{border-bottom:0}
+.tl .t{font-size:13px;color:var(--muted)}
+.tl .k{font-weight:700}
+.tabs{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:1px solid var(--line);height:64px}
+.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;color:var(--muted)}
+.tabs button[aria-current="page"]{color:var(--brand);font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ph{border:0;padding:0;background:none;border-radius:8px;overflow:hidden;display:block;width:100%}
+.ph svg{display:block;width:100%;aspect-ratio:1}
+.bubble{max-width:80%;display:flex;flex-direction:column;gap:3px}
+.bubble .b{border-radius:16px 16px 16px 4px;padding:10px 14px;background:#fff;border:1px solid var(--line);font-size:15px}
+.bubble.me{align-self:flex-end;align-items:flex-end}
+.bubble.me .b{background:var(--brand);color:#fff;border:0;border-radius:16px 16px 4px 16px}
+.bubble .w{font-size:12px;font-weight:700;color:#3C4846}
+.bubble .tm{font-size:12px;color:var(--muted)}
+.lightbox{position:fixed;inset:0;background:rgba(20,30,30,.85);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.lightbox .inner{background:#fff;border-radius:14px;padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;gap:10px}
+.lightbox svg{width:100%;aspect-ratio:1;border-radius:10px;display:block}
+.frow{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #EEF1ED;font-size:15px}
+
+/* staff + director */
+.topbar{background:#fff;border-bottom:1px solid var(--line);padding:14px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.topbar h1{font-size:22px}
+.wrap{padding:20px 24px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px}
+.kids{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.kid{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center;text-align:left;min-height:68px}
+.kid.sel{border-color:var(--brand)}
+.kid.out{background:#EEF1ED}
+.kid .ini{width:42px;height:42px;border-radius:50%;background:#E4E9E3;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.kid.sel .ini{background:var(--brand);color:#fff}
+.kid .flag{font-size:12px;font-weight:700;color:#B5461A;margin-left:auto;text-align:right}
+.logbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.logbtns button{height:54px;border-radius:12px;border:1px solid var(--line2);background:#F7F9F6;font-weight:700}
+.feed{max-height:300px;overflow:auto;font-size:14px}
+.feed div{padding:8px 0;border-bottom:1px solid #EEF1ED}
+.dir{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:calc(100vh - 36px)}
+.side{background:var(--brand-dark);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px}
+.side button{background:none;border:0;color:#D5E3DD;text-align:left;padding:11px 12px;border-radius:10px;font-size:15px}
+.side button[aria-current="page"]{background:rgba(255,255,255,.12);color:#fff;font-weight:700}
+.main{padding:26px 30px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi .v{font-family:var(--display);font-weight:800;font-size:32px}
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th{text-align:left;font-size:12px;letter-spacing:.06em;color:var(--muted);padding:10px 8px;border-bottom:1px solid var(--line)}
+.tbl td{padding:12px 8px;border-bottom:1px solid #EEF1ED;vertical-align:middle}
+.tblbox{overflow-x:auto}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1E2A2A;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:20}
+
+@media (max-width:860px){
+  .login{grid-template-columns:1fr}
+  .login .hero{padding:28px 20px}
+  .wrap{grid-template-columns:1fr;padding:16px}
+  .dir{grid-template-columns:1fr}
+  .side{flex-direction:row;flex-wrap:wrap;padding:10px}
+  .main{padding:18px 16px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:no-preference){.toast{animation:up .2s ease-out}@keyframes up{from{opacity:0;transform:translate(-50%,8px)}}}
+</style>
+</head>
+<body>
+<div class="banner">Test prototype with fake data. Nothing leaves this browser. <button type="button" data-a="reset">Reset demo data</button></div>
+<div id="app"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------- fake accounts (for testing only) ----------
+  const ACCOUNTS = [
+    { email: 'daniel@nestday.test', password: 'parent123', role: 'parent', name: 'Daniel Reyes', child: 'maya' },
+    { email: 'hannah@nestday.test', password: 'parent123', role: 'parent', name: 'Hannah Tran', child: 'noah' },
+    { email: 'priya@nestday.test', password: 'educator123', role: 'educator', name: 'Priya K.' },
+    { email: 'karen@nestday.test', password: 'director123', role: 'director', name: 'Karen Olsen' }
+  ];
+
+  // ---------- illustrated fake photos ----------
+  const ART = {
+    tower: ['Block tower', '<rect width="100" height="100" fill="#F7DE9C"/><rect y="82" width="100" height="18" fill="#D9B45A"/><rect x="36" y="66" width="28" height="16" fill="#1F6F5C"/><rect x="40" y="50" width="22" height="16" fill="#C8551B"/><rect x="38" y="34" width="24" height="16" fill="#2C4F8A"/><rect x="42" y="20" width="18" height="14" fill="#1F6F5C"/>'],
+    leaf: ['Leaf painting', '<rect width="100" height="100" fill="#CFE3DA"/><rect x="14" y="16" width="72" height="62" rx="3" fill="#fff"/><ellipse cx="36" cy="40" rx="12" ry="7" transform="rotate(-30 36 40)" fill="#E07A4F"/><ellipse cx="62" cy="36" rx="11" ry="6" transform="rotate(20 62 36)" fill="#F2B632"/><ellipse cx="50" cy="60" rx="13" ry="7" transform="rotate(-10 50 60)" fill="#C8551B"/>'],
+    slide: ['Playground slide', '<rect width="100" height="100" fill="#DCE6F2"/><circle cx="78" cy="22" r="10" fill="#F2B632"/><rect y="72" width="100" height="28" fill="#8DBF7A"/><path d="M22 72 L22 36 L34 36 L64 72" fill="none" stroke="#C8551B" stroke-width="5"/><path d="M18 36 H38" stroke="#2C4F8A" stroke-width="4"/>'],
+    story: ['Story time', '<rect width="100" height="100" fill="#EADCF0"/><rect x="28" y="30" width="44" height="32" rx="2" fill="#2C4F8A"/><path d="M50 30 V62" stroke="#fff" stroke-width="2"/><circle cx="22" cy="76" r="9" fill="#8A5A3C"/><circle cx="78" cy="76" r="9" fill="#E0B090"/>'],
+    sand: ['Sand table', '<rect width="100" height="100" fill="#F4E6C8"/><rect x="12" y="40" width="76" height="34" rx="4" fill="#D9B45A"/><circle cx="38" cy="52" r="6" fill="#C8551B"/><rect x="56" y="46" width="14" height="10" fill="#1F6F5C"/>'],
+    snack: ['Snack time', '<rect width="100" height="100" fill="#FBEDE6"/><circle cx="50" cy="54" r="30" fill="#fff"/><circle cx="40" cy="48" r="7" fill="#C8551B"/><circle cx="58" cy="46" r="6" fill="#8DBF7A"/><circle cx="52" cy="62" r="7" fill="#F2B632"/>'],
+    music: ['Music circle', '<rect width="100" height="100" fill="#E3EEF6"/><ellipse cx="50" cy="44" rx="24" ry="8" fill="#C8551B"/><rect x="26" y="44" width="48" height="26" fill="#E07A4F"/><ellipse cx="50" cy="70" rx="24" ry="8" fill="#C8551B"/><path d="M30 20 L44 38 M70 20 L56 38" stroke="#8A5A3C" stroke-width="4" stroke-linecap="round"/>'],
+    puzzle: ['Puzzle', '<rect width="100" height="100" fill="#E4F0E6"/><rect x="20" y="20" width="28" height="28" fill="#2C4F8A"/><rect x="52" y="20" width="28" height="28" fill="#F2B632"/><rect x="20" y="52" width="28" height="28" fill="#1F6F5C"/><rect x="54" y="54" width="28" height="28" fill="#C8551B"/>'],
+    bubbles: ['Bubbles outside', '<rect width="100" height="100" fill="#DCEBF5"/><rect y="78" width="100" height="22" fill="#8DBF7A"/><circle cx="34" cy="36" r="12" fill="none" stroke="#2C4F8A" stroke-width="2"/><circle cx="62" cy="28" r="8" fill="none" stroke="#6B3F7A" stroke-width="2"/><circle cx="70" cy="54" r="10" fill="none" stroke="#1F6F5C" stroke-width="2"/>'],
+    garden: ['Planting seeds', '<rect width="100" height="100" fill="#F1EBDD"/><rect x="18" y="56" width="64" height="26" rx="3" fill="#8A5A3C"/><path d="M34 56 V40 M50 56 V34 M66 56 V42" stroke="#1F6F5C" stroke-width="4" stroke-linecap="round"/><circle cx="34" cy="38" r="5" fill="#8DBF7A"/><circle cx="50" cy="32" r="5" fill="#8DBF7A"/><circle cx="66" cy="40" r="5" fill="#8DBF7A"/>']
+  };
+  const svg = k => '<svg viewBox="0 0 100 100" role="img" aria-label="Photo: ' + ART[k][0] + '">' + ART[k][1] + '</svg>';
+
+  // ---------- demo data ----------
+  function freshData() {
+    return {
+      educators: 2,
+      kids: [
+        { id: 'maya', name: 'Maya R.', first: 'Maya', ini: 'MR', inAt: '7:52 am', by: 'Daniel', here: true, flag: '' },
+        { id: 'noah', name: 'Noah T.', first: 'Noah', ini: 'NT', inAt: '8:05 am', by: 'Hannah', here: true, flag: 'Nut allergy' },
+        { id: 'aria', name: 'Aria P.', first: 'Aria', ini: 'AP', inAt: '8:10 am', here: true, flag: '' },
+        { id: 'leo', name: 'Leo S.', first: 'Leo', ini: 'LS', inAt: '8:14 am', here: true, flag: 'Meds 11:00' },
+        { id: 'zoe', name: 'Zoe M.', first: 'Zoe', ini: 'ZM', inAt: '8:30 am', here: true, flag: '' },
+        { id: 'ethan', name: 'Ethan W.', first: 'Ethan', ini: 'EW', inAt: '8:41 am', here: true, flag: 'No photos' },
+        { id: 'lily', name: 'Lily C.', first: 'Lily', ini: 'LC', inAt: '9:02 am', here: true, flag: '' },
+        { id: 'omar', name: 'Omar H.', first: 'Omar', ini: 'OH', inAt: '', here: false, flag: '', note: 'Expected 9:30' },
+        { id: 'ava', name: 'Ava B.', first: 'Ava', ini: 'AB', inAt: '', here: false, flag: '', note: 'Absent · sick' }
+      ],
+      log: [
+        { kid: 'maya', t: '8:30 am', k: 'Breakfast', v: 'Ate all · oatmeal, pears' },
+        { kid: 'maya', t: '9:20 am', k: 'Art', v: 'Leaf prints with paint' },
+        { kid: 'maya', t: '9:50 am', k: 'Outside', v: 'Playground, 35 min' },
+        { kid: 'maya', t: '10:15 am', k: 'Diaper', v: 'Wet' },
+        { kid: 'noah', t: '8:30 am', k: 'Breakfast', v: 'Ate some · toast, banana (nut-free)' },
+        { kid: 'noah', t: '9:50 am', k: 'Outside', v: 'Playground, 35 min' },
+        { kid: 'noah', t: '10:20 am', k: 'Toilet', v: 'Dry, used the potty' }
+      ],
+      photos: {
+        maya: [['Today · Thu 24 Sep', ['tower', 'leaf', 'slide']], ['Yesterday · Wed 23 Sep', ['story', 'sand', 'snack', 'music', 'puzzle', 'bubbles']], ['Mon 21 Sep', ['garden', 'story', 'slide']]],
+        noah: [['Today · Thu 24 Sep', ['puzzle', 'slide']], ['Yesterday · Wed 23 Sep', ['music', 'snack', 'bubbles']], ['Mon 21 Sep', ['garden', 'sand']]]
+      },
+      notes: {
+        maya: 'Maya built a tall tower and counted the blocks to 8.',
+        noah: 'Noah finished the farm puzzle all by himself.'
+      },
+      messages: {
+        maya: [
+          { w: 'Priya K.', t: 'Yesterday 4:12 pm', v: 'Maya asked for her blue blanket at nap. Could you pack it tomorrow?' },
+          { me: true, t: 'Yesterday 4:20 pm', v: 'Will do, thanks Priya!' },
+          { w: 'Priya K.', t: 'Today 8:40 am', v: 'Blanket arrived, she was very happy about it.' }
+        ],
+        noah: [
+          { w: 'Jordan M.', t: 'Today 8:10 am', v: 'Good morning! Noah\'s nut-free snack box is in his cubby.' }
+        ]
+      },
+      medsDone: false,
+      incidents: [{ t: '9:40 am', v: 'Maple Room · scraped knee · parent notified 9:44', signed: false }],
+      guardians: [
+        { child: 'Maya R.', room: 'Sunflower', name: 'Daniel Reyes', email: 'daniel@nestday.test', status: 'Active', last: 'Today' },
+        { child: 'Maya R.', room: 'Sunflower', name: 'Lucia Reyes', email: 'lucia.r@example.com', status: 'Active', last: 'Yesterday' },
+        { child: 'Noah T.', room: 'Sunflower', name: 'Hannah Tran', email: 'hannah@nestday.test', status: 'Active', last: 'Today' },
+        { child: 'Leo S.', room: 'Sunflower', name: 'Marcus Singh', email: 'marcus.s@example.com', status: 'Invite sent', last: 'Sent 21 Sep' },
+        { child: 'Omar H.', room: 'Sunflower', name: 'Sara Haddad', email: '', status: 'Not invited', last: 'Never' },
+        { child: 'Jonah F.', room: 'Oak', name: 'Tom Fischer', email: 'tom.f@example.com', status: 'Locked', last: '5 failed tries' },
+        { child: 'Ava B.', room: 'Sunflower', name: 'Chloe Brown', email: 'chloe.b@example.com', status: 'Invite sent', last: 'Sent 23 Sep' }
+      ],
+      staff: freshStaff()
+    };
+  }
+
+  // Alberta certification levels: Level 1 (ECE Assistant), Level 2 (ECE), Level 3 (ECE Supervisor). All people are fictional.
+  function freshStaff() {
+    const s = (name, email, role, room, level, firstAid, status, last, pin) => ({ name, email, role, room, level, firstAid, status, last, pin });
+    return [
+      s('Karen Olsen', 'karen@nestday.test', 'Director', 'All rooms', 'Level 3', '2027-05-12', 'Active', 'Today', false),
+      s('Priya Kaur', 'priya@nestday.test', 'Lead educator', 'Sunflower', 'Level 3', '2027-03-02', 'Active', 'Today', true),
+      s('Jordan Mitchell', 'jordan.m@example.com', 'Educator', 'Sunflower', 'Level 2', '2026-10-15', 'Active', 'Today', true),
+      s('Amara Nwosu', 'amara.n@example.com', 'Lead educator', 'Seedlings', 'Level 3', '2027-01-20', 'Active', 'Today', true),
+      s('Ben Tremblay', 'ben.t@example.com', 'Educator', 'Seedlings', 'Level 1', '2027-06-08', 'Active', 'Today', true),
+      s('Sofia Lopez', 'sofia.l@example.com', 'Lead educator', 'Sprouts', 'Level 3', '2026-12-01', 'Active', 'Today', true),
+      s('Wei Chen', 'wei.c@example.com', 'Educator', 'Sprouts', 'Level 2', '2027-04-17', 'Active', 'Today', true),
+      s('Grace Okafor', 'grace.o@example.com', 'Lead educator', 'Maple', 'Level 3', '2027-02-11', 'Active', 'Today', true),
+      s('Tariq Ahmed', 'tariq.a@example.com', 'Educator', 'Maple', 'Level 2', '2026-10-03', 'Active', 'Today', true),
+      s('Hailey Dubois', 'hailey.d@example.com', 'Educator', 'Maple', 'Level 1', '2027-07-22', 'Active', 'Today', false),
+      s('Marco Pereira', 'marco.p@example.com', 'Educator', 'Oak', 'Level 2', '2027-03-30', 'Active', 'Today', true),
+      s('Nina Roy', 'nina.r@example.com', 'Lead educator', 'Oak', 'Level 3', '2027-08-14', 'Active', 'Today', true),
+      s('Lena Fischer', 'lena.f@example.com', 'Educator (starts 28 Sep)', 'Float', 'Level 1', '2027-09-01', 'Invite sent', 'Sent 22 Sep', false),
+      s('Dev Sharma', 'dev.s@example.com', 'Educator (left 29 Aug)', 'Float', 'Level 2', '2026-11-19', 'Access off', 'Turned off 29 Aug', false)
+    ];
+  }
+
+  // The prototype's "today" is fixed so the demo data always reads the same.
+  const TODAY = new Date('2026-09-24T12:00:00');
+  const daysUntil = iso => Math.round((new Date(iso + 'T12:00:00') - TODAY) / 86400000);
+  const fmtDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-CA', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  // Storage is a convenience so the demo survives a reload; the page works without it.
+  const KEY = 'nestday-demo-v1';
+  function load() { try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { /* ignore */ } }
+  function loadUser() { try { const s = sessionStorage.getItem(KEY + '-user'); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+  function saveUser(u) { try { u ? sessionStorage.setItem(KEY + '-user', JSON.stringify(u)) : sessionStorage.removeItem(KEY + '-user'); } catch (e) { /* ignore */ } }
+
+  let D = load() || freshData();
+  if (!D.staff) { D.staff = freshStaff(); save(); } // older saved demo data had no staff list
+  let user = loadUser();
+  let ui = { role: 'parent', err: '', tab: 'today', dtab: 'today', sel: ['maya', 'noah', 'aria'], light: null, email: '', pw: '' };
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const now = () => new Date().toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' }).replace('a.m.', 'am').replace('p.m.', 'pm');
+  const kid = id => D.kids.find(k => k.id === id);
+  const app = document.getElementById('app');
+
+  function toast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+    document.body.appendChild(t); setTimeout(() => t.remove(), 2200);
+  }
+
+  // ---------- views ----------
+  function viewLogin() {
+    const rows = ACCOUNTS.map((a, i) =>
+      '<tr><td><b>' + (a.role === 'parent' ? 'Parent (' + esc(kid(a.child).first) + ')' : a.role === 'educator' ? 'Educator' : 'Director') + '</b></td>' +
+      '<td><code>' + esc(a.email) + '</code><br><code>' + esc(a.password) + '</code></td>' +
+      '<td><button type="button" class="btn small ghost" data-a="fill" data-i="' + i + '">Use</button></td></tr>').join('');
+    return '<div class="login">' +
+      '<div class="hero"><div class="logo">' + sunIcon() + 'Nestday</div>' +
+      '<div><h1>Their day, while you\'re at work.</h1><p>Photos, meals, naps and notes from your child\'s room, in any web browser. No app to install.</p></div>' +
+      '<div class="small" style="color:#D7EAE3">Sunflower Early Learning Centre (fictional) · Airdrie AB · 403-555-0142<br>Data stored in Canada</div></div>' +
+      '<div class="form"><form id="loginForm" novalidate>' +
+      '<div><h2 style="font-size:32px">Sign in</h2><div class="muted">Parents, educators and directors all sign in here.</div></div>' +
+      (ui.err ? '<div class="err" role="alert">' + esc(ui.err) + '</div>' : '') +
+      '<label class="field">Email<input id="email" type="email" autocomplete="username" value="' + esc(ui.email) + '" required></label>' +
+      '<label class="field">Password<input id="pw" type="password" autocomplete="current-password" value="' + esc(ui.pw) + '" required></label>' +
+      '<button class="btn" type="submit" style="height:52px;font-size:17px">Sign in</button>' +
+      '<div class="testbox"><div style="font-weight:700;margin-bottom:6px">Test accounts (fake)</div><table>' + rows + '</table>' +
+      '<div class="small muted" style="margin-top:8px">Try this: sign in as the educator, log a meal for Maya, sign out, then sign in as Daniel to see it on Maya\'s day.</div></div>' +
+      '</form></div></div>';
+  }
+
+  function sunIcon() {
+    return '<svg width="32" height="32" viewBox="0 0 36 36" fill="none" stroke="#F2B632" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="18" cy="18" r="7"/><path d="M18 3v5M18 28v5M3 18h5M28 18h5M7.4 7.4l3.5 3.5M25.1 25.1l3.5 3.5M7.4 28.6l3.5-3.5M25.1 10.9l3.5-3.5"/></svg>';
+  }
+
+  function viewParent() {
+    const c = kid(user.child);
+    const tabs = [['today', 'Today'], ['photos', 'Photos'], ['messages', 'Messages'], ['fees', 'Fees']];
+    let body = '';
+    if (ui.tab === 'today') body = parentToday(c);
+    if (ui.tab === 'photos') body = parentPhotos(c);
+    if (ui.tab === 'messages') body = parentMessages(c);
+    if (ui.tab === 'fees') body = parentFees(c);
+    return '<div class="phone"><div class="phead">' +
+      '<div class="row"><span class="logo" style="font-size:18px">Nestday</span><span class="spacer"></span><button class="link" data-a="logout">Sign out</button></div>' +
+      '<div class="row"><div class="avatar">' + esc(c.ini) + '</div><div><h1 style="font-size:24px">' + esc(c.first) + '</h1><div class="small" style="color:#D7EAE3">Sunflower Room · Toddlers · signed in as ' + esc(user.name) + '</div></div></div>' +
+      '<div class="statusbar"><div><div class="small" style="color:#D7EAE3">Thursday, 24 September</div><b>' +
+      (c.here ? 'Checked in ' + esc(c.inAt) + (c.by ? ' by ' + esc(c.by) : '') : esc(c.note || 'Not checked in yet')) + '</b></div>' +
+      '<span class="pill" style="background:' + (c.here ? '#F2B632;color:#1E2A2A' : '#EEF1ED;color:#3C4846') + '">' + (c.here ? 'Here now' : 'Not here') + '</span></div></div>' +
+      '<main class="pbody">' + body + '</main>' +
+      '<nav class="tabs" aria-label="Parent menu">' + tabs.map(([id, l]) => '<button data-a="tab" data-t="' + id + '"' + (ui.tab === id ? ' aria-current="page"' : '') + '>' + tabIcon(id) + l + '</button>').join('') + '</nav>' +
+      (ui.light ? lightbox() : '') + '</div>';
+  }
+
+  function tabIcon(id) {
+    const p = {
+      today: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+      photos: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
+      messages: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+      fees: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>'
+    }[id];
+    return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+  }
+
+  function parentToday(c) {
+    const items = D.log.filter(l => l.kid === c.id);
+    const first = D.photos[c.id][0][1];
+    const lastMsg = D.messages[c.id][D.messages[c.id].length - 1];
+    return '<section class="card stack"><div class="row"><b>' + first.length + ' new photos</b><span class="spacer"></span><span class="small muted">10:42 am</span></div>' +
+      '<div class="grid3">' + first.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div>' +
+      '<div>' + esc(D.notes[c.id]) + '</div><div class="row small"><span class="muted">From Priya K., educator</span><span class="spacer"></span><button class="btn small ghost" data-a="tab" data-t="photos">All photos</button></div></section>' +
+      '<section class="card tl" style="padding:4px 16px" aria-label="Today\'s timeline">' +
+      (items.length ? items.map(l => '<div><span class="t num">' + esc(l.t) + '</span><span class="k">' + esc(l.k) + '</span><span>' + esc(l.v) + '</span></div>').join('') : '<div><span class="muted">Nothing logged yet today.</span></div>') +
+      '</section>' +
+      '<section class="card" style="background:var(--sky);border:0"><b>Reminder from the Sunflower Room</b><div>Please send a spare set of clothes on Friday. We\'re doing water play.</div></section>' +
+      '<section class="card"><div class="row"><b>Latest message</b><span class="spacer"></span><span class="small muted">' + esc(lastMsg.t) + '</span></div><div>' + (lastMsg.me ? '<b>You:</b> ' : '<b>' + esc(lastMsg.w) + ':</b> ') + esc(lastMsg.v) + '</div></section>' +
+      '<div class="row"><button class="btn" style="flex:1" data-a="tab" data-t="messages">Message the room</button>' +
+      (c.here ? '' : '<button class="btn ghost" style="flex:1" data-a="absent">Report absence</button>') + '</div>';
+  }
+
+  function parentPhotos(c) {
+    return '<div class="card" style="background:var(--sun-soft);border-color:#F2D27A;font-size:14px">Full-size downloads are free. Tap a photo to open it. Children whose families said no to photos are never shown.</div>' +
+      D.photos[c.id].map(([label, keys]) => '<section class="stack" style="gap:8px"><div class="row"><b>' + esc(label) + '</b><span class="spacer"></span><span class="small muted">' + keys.length + ' photos</span></div>' +
+        '<div class="grid3">' + keys.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div></section>').join('');
+  }
+
+  function lightbox() {
+    return '<div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo"><div class="inner">' + svg(ui.light) +
+      '<div class="row"><b>' + esc(ART[ui.light][0]) + '</b><span class="spacer"></span><span class="small muted">Sunflower Room</span></div>' +
+      '<div class="row"><button class="btn" style="flex:1" data-a="savephoto">Save full size</button><button class="btn ghost" data-a="closephoto">Close</button></div></div></div>';
+  }
+
+  function parentMessages(c) {
+    const list = D.messages[c.id].map(m => '<div class="bubble' + (m.me ? ' me' : '') + '">' + (m.me ? '' : '<span class="w">' + esc(m.w) + '</span>') +
+      '<div class="b">' + esc(m.v) + '</div><span class="tm">' + esc(m.t) + '</span></div>').join('');
+    return '<div class="card" style="background:var(--sky);border:0"><div class="small" style="font-weight:700;color:#2C4F8A">ANNOUNCEMENT · KAREN O., DIRECTOR</div>We\'re closed Monday 12 October for Thanksgiving.</div>' +
+      '<div class="stack" id="thread" aria-live="polite">' + list + '</div>' +
+      '<div class="small muted" style="text-align:center">Educators usually reply within an hour during care hours.</div>' +
+      '<form id="msgForm" class="row"><label for="msg" class="sr">Write a message</label><input id="msg" autocomplete="off" placeholder="Write to the Sunflower Room" style="flex:1;height:48px;border:1px solid var(--line2);border-radius:24px;padding:0 16px;background:#fff"><button class="btn" type="submit">Send</button></form>';
+  }
+
+  function parentFees() {
+    const past = ['1 Sep 2026', '1 Aug 2026', '1 Jul 2026', '1 Jun 2026'];
+    return '<section class="card"><div class="small muted">Balance owing</div><div style="font-family:var(--display);font-weight:800;font-size:34px" class="num">$0.00</div><div class="small" style="color:var(--brand-ink);font-weight:700">You\'re all paid up</div></section>' +
+      '<section class="card"><div class="row"><b>Next payment</b><span class="spacer"></span><span class="small muted">Thu 1 Oct</span></div>' +
+      '<div class="frow"><span>Parent fee, full-time (Alberta flat rate)</span><span class="num">$326.25</span></div>' +
+      '<div class="frow muted"><span>Optional services</span><span class="num">$0.00</span></div>' +
+      '<div class="frow muted"><span>Processing fee</span><span class="num">$0.00</span></div>' +
+      '<div class="frow" style="border:0;font-weight:700"><span>Total</span><span class="num">$326.25</span></div></section>' +
+      '<section class="card row"><div><b>Pre-authorized debit</b><div class="small muted">Chequing account ending 4821</div></div><span class="spacer"></span><button class="btn small ghost" data-a="nope">Change</button></section>' +
+      '<section class="card" style="padding:6px 16px"><div style="font-weight:700;padding:10px 0 2px">Past payments</div>' +
+      past.map(d => '<div class="frow"><span>' + d + '</span><span class="row"><span class="num">$326.25</span><span class="pill ok">Paid</span></span></div>').join('') + '</section>' +
+      '<section class="card row" style="background:var(--sky);border:0"><div><b>2025 child care receipt</b><div class="small">For your income tax return</div></div><span class="spacer"></span><button class="btn small ghost" data-a="nope">Save PDF</button></section>';
+  }
+
+  function viewEducator() {
+    const here = D.kids.filter(k => k.here).length;
+    const need = Math.max(1, Math.ceil(here / 6));
+    const ok = D.educators >= need;
+    const selNames = ui.sel.map(id => kid(id).first).join(', ') || 'no one selected';
+    const feed = D.log.slice().reverse().slice(0, 12).map(l => '<div><b>' + esc(l.t) + '</b> · ' + esc(kid(l.kid).first) + ' · ' + esc(l.k) + ': ' + esc(l.v) + '</div>').join('');
+    return '<header class="topbar"><h1>Sunflower Room</h1><span class="muted">Toddlers · Thu 24 Sep</span><span class="spacer"></span>' +
+      '<span class="pill ' + (ok ? 'ok' : 'bad') + '" style="font-size:14px;padding:6px 12px" role="status">' + (ok ? 'In ratio' : 'OUT OF RATIO') + ' · ' + here + ' children, ' + D.educators + (D.educators === 1 ? ' educator' : ' educators') + ' (1:6 needs ' + need + ')</span>' +
+      '<span class="row small">Educators <button class="btn small ghost" data-a="edu" data-d="-1" aria-label="One fewer educator">−</button><button class="btn small ghost" data-a="edu" data-d="1" aria-label="One more educator">+</button></span>' +
+      '<span>' + esc(user.name) + '</span><button class="btn small ghost" data-a="logout">Sign out</button></header>' +
+      '<div class="wrap"><div class="stack">' +
+      '<div class="row"><b>Children · ' + ui.sel.length + ' selected</b><span class="spacer"></span><button class="btn small ghost" data-a="selall">Select all here</button><button class="btn small" data-a="checkin">Check in / out selected</button></div>' +
+      '<div class="kids">' + D.kids.map(k => '<button class="kid' + (ui.sel.includes(k.id) ? ' sel' : '') + (k.here ? '' : ' out') + '" data-a="pick" data-id="' + k.id + '" aria-pressed="' + ui.sel.includes(k.id) + '">' +
+        '<span class="ini">' + esc(k.ini) + '</span><span><b>' + esc(k.name) + '</b><br><span class="small muted">' + (k.here ? 'In ' + esc(k.inAt) : esc(k.note || 'Checked out')) + '</span></span><span class="flag">' + esc(k.flag) + '</span></button>').join('') + '</div>' +
+      '<section class="card"><b>Room log</b><div class="feed" aria-live="polite">' + feed + '</div></section></div>' +
+      '<aside class="stack"><section class="card stack"><b>Log for ' + esc(selNames) + '</b>' +
+      '<label class="field">Details (optional)<input id="detail" placeholder="e.g. ate all, pasta and peas"></label>' +
+      '<div class="logbtns">' + ['Meal', 'Nap', 'Diaper', 'Note', 'Photo'].map(t => '<button data-a="log" data-k="' + t + '">' + t + '</button>').join('') +
+      '<button data-a="incident" style="background:var(--warn-soft);color:var(--warn);border-color:#E8B9A4">Incident</button></div>' +
+      '<div class="small muted">One tap logs the same entry for every selected child who is here.</div></section>' +
+      (D.medsDone ? '<section class="card" style="background:var(--brand-soft);border:0"><b>Leo S. · Salbutamol given</b><div class="small">Recorded by ' + esc(user.name) + '</div></section>' :
+        '<section class="card stack" style="background:var(--sun-soft);border-color:#F2D27A"><span class="small" style="font-weight:700;color:#6B5412">DUE AT 11:00 AM</span><b>Leo S. · Salbutamol, 2 puffs</b><span class="small">Parent consent on file until 30 Nov.</span><button class="btn" style="background:#1E2A2A" data-a="meds">Record dose</button></section>') +
+      '</aside></div>';
+  }
+
+  function viewDirector() {
+    const sun = D.kids.filter(k => k.here).length;
+    const present = 51 + sun;
+    const openInc = D.incidents.filter(i => !i.signed);
+    const pending = D.guardians.filter(g => g.status === 'Invite sent').length;
+    const expiring = D.staff.filter(s => s.status === 'Active' && daysUntil(s.firstAid) <= 30);
+    const attention = openInc.length + 1 + (pending ? 1 : 0) + (expiring.length ? 1 : 0);
+    const nav = [['today', 'Today'], ['families', 'Families and logins'], ['staff', 'Staff accounts']];
+    const body = ui.dtab === 'today' ? dirToday(present, sun, openInc, pending, attention, expiring) : ui.dtab === 'staff' ? dirStaff() : dirFamilies();
+    return '<div class="dir"><nav class="side" aria-label="Director menu"><div class="logo" style="font-size:20px;padding:0 12px 4px">Nestday</div>' +
+      '<div class="small" style="color:#A9C4BA;padding:0 12px 14px">Sunflower Early Learning · Airdrie</div>' +
+      nav.map(([id, l]) => '<button data-a="dtab" data-t="' + id + '"' + (ui.dtab === id ? ' aria-current="page"' : '') + '>' + l + '</button>').join('') +
+      '<button data-a="nope">Fees and billing</button><button data-a="nope">Reports and grant claim</button>' +
+      '<span class="spacer"></span><button data-a="logout">Sign out</button></nav><main class="main">' + body + '</main></div>';
+  }
+
+  function dirToday(present, sun, openInc, pending, attention, expiring) {
+    const rooms = [['Seedlings', 'Under 12 months', 5, 2, 3], ['Sprouts', '12 to 19 months', 8, 2, 4], ['Sunflower', '19 months to 3 yrs', sun, D.educators, 6], ['Maple', '3 to 4½ yrs', 22, 3, 8], ['Oak', '3 to 4½ yrs', 16, 2, 8]];
+    const inRatio = rooms.filter(r => r[3] >= Math.ceil(r[2] / r[4])).length;
+    return '<div class="row" style="flex-wrap:wrap"><div><div class="small muted">Thursday, 24 September</div><h1 style="font-size:32px">Good morning, ' + esc(user.name.split(' ')[0]) + '</h1></div><span class="spacer"></span><button class="btn" data-a="announce">Send announcement</button></div>' +
+      '<div class="kpis"><div class="card kpi"><div class="small muted">Children here</div><div class="v num">' + present + ' <span class="small muted">of 64</span></div></div>' +
+      '<div class="card kpi"><div class="small muted">Educators on shift</div><div class="v num">' + (9 + D.educators) + '</div></div>' +
+      '<div class="card kpi" style="' + (inRatio === 5 ? 'background:var(--brand-soft)' : 'background:var(--warn-soft)') + '"><div class="small">Rooms in ratio</div><div class="v num">' + inRatio + ' <span class="small">of 5</span></div></div>' +
+      '<div class="card kpi" style="background:var(--warn-soft)"><div class="small" style="color:var(--warn)">Needs your attention</div><div class="v num" style="color:var(--warn)">' + attention + '</div></div></div>' +
+      '<div class="two"><section class="card tblbox"><table class="tbl"><thead><tr><th>ROOM</th><th>AGE GROUP</th><th>CHILDREN</th><th>EDUCATORS</th><th>RATIO</th></tr></thead><tbody>' +
+      rooms.map(r => { const ok = r[3] >= Math.ceil(r[2] / r[4]); return '<tr><td><b>' + r[0] + '</b></td><td class="muted">' + r[1] + '</td><td class="num">' + r[2] + '</td><td class="num">' + r[3] + '</td><td><span class="pill ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'OK' : 'Short') + ' · 1:' + r[4] + '</span></td></tr>'; }).join('') +
+      '</tbody></table></section><section class="stack"><b>Needs your attention</b>' +
+      openInc.map((i, n) => '<div class="card"><b>Incident waiting for parent signature</b><div class="small muted">' + esc(i.t) + ' · ' + esc(i.v) + '</div><button class="btn small ghost" style="margin-top:8px" data-a="sign" data-n="' + D.incidents.indexOf(i) + '">Mark signed</button></div>').join('') +
+      '<div class="card"><b>Medication consent expires in 7 days</b><div class="small muted">Jonah F., Oak Room</div></div>' +
+      (pending ? '<div class="card"><b>' + pending + ' guardians haven\'t set up their login</b><div><button class="btn small ghost" style="margin-top:8px" data-a="dtab" data-t="families">Open families</button></div></div>' : '') +
+      (expiring.length ? '<div class="card"><b>First aid expiring for ' + expiring.length + (expiring.length === 1 ? ' educator' : ' educators') + '</b><div class="small muted">' + expiring.map(s => esc(s.name) + ' (' + fmtDate(s.firstAid) + ')').join(', ') + '</div><div><button class="btn small ghost" style="margin-top:8px" data-a="dtab" data-t="staff">Open staff accounts</button></div></div>' : '') +
+      '</section></div>' +
+      '<div class="two"><section class="card"><div class="small muted" style="font-weight:700">REPORTS</div><b>September affordability grant claim</b><div class="small">Attendance complete to yesterday: 16 of 21 operating days.</div></section>' +
+      '<section class="card"><div class="small muted" style="font-weight:700">SEPTEMBER PARENT FEES</div><div style="font-family:var(--display);font-weight:800;font-size:26px" class="num">$18,922.50 <span class="small muted">of $20,880.00</span></div><div class="small">58 of 64 paid · 6 outstanding</div></section></div>';
+  }
+
+  function dirFamilies() {
+    const cls = { 'Active': 'ok', 'Invite sent': 'wait', 'Not invited': 'grey', 'Locked': 'bad' };
+    const act = { 'Active': '', 'Invite sent': 'Resend invite', 'Not invited': 'Send invite', 'Locked': 'Reset access' };
+    return '<div><h1 style="font-size:32px">Families and logins</h1><div class="muted">' + D.guardians.length + ' guardians shown · each has their own login</div></div>' +
+      '<div class="two" style="grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)"><section class="card tblbox"><table class="tbl"><thead><tr><th>CHILD</th><th>GUARDIAN</th><th>LOGIN</th><th>LAST SIGN-IN</th><th></th></tr></thead><tbody>' +
+      D.guardians.map((g, i) => '<tr><td><b>' + esc(g.child) + '</b><div class="small muted">' + esc(g.room) + '</div></td><td>' + esc(g.name) + '<div class="small muted">' + esc(g.email || 'No email yet') + '</div></td>' +
+        '<td><span class="pill ' + cls[g.status] + '">' + esc(g.status) + '</span></td><td class="small muted">' + esc(g.last) + '</td><td>' +
+        (act[g.status] && (g.email || g.status !== 'Not invited') ? '<button class="btn small ghost" data-a="gact" data-i="' + i + '">' + act[g.status] + '</button>' : '') + '</td></tr>').join('') +
+      '</tbody></table></section>' +
+      '<section class="card"><form id="gForm" class="stack"><h2 style="font-size:22px">Add a guardian</h2>' +
+      '<label class="field">Child<select id="gchild">' + D.kids.map(k => '<option>' + esc(k.name) + '</option>').join('') + '</select></label>' +
+      '<label class="field">Full name<input id="gname" required placeholder="e.g. Rosa Reyes"></label>' +
+      '<label class="field">Email for login<input id="gemail" type="email" required placeholder="rosa@example.com"></label>' +
+      '<fieldset style="border:0;padding:0;margin:0" class="stack"><legend style="font-weight:700;font-size:14px;margin-bottom:8px">This person can</legend>' +
+      ['See photos and daily reports', 'Pick up the child', 'Get incident alerts', 'See and pay fees'].map((t, i) => '<label class="row" style="font-size:15px"><input type="checkbox"' + (i < 3 ? ' checked' : '') + ' style="width:18px;height:18px;accent-color:#1F6F5C">' + t + '</label>').join('') +
+      '</fieldset><button class="btn" type="submit">Email login invite</button><div class="small muted">In the prototype no email is sent. The guardian appears in the list as "Invite sent".</div></form></section></div>';
+  }
+
+  function dirStaff() {
+    const cls = { 'Active': 'ok', 'Invite sent': 'wait', 'Access off': 'grey' };
+    const active = D.staff.filter(s => s.status === 'Active').length;
+    const aid = s => {
+      const d = daysUntil(s.firstAid);
+      const cl = d < 0 ? 'bad' : d <= 30 ? 'wait' : 'ok';
+      return '<span class="pill ' + cl + '">' + (d < 0 ? 'Expired ' : d <= 30 ? 'Expires ' : 'Valid to ') + fmtDate(s.firstAid) + '</span>';
+    };
+    const actions = (s, i) => {
+      if (s.role === 'Director') return '<span class="small muted">You</span>';
+      if (s.status === 'Active') return '<div class="row" style="flex-wrap:wrap;gap:6px"><button class="btn small ghost" data-a="sact" data-op="pin" data-i="' + i + '">Reset PIN</button><button class="btn small warn" data-a="sact" data-op="off" data-i="' + i + '">Turn off access</button></div>';
+      if (s.status === 'Invite sent') return '<button class="btn small ghost" data-a="sact" data-op="resend" data-i="' + i + '">Resend invite</button>';
+      return '<button class="btn small ghost" data-a="sact" data-op="on" data-i="' + i + '">Turn access back on</button>';
+    };
+    return '<div><h1 style="font-size:32px">Staff accounts</h1><div class="muted">' + D.staff.length + ' people · ' + active + ' with active logins · educators use a 4-digit PIN on the room tablets</div></div>' +
+      '<div class="two" style="grid-template-columns:minmax(0,1.8fr) minmax(0,1fr)"><section class="card tblbox"><table class="tbl" style="min-width:760px"><thead><tr><th>NAME</th><th>ROLE AND ROOM</th><th>CERTIFICATION</th><th>FIRST AID</th><th>LOGIN</th><th></th></tr></thead><tbody>' +
+      D.staff.map((s, i) => '<tr><td><b>' + esc(s.name) + '</b><div class="small muted">' + esc(s.email) + '</div></td>' +
+        '<td>' + esc(s.role) + '<div class="small muted">' + esc(s.room) + '</div></td>' +
+        '<td>' + esc(s.level) + '</td><td>' + aid(s) + '</td>' +
+        '<td><span class="pill ' + cls[s.status] + '">' + esc(s.status) + '</span><div class="small muted">' + esc(s.last) + (s.status === 'Active' && s.role !== 'Director' ? (s.pin ? ' · PIN set' : ' · no PIN yet') : '') + '</div></td>' +
+        '<td>' + actions(s, i) + '</td></tr>').join('') +
+      '</tbody></table></section>' +
+      '<section class="card"><form id="sForm" class="stack"><h2 style="font-size:22px">Add a staff member</h2>' +
+      '<label class="field">Full name<input id="sname" required placeholder="e.g. Maria Santos"></label>' +
+      '<label class="field">Work email for login<input id="semail" type="email" required placeholder="maria@example.com"></label>' +
+      '<label class="field">Role<select id="srole"><option>Educator</option><option>Lead educator</option><option>Cook</option><option>Assistant director</option></select></label>' +
+      '<label class="field">Main room<select id="sroom"><option>Seedlings</option><option>Sprouts</option><option>Sunflower</option><option>Maple</option><option>Oak</option><option>Float</option></select></label>' +
+      '<label class="field">Alberta certification<select id="slevel"><option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Not certified yet</option></select></label>' +
+      '<label class="field">First aid valid until<input id="said" type="date" value="2027-09-24"></label>' +
+      '<fieldset style="border:0;padding:0;margin:0" class="stack"><legend style="font-weight:700;font-size:14px;margin-bottom:8px">This person can</legend>' +
+      ['Log daily reports and photos', 'Give and record medication', 'Check children in and out', 'Message families', 'See fees and billing'].map((t, i) => '<label class="row" style="font-size:15px"><input type="checkbox"' + (i < 4 ? ' checked' : '') + ' style="width:18px;height:18px;accent-color:#1F6F5C">' + t + '</label>').join('') +
+      '</fieldset><button class="btn" type="submit">Email login invite</button><div class="small muted">In the prototype no email is sent. The person appears in the list as "Invite sent" and sets their own password and PIN.</div></form></section></div>';
+  }
+
+  function render() {
+    if (!user) app.innerHTML = viewLogin();
+    else if (user.role === 'parent') app.innerHTML = viewParent();
+    else if (user.role === 'educator') app.innerHTML = viewEducator();
+    else app.innerHTML = viewDirector();
+    const thread = document.getElementById('thread');
+    if (thread) thread.lastElementChild && thread.lastElementChild.scrollIntoView({ block: 'nearest' });
+  }
+
+  // ---------- events ----------
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-a]');
+    if (!b) return;
+    const a = b.dataset.a;
+    if (a === 'reset') { D = freshData(); save(); ui.sel = ['maya', 'noah', 'aria']; toast('Demo data reset'); render(); }
+    if (a === 'fill') { const acc = ACCOUNTS[+b.dataset.i]; ui.email = acc.email; ui.pw = acc.password; ui.err = ''; render(); }
+    if (a === 'logout') { user = null; saveUser(null); ui.tab = 'today'; ui.dtab = 'today'; ui.email = ''; ui.pw = ''; render(); }
+    if (a === 'tab') { ui.tab = b.dataset.t; render(); window.scrollTo(0, 0); }
+    if (a === 'dtab') { ui.dtab = b.dataset.t; render(); }
+    if (a === 'photo') { ui.light = b.dataset.k; render(); }
+    if (a === 'closephoto') { ui.light = null; render(); }
+    if (a === 'savephoto') { toast('In the real product this saves the full-size photo'); }
+    if (a === 'nope') { toast('Not built in the prototype yet'); }
+    if (a === 'absent') { const c = kid(user.child); c.note = 'Absent · reported by ' + user.name.split(' ')[0]; save(); toast('The room has been told ' + c.first + ' is away today'); render(); }
+    if (a === 'pick') { const id = b.dataset.id; ui.sel = ui.sel.includes(id) ? ui.sel.filter(x => x !== id) : ui.sel.concat(id); render(); }
+    if (a === 'selall') { ui.sel = D.kids.filter(k => k.here).map(k => k.id); render(); }
+    if (a === 'checkin') {
+      ui.sel.forEach(id => { const k = kid(id); k.here = !k.here; if (k.here) { k.inAt = now(); k.by = ''; k.note = ''; } else { k.note = 'Checked out ' + now(); } });
+      save(); render();
+    }
+    if (a === 'edu') { D.educators = Math.max(0, D.educators + +b.dataset.d); save(); render(); }
+    if (a === 'log' || a === 'incident') {
+      const detail = (document.getElementById('detail') || {}).value || '';
+      const who = ui.sel.filter(id => kid(id).here);
+      if (!who.length) { toast('Select at least one child who is here'); return; }
+      const k = a === 'incident' ? 'Incident' : b.dataset.k;
+      const v = detail.trim() || { Meal: 'Ate most', Nap: 'Fell asleep', Diaper: 'Wet', Note: 'Had a good morning', Photo: 'New photo shared', Incident: 'Minor bump, first aid given' }[k];
+      who.forEach(id => D.log.push({ kid: id, t: now(), k, v }));
+      if (a === 'incident') D.incidents.push({ t: now(), v: 'Sunflower Room · ' + who.map(id => kid(id).first).join(', ') + ' · ' + v, signed: false });
+      save(); toast(k + ' logged for ' + who.length + (who.length === 1 ? ' child' : ' children')); render();
+    }
+    if (a === 'meds') { D.medsDone = true; D.log.push({ kid: 'leo', t: now(), k: 'Medication', v: 'Salbutamol, 2 puffs' }); save(); render(); }
+    if (a === 'sign') { D.incidents[+b.dataset.n].signed = true; save(); render(); }
+    if (a === 'announce') { toast('Announcement drafts are not built in the prototype yet'); }
+    if (a === 'sact') {
+      const s = D.staff[+b.dataset.i], op = b.dataset.op;
+      if (op === 'pin') { s.pin = false; toast(s.name + ' will set a new PIN at the next tablet sign-in'); }
+      if (op === 'off') { s.status = 'Access off'; s.last = 'Turned off today ' + now(); toast('Access turned off for ' + s.name + '. They are signed out everywhere.'); }
+      if (op === 'on') { s.status = 'Invite sent'; s.last = 'Sent today ' + now(); toast('New invite sent to ' + s.email); }
+      if (op === 'resend') { s.last = 'Sent today ' + now(); toast('Invite sent again to ' + s.email); }
+      save(); render();
+    }
+    if (a === 'gact') {
+      const g = D.guardians[+b.dataset.i];
+      if (g.status === 'Locked') { g.status = 'Invite sent'; g.last = 'Reset ' + now(); toast('Access reset. ' + g.name + ' gets a new link.'); }
+      else { g.status = 'Invite sent'; g.last = 'Sent today ' + now(); toast('Invite sent to ' + g.email); }
+      save(); render();
+    }
+  });
+
+  document.addEventListener('submit', e => {
+    e.preventDefault();
+    if (e.target.id === 'loginForm') {
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const pw = document.getElementById('pw').value;
+      const acc = ACCOUNTS.find(x => x.email === email && x.password === pw);
+      ui.email = email; ui.pw = '';
+      if (!acc) { ui.err = 'That email and password don\'t match a test account. Use one from the list below.'; render(); return; }
+      const st = D.staff.find(s => s.email === acc.email);
+      if (st && st.status !== 'Active') { ui.err = 'The director has turned off access for this account. Ask them to turn it back on.'; render(); return; }
+      user = { email: acc.email, role: acc.role, name: acc.name, child: acc.child }; saveUser(user); ui.err = ''; render();
+    }
+    if (e.target.id === 'msgForm') {
+      const inp = document.getElementById('msg'); const v = inp.value.trim(); if (!v) return;
+      const c = user.child;
+      D.messages[c].push({ me: true, t: 'Today ' + now(), v }); save(); render();
+      setTimeout(() => { D.messages[c].push({ w: 'Priya K.', t: 'Today ' + now(), v: 'Thanks, got it! (automatic demo reply)' }); save(); if (user && ui.tab === 'messages') render(); }, 1500);
+    }
+    if (e.target.id === 'sForm') {
+      const name = document.getElementById('sname').value.trim();
+      const email = document.getElementById('semail').value.trim();
+      const aid = document.getElementById('said').value || '2027-09-24';
+      if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { toast('Add a name and a valid email'); return; }
+      D.staff.push({ name, email, role: document.getElementById('srole').value, room: document.getElementById('sroom').value, level: document.getElementById('slevel').value, firstAid: aid, status: 'Invite sent', last: 'Sent today ' + now(), pin: false });
+      save(); toast('Invite sent to ' + email + ' (not really)'); render();
+    }
+    if (e.target.id === 'gForm') {
+      const name = document.getElementById('gname').value.trim();
+      const email = document.getElementById('gemail').value.trim();
+      if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { toast('Add a name and a valid email'); return; }
+      D.guardians.unshift({ child: document.getElementById('gchild').value, room: 'Sunflower', name, email, status: 'Invite sent', last: 'Sent today ' + now() });
+      save(); toast('Invite sent to ' + email + ' (not really)'); render();
+    }
+  });
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && ui.light) { ui.light = null; render(); } });
+
+  render();
+})();
+</script>
+</body>
+</html>
