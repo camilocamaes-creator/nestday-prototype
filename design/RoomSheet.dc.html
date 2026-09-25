@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=1180">
+<title>Nestday · Room, Meal sheet open</title>
+<meta name="theme-color" content="#F4EEE2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nestday">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="runtime/nestday-runtime.js"></script>
+</head>
+<body class="kind-tablet">
+<template data-dc-template="RoomSheet"><x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1180px; height: 820px; overflow: hidden; background: #F4EEE2; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1D2A23">
+<dc-import name="Room" initial-sheet="meal" hint-size="1180px,820px"></dc-import>
+</div>
+</x-dc></template>
+<script type="text/x-dc" data-dc-name="RoomSheet">
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+<template data-dc-template="Room"><x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1180px; height: 820px; box-sizing: border-box; position: relative; overflow: hidden; background: #F4EEE2; color: #1D2A23; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column">
+
+<header style="height: 68px; flex-shrink: 0; display: flex; align-items: center; gap: 16px; padding: 0 24px; background: #FFFCF6">
+<div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 24px; line-height: 1.1">Sunflower Room</span>
+<span style="font-size: 14px; color: #58625A">19 months to 3 years · Friday 25 September</span>
+</div>
+<span style="{{ratioStyle}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ratioIcon}}"></path></svg>{{ratioLabel}}</span>
+<div style="display: flex; align-items: center; gap: 6px; padding: 0 6px 0 14px; height: 48px; border-radius: 24px; border: 1px solid #E2D9C6">
+<span style="font-size: 14px; color: #58625A">Educators</span>
+<button type="button" aria-label="One fewer educator" onClick="{{eduMinus}}" style="width: 36px; height: 36px; border-radius: 50%; border: 0; background: #F1ECE1; color: #1D2A23; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+<span style="min-width: 18px; text-align: center; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums">{{educators}}</span>
+<button type="button" aria-label="One more educator" onClick="{{eduPlus}}" style="width: 36px; height: 36px; border-radius: 50%; border: 0; background: #F1ECE1; color: #1D2A23; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+<button type="button" onClick="{{openPin}}" aria-label="Switch educator" style="display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px 0 6px; border-radius: 24px; border: 1px solid #E2D9C6; background: transparent; font: inherit; color: #1D2A23">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #DCE8E0; color: #1F4538; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px">{{meIni}}</span>
+<span style="font-size: 15px; font-weight: 600">{{me}}</span>
+<span style="font-size: 13px; color: #58625A">Switch</span>
+</button>
+</header>
+
+<nav aria-label="Room sections" style="height: 48px; flex-shrink: 0; display: flex; gap: 28px; padding: 0 24px; background: #FFFCF6; border-bottom: 1px solid #E2D9C6">
+<button type="button" onClick="{{goRoom}}" aria-current="{{roomCurrent}}" style="{{tabRoomStyle}}">Room</button>
+<button type="button" onClick="{{goNotes}}" aria-current="{{notesCurrent}}" style="{{tabNotesStyle}}">Notes<span style="{{notesBadgeStyle}}">{{notesBadge}}</span></button>
+<button type="button" onClick="{{goPhotos}}" aria-current="{{photosCurrent}}" style="{{tabPhotosStyle}}">Photos · QR upload</button>
+</nav>
+
+<sc-if value="{{isRoomTab}}" hint-placeholder-val="{{ true }}">
+<div style="flex-grow: 1; min-height: 0; display: flex; gap: 20px; padding: 16px 24px 100px">
+<main style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<sc-if value="{{medOpen}}" hint-placeholder-val="{{ true }}">
+<section aria-label="Medication due" style="height: 84px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; padding: 0 12px 0 16px; border-radius: 20px; background: #FBEBC8">
+<span style="width: 40px; height: 40px; border-radius: 50%; background: #E8A73A; color: #1D2A23; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-45 12 12)"></rect><path d="M9.5 9.5l5 5"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0">
+<span style="font-size: 15px; font-weight: 700">Medication due 11:00 · Leo S.</span>
+<span style="font-size: 13px; color: #5A4210">Amoxicillin · 5 mL · consent until 2 Oct</span>
+</div>
+<button type="button" onClick="{{recordDose}}" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 0; background: #1D2A23; color: #FFFCF6; font: inherit; font-size: 14px; font-weight: 700; flex-shrink: 0">Record dose</button>
+</section>
+</sc-if>
+<section aria-label="Naps" style="{{napBannerStyle}}">
+<span style="width: 40px; height: 40px; border-radius: 50%; background: #2D5B4B; color: #FFFCF6; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0">
+<span style="font-size: 15px; font-weight: 700">{{napTitle}}</span>
+<span style="font-size: 13px; color: #1F4538">{{napLine}}</span>
+</div>
+<button type="button" onClick="{{checkAsleep}}" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 0; background: #2D5B4B; color: #FFFCF6; font: inherit; font-size: 14px; font-weight: 700; flex-shrink: 0">Check all asleep</button>
+</section>
+</div>
+
+<div style="height: 44px; display: flex; align-items: center; gap: 10px">
+<span style="flex-grow: 1; font-size: 15px; font-weight: 600; color: #3E4740">{{selLabel}}</span>
+<button type="button" onClick="{{allHere}}" style="height: 44px; padding: 0 18px; border-radius: 22px; border: 1.5px solid #2D5B4B; background: transparent; font: inherit; font-size: 14px; font-weight: 700; color: #1F4538">All here</button>
+<button type="button" onClick="{{clear}}" style="height: 44px; padding: 0 18px; border-radius: 22px; border: 1.5px solid #D6CCB6; background: transparent; font: inherit; font-size: 14px; font-weight: 700; color: #1D2A23">Clear</button>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{kids}}" as="k" hint-placeholder-count="9">
+<button type="button" onClick="{{k.toggle}}" aria-pressed="{{k.pressed}}" style="{{k.tileStyle}}">
+<span style="display: flex; align-items: center; gap: 12px">
+<span style="{{k.avStyle}}">
+<sc-if value="{{k.pressed}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"></path></svg></sc-if>
+<sc-if value="{{k.notPressed}}" hint-placeholder-val="{{ true }}">{{k.ini}}</sc-if>
+</span>
+<span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+<span style="{{k.nameStyle}}">{{k.name}}</span>
+<span style="font-size: 13px; color: #58625A">{{k.statusLine}}</span>
+</span>
+</span>
+<span style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{k.chips}}" as="c" hint-placeholder-count="3">
+<span style="{{c.style}}">{{c.label}}</span>
+</sc-for>
+</span>
+</button>
+</sc-for>
+</div>
+</main>
+
+<aside style="width: 300px; flex-shrink: 0; box-sizing: border-box; background: #FFFCF6; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 19px">Today's photos</h2>
+<button type="button" onClick="{{goPhotos}}" style="height: 36px; padding: 0 4px; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 700; color: #1F4538; text-decoration: underline">See all</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{latestSix}}" as="p" hint-placeholder-count="6">
+<span style="{{p.box}}"><svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; display: block" aria-hidden="true"><circle cx="{{p.cx}}" cy="36" r="16" fill="{{p.sun}}"></circle><path d="{{p.hill}}" fill="{{p.land}}"></path></svg></span>
+</sc-for>
+</div>
+<h2 style="margin: 8px 0 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 19px">Room log</h2>
+<div style="display: flex; flex-direction: column">
+<sc-for list="{{log}}" as="r" hint-placeholder-count="7">
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; padding: 8px 0; border-top: 1px solid #EDE6D6">
+<span style="font-size: 13px; color: #58625A; font-variant-numeric: tabular-nums; padding-top: 1px">{{r.time}}</span>
+<span style="display: flex; flex-direction: column; gap: 1px"><span style="font-size: 14px; font-weight: 700">{{r.child}}</span><span style="font-size: 13px; color: #3E4740">{{r.what}}</span></span>
+</div>
+</sc-for>
+</div>
+</aside>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; display: flex; align-items: center; gap: 8px; padding: 0 16px 0 24px; background: #FFFCF6; border-top: 1px solid #E2D9C6">
+<div style="display: flex; flex-direction: column; gap: 1px; flex-grow: 1">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 20px">{{forLabel}}</span>
+<span style="font-size: 13px; color: #58625A">Nestday · Powered by Dantia.ca</span>
+</div>
+<button type="button" onClick="{{checkInOut}}" style="width: 104px; height: 64px; border-radius: 16px; border: 0; background: #F1ECE1; color: #1D2A23; font: inherit; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h5v16h-5M3 12h11M10 8l4 4-4 4"></path></svg>Check in / out</button>
+<button type="button" onClick="{{openMeal}}" style="width: 80px; height: 64px; border-radius: 16px; border: 0; background: #F1ECE1; color: #1D2A23; font: inherit; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3v18M5 3v5a2 2 0 0 0 4 0V3M17 21V3c-2 0-3 2-3 6s1 4 3 4"></path></svg>Meal</button>
+<button type="button" onClick="{{openNap}}" style="width: 80px; height: 64px; border-radius: 16px; border: 0; background: #F1ECE1; color: #1D2A23; font: inherit; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg>Nap</button>
+<button type="button" onClick="{{openDiaper}}" style="width: 80px; height: 64px; border-radius: 16px; border: 0; background: #F1ECE1; color: #1D2A23; font: inherit; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path></svg>Diaper</button>
+<button type="button" onClick="{{openNote}}" style="width: 80px; height: 64px; border-radius: 16px; border: 0; background: #F1ECE1; color: #1D2A23; font: inherit; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg>Note</button>
+<button type="button" onClick="{{photosAction}}" style="width: 80px; height: 64px; border-radius: 16px; border: 0; background: #F1ECE1; color: #1D2A23; font: inherit; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>Photos</button>
+<button type="button" onClick="{{openIncident}}" style="width: 88px; height: 64px; border-radius: 16px; border: 0; background: #F8E0D6; color: #7A2816; font: inherit; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.5"></path></svg>Incident</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isNotesTab}}" hint-placeholder-val="{{ false }}">
+<div style="flex-grow: 1; min-height: 0; display: flex; gap: 20px; padding: 16px 24px 24px">
+<main style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{modeEach}}" aria-pressed="{{isEach}}" style="{{modeEachStyle}}">A note for each child</button>
+<button type="button" onClick="{{modeGroup}}" aria-pressed="{{isGroup}}" style="{{modeGroupStyle}}">One note for several children</button>
+</div>
+
+<sc-if value="{{isEach}}" hint-placeholder-val="{{ true }}">
+<div style="flex-grow: 1; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start">
+<sc-for list="{{noteRows}}" as="r" hint-placeholder-count="7">
+<div style="background: #FFFCF6; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="{{r.avStyle}}">{{r.ini}}</span>
+<span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+<label for="{{r.fieldId}}" style="font-size: 16px; font-weight: 700">{{r.name}}</label>
+<span style="{{r.lastStyle}}">{{r.last}}</span>
+</span>
+</div>
+<textarea id="{{r.fieldId}}" rows="2" value="{{r.draft}}" onChange="{{r.onDraft}}" placeholder="Write a note for this family" style="box-sizing: border-box; padding: 10px 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 15px; line-height: 1.4; color: #1D2A23; resize: none"></textarea>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; align-items: center; gap: 14px">
+<span style="flex-grow: 1; font-size: 14px; color: #58625A">{{eachHint}}</span>
+<button type="button" onClick="{{sendEach}}" disabled="{{cannotSendEach}}" style="{{sendEachStyle}}">Send notes to families</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isGroup}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFCF6; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 8px">
+<span style="flex-grow: 1; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">Children</span>
+<button type="button" onClick="{{groupAll}}" style="height: 40px; padding: 0 14px; border-radius: 20px; border: 1.5px solid #2D5B4B; background: transparent; font: inherit; font-size: 14px; font-weight: 700; color: #1F4538">All here</button>
+<button type="button" onClick="{{groupNone}}" style="height: 40px; padding: 0 14px; border-radius: 20px; border: 1.5px solid #D6CCB6; background: transparent; font: inherit; font-size: 14px; font-weight: 700; color: #1D2A23">None</button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{groupChips}}" as="c" hint-placeholder-count="7">
+<button type="button" onClick="{{c.toggle}}" aria-pressed="{{c.pressed}}" style="{{c.style}}"><sc-if value="{{c.pressed}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"></path></svg></sc-if>{{c.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="group-note" style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">Note</label>
+<textarea id="group-note" rows="4" value="{{groupText}}" onChange="{{onGroupText}}" placeholder="Write one note for every selected family" style="box-sizing: border-box; padding: 12px 16px; border-radius: 14px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; line-height: 1.45; color: #1D2A23; resize: none"></textarea>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{groupPhrases}}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{o.pick}}" style="height: 40px; padding: 0 14px; border-radius: 20px; border: 1px dashed #B7AC93; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: #3E4740">+ {{o.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 14px">
+<span style="flex-grow: 1; font-size: 14px; color: #58625A">Each family sees it as a note on their own child's day.</span>
+<button type="button" onClick="{{sendGroup}}" disabled="{{cannotSendGroup}}" style="{{sendGroupStyle}}">{{sendGroupLabel}}</button>
+</div>
+</div>
+</sc-if>
+</main>
+
+<aside style="width: 300px; flex-shrink: 0; box-sizing: border-box; background: #FFFCF6; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 19px">Still need a note today</h2>
+<sc-if value="{{allNoted}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 15px; color: #1F4538; font-weight: 600">Every child here has a note.</p>
+</sc-if>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{needNote}}" as="n" hint-placeholder-count="4">
+<span style="font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: #FBEBC8; color: #5A4210">{{n.name}}</span>
+</sc-for>
+</div>
+<h2 style="margin: 12px 0 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 19px">Notes sent today</h2>
+<div style="display: flex; flex-direction: column; overflow: hidden">
+<sc-for list="{{sentNotes}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 0; border-top: 1px solid #EDE6D6">
+<span style="font-size: 13px; color: #58625A"><strong style="color: #1D2A23; font-size: 14px">{{s.name}}</strong> · {{s.time}}</span>
+<span style="font-size: 14px; color: #3E4740; line-height: 1.4">{{s.short}}</span>
+</div>
+</sc-for>
+</div>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{isPhotosTab}}" hint-placeholder-val="{{ false }}">
+<div style="flex-grow: 1; min-height: 0; display: flex; gap: 20px; padding: 16px 24px 24px">
+<main style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section style="background: #FFFCF6; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="width: 32px; height: 32px; border-radius: 50%; background: #2D5B4B; color: #FFFCF6; display: flex; align-items: center; justify-content: center; font-weight: 700">1</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 22px">Who is in the photos?</h2>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{photoChips}}" as="c" hint-placeholder-count="7">
+<button type="button" onClick="{{c.toggle}}" aria-pressed="{{c.pressed}}" disabled="{{c.disabled}}" style="{{c.style}}"><sc-if value="{{c.pressed}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"></path></svg></sc-if>{{c.name}}</button>
+</sc-for>
+</div>
+</section>
+
+<section style="flex-grow: 1; min-height: 0; background: #FFFCF6; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="width: 32px; height: 32px; border-radius: 50%; background: #2D5B4B; color: #FFFCF6; display: flex; align-items: center; justify-content: center; font-weight: 700">3</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 22px; flex-grow: 1">Uploaded today</h2>
+<span style="font-size: 15px; font-weight: 700; color: #3E4740">{{photoCount}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; overflow-y: auto">
+<sc-for list="{{allPhotos}}" as="p" hint-placeholder-count="6">
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="{{p.box}}"><svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; display: block" aria-hidden="true"><circle cx="{{p.cx}}" cy="36" r="16" fill="{{p.sun}}"></circle><path d="{{p.hill}}" fill="{{p.land}}"></path></svg></span>
+<span style="{{p.tagStyle}}">{{p.tag}}</span>
+</span>
+</sc-for>
+</div>
+</section>
+</main>
+
+<aside style="width: 420px; flex-shrink: 0; box-sizing: border-box; background: #FFFCF6; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="width: 32px; height: 32px; border-radius: 50%; background: #2D5B4B; color: #FFFCF6; display: flex; align-items: center; justify-content: center; font-weight: 700">2</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 22px">Scan and upload</h2>
+</div>
+<sc-if value="{{noPick}}" hint-placeholder-val="{{ true }}">
+<div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 2px dashed #D6CCB6; border-radius: 18px; padding: 24px; text-align: center">
+<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#8A9189" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2M20 14v2M14 18v2h2M18 18h2v2"></path></svg>
+<p style="margin: 0; font-size: 16px; color: #3E4740; line-height: 1.45">Pick the children in the photos and a code appears here.</p>
+</div>
+</sc-if>
+<sc-if value="{{hasPick}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 16px; align-items: center">
+<a href="Upload.dc.html" aria-label="QR code. Tap to open the phone upload page" style="display: block; width: 176px; height: 176px; flex-shrink: 0; background: #FFFFFF; border-radius: 14px; border: 1px solid #E2D9C6; padding: 8px; box-sizing: border-box">
+<svg viewBox="-2 -2 29 29" style="width: 100%; height: 100%; display: block" shape-rendering="crispEdges" aria-hidden="true"><path d="{{qrPath}}" fill="#1D2A23"></path></svg>
+</a>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 20px; line-height: 1.3">{{scanTitle}}</span>
+<span style="font-size: 14px; color: #58625A; line-height: 1.4">This code only works for the Sunflower Room and stops working at {{expiry}}.</span>
+</div>
+</div>
+<ol style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.4; color: #3E4740">
+<li>Open your phone camera and point it at the code.</li>
+<li>Tap the link and choose the photos.</li>
+<li>Tap Send, and they go only to that child's family.</li>
+</ol>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto">
+<button type="button" onClick="{{deviceUpload}}" style="height: 50px; border-radius: 25px; border: 0; background: #2D5B4B; color: #FFFCF6; font: inherit; font-size: 15px; font-weight: 700">Choose photos on this device instead</button>
+<button type="button" onClick="{{newCode}}" style="height: 50px; border-radius: 25px; border: 1.5px solid #D6CCB6; background: transparent; color: #1D2A23; font: inherit; font-size: 15px; font-weight: 700">New code</button>
+</div>
+</sc-if>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="{{toastStyle}}">
+<span>{{toast}}</span>
+<sc-if value="{{toastUndo}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{undo}}" style="height: 40px; padding: 0 18px; border-radius: 20px; border: 0; background: #E8A73A; color: #1D2A23; font: inherit; font-size: 14px; font-weight: 700">Undo</button>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(20, 26, 22, 0.5); display: flex; align-items: flex-end; justify-content: center">
+<section role="dialog" aria-label="{{sheetTitle}}" style="width: 780px; box-sizing: border-box; background: #FFFCF6; border-radius: 28px 28px 0 0; padding: 22px 28px 24px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 -12px 40px rgba(20, 26, 22, 0.2)">
+<div style="display: flex; align-items: center; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 28px">{{sheetTitle}}</h2>
+<span style="font-size: 14px; color: #58625A">{{sheetSub}}</span>
+</div>
+<button type="button" aria-label="Close" onClick="{{closeSheet}}" style="width: 44px; height: 44px; border-radius: 50%; border: 0; background: #F1ECE1; color: #1D2A23; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">Children</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="7">
+<button type="button" onClick="{{c.toggle}}" aria-pressed="{{c.pressed}}" style="{{c.style}}"><sc-if value="{{c.pressed}}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"></path></svg></sc-if>{{c.name}}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">When</span>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{whenOpts}}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{isMeal}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">Which meal <span style="text-transform: none; letter-spacing: 0; font-weight: 500">· suggested for 10:55 am</span></span>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{mealOpts}}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="menu-item" style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">On this week's menu</label>
+<input id="menu-item" type="text" value="{{menu}}" onChange="{{onMenu}}" style="height: 48px; box-sizing: border-box; padding: 0 16px; border-radius: 14px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">How much</span>
+<div style="display: flex; gap: 10px">
+<sc-for list="{{amountOpts}}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isNap}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">Nap <span style="text-transform: none; letter-spacing: 0; font-weight: 500">· {{napHint}}</span></span>
+<div style="display: flex; gap: 10px">
+<sc-for list="{{napOpts}}" as="o" hint-placeholder-count="2">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isDiaper}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">Diaper</span>
+<div style="display: flex; gap: 10px">
+<sc-for list="{{diaperOpts}}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isNote}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="note-text" style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">Note to families</label>
+<textarea id="note-text" rows="3" value="{{note}}" onChange="{{onNote}}" placeholder="Write a note" style="box-sizing: border-box; padding: 12px 16px; border-radius: 14px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; line-height: 1.45; color: #1D2A23; resize: none"></textarea>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{phrases}}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{o.pick}}" style="height: 40px; padding: 0 14px; border-radius: 20px; border: 1px dashed #B7AC93; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: #3E4740">+ {{o.label}}</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; color: #58625A">The same note goes to every selected child's family.</span>
+</div>
+</sc-if>
+
+<sc-if value="{{isIncident}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="incident-text" style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">What happened</label>
+<textarea id="incident-text" rows="4" value="{{incident}}" onChange="{{onIncident}}" placeholder="Describe what happened and what you did" style="box-sizing: border-box; padding: 12px 16px; border-radius: 14px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; line-height: 1.45; color: #1D2A23; resize: none"></textarea>
+<span style="font-size: 14px; color: #7A2816; background: #F8E0D6; border-radius: 12px; padding: 10px 14px">The family is told right away and the director gets it to sign.</span>
+</div>
+</sc-if>
+
+<div style="display: flex; gap: 10px; justify-content: flex-end; padding-top: 4px">
+<button type="button" onClick="{{closeSheet}}" style="height: 54px; padding: 0 24px; border-radius: 27px; border: 1.5px solid #D6CCB6; background: transparent; font: inherit; font-size: 16px; font-weight: 700; color: #1D2A23">Cancel</button>
+<button type="button" onClick="{{save}}" disabled="{{cannotSave}}" style="{{saveStyle}}">{{saveLabel}}</button>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{pinOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(20, 26, 22, 0.55); display: flex; align-items: center; justify-content: center">
+<section role="dialog" aria-label="Switch educator" style="width: 440px; box-sizing: border-box; background: #FFFCF6; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 50px rgba(20, 26, 22, 0.25)">
+<div style="display: flex; align-items: center; gap: 12px">
+<h2 style="margin: 0; flex-grow: 1; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 26px">Who's logging?</h2>
+<button type="button" aria-label="Close" onClick="{{closePin}}" style="width: 44px; height: 44px; border-radius: 50%; border: 0; background: #F1ECE1; color: #1D2A23; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{staffOpts}}" as="o" hint-placeholder-count="2">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span style="font-size: 15px; color: #3E4740">Enter your 4-digit PIN</span>
+<div style="display: flex; gap: 14px" aria-label="{{pinAria}}">
+<sc-for list="{{pinDots}}" as="d" hint-placeholder-count="4">
+<span style="{{d.style}}"></span>
+</sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{pinKeys}}" as="k" hint-placeholder-count="12">
+<button type="button" onClick="{{k.press}}" aria-label="{{k.aria}}" style="{{k.style}}">{{k.label}}</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; color: #58625A; text-align: center">Any four digits work in this prototype.</span>
+</section>
+</div>
+</sc-if>
+</div>
+</x-dc></template>
+<script type="text/x-dc" data-dc-name="Room">
+class Component extends DCLogic {
+componentWillUnmount() { if (this._t) clearTimeout(this._t); if (this._arr) clearTimeout(this._arr); }
+renderVals() {
+var self = this;
+var st = this.state || {};
+var init = this.props.initialSheet && this.props.initialSheet !== 'none' ? this.props.initialSheet : null;
+function g(k, d) { return st[k] !== undefined ? st[k] : d; }
+var tab = g('tab', 'room');
+var sheet = g('sheet', init);
+var sel = g('sel', init ? ['leo', 'zoe', 'ethan', 'lily'] : []);
+var when = g('when', 'Now');
+var meal = g('meal', 'AM snack');
+var amount = g('amount', init === 'meal' ? 'Most' : null);
+var menu = g('menu', 'Apple slices, cheese cubes, water');
+var napChoice = g('nap', 'Fell asleep');
+var diaper = g('diaper', null);
+var note = g('note', '');
+var incident = g('incident', '');
+var upd = g('upd', {});
+var added = g('added', []);
+var educators = g('educators', 2);
+var medDone = g('medDone', false);
+var lastCheck = g('lastCheck', 'Last check 5 min ago · next check by 11:05 am');
+var toast = g('toast', null);
+var toastUndo = g('toastUndo', false);
+var notes = g('notes', {
+maya: { time: '9:05 am', text: 'Maya helped hand out the cups at snack this morning and was very proud of herself.' },
+noah: { time: '9:20 am', text: 'Noah built a tall block tower and counted every block out loud.' },
+aria: { time: '9:32 am', text: 'Aria loved the bubbles outside and kept asking for more.' }
+});
+var sentOrder = g('sentOrder', ['aria', 'noah', 'maya']);
+var drafts = g('drafts', {});
+var notesMode = g('notesMode', 'each');
+var groupSel = g('groupSel', []);
+var groupText = g('groupText', '');
+var photoPick = g('photoPick', []);
+var codeSeed = g('codeSeed', 7);
+var uploads = g('uploads', []);
+var pinOpen = g('pinOpen', false);
+var pinWho = g('pinWho', 'Priya S.');
+var pin = g('pin', '');
+var me = g('me', 'Priya');
+
+var TIMES = { 'Now': '10:55 am', '10 min ago': '10:45 am', '20 min ago': '10:35 am', '30 min ago': '10:25 am' };
+var t = TIMES[when];
+var BASE = [
+{ id: 'maya', name: 'Maya R.', ini: 'MR', status: 'here', flags: [], nap: 'Napping 25 min', meal: 'Ate 9:40 am', change: 'Change 10:15 am' },
+{ id: 'noah', name: 'Noah T.', ini: 'NT', status: 'here', flags: [['Nut allergy', 'allergy']], nap: 'Napping 20 min', meal: 'Ate 9:40 am', change: 'Change 10:05 am' },
+{ id: 'aria', name: 'Aria P.', ini: 'AP', status: 'here', flags: [], nap: 'Napping 25 min', meal: 'Ate 9:40 am', change: 'Change 10:20 am' },
+{ id: 'leo', name: 'Leo S.', ini: 'LS', status: 'here', flags: [['Meds 11:00', 'meds']], nap: '', meal: 'Ate 9:40 am', change: 'Change 10:20 am' },
+{ id: 'zoe', name: 'Zoe M.', ini: 'ZM', status: 'here', flags: [], nap: '', meal: 'Ate 9:40 am', change: 'Change 10:15 am' },
+{ id: 'ethan', name: 'Ethan W.', ini: 'EW', status: 'here', noPhotos: true, flags: [['No photos', 'nophotos']], nap: '', meal: 'Ate 9:45 am', change: 'Change 10:30 am' },
+{ id: 'lily', name: 'Lily C.', ini: 'LC', status: 'here', flags: [], nap: '', meal: '', change: 'Change 10:10 am' },
+{ id: 'omar', name: 'Omar H.', ini: 'OH', status: 'expected', line: 'Expected 9:30', flags: [], nap: '', meal: '', change: '' },
+{ id: 'ava', name: 'Ava B.', ini: 'AB', status: 'absent', line: 'Absent · sick', flags: [], nap: '', meal: '', change: '' }
+];
+var kidsData = BASE.map(function (k) { return Object.assign({}, k, upd[k.id] || {}); });
+var byId = {}; kidsData.forEach(function (k) { byId[k.id] = k; });
+var hereIds = kidsData.filter(function (k) { return k.status === 'here'; }).map(function (k) { return k.id; });
+var selHere = sel.filter(function (id) { return hereIds.indexOf(id) >= 0; });
+function plural(x, one, many) { return x + ' ' + (x === 1 ? one : many); }
+function first(id) { return byId[id].name.split(' ')[0]; }
+function joinNames(ids) {
+var ns = ids.map(first);
+if (ns.length <= 1) return ns.join('');
+return ns.slice(0, -1).join(', ') + ' and ' + ns[ns.length - 1];
+}
+function toggleIn(list, id) { return list.indexOf(id) >= 0 ? list.filter(function (x) { return x !== id; }) : list.concat([id]); }
+function chipStyle(on, disabled) {
+var s = 'height: 44px; padding: 0 16px; border-radius: 22px; font: inherit; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; ';
+if (disabled) return s + 'border: 1.5px dashed #D6CCB6; background: transparent; color: #58625A; cursor: not-allowed';
+return s + (on ? 'border: 1.5px solid #2D5B4B; background: #2D5B4B; color: #FFFCF6' : 'border: 1.5px solid #D6CCB6; background: #FFFCF6; color: #1D2A23');
+}
+function primaryStyle(ok) {
+return 'height: 54px; padding: 0 28px; border-radius: 27px; border: 0; font: inherit; font-size: 16px; font-weight: 700; ' + (ok ? 'background: #2D5B4B; color: #FFFCF6; cursor: pointer' : 'background: #E2D9C6; color: #58625A; cursor: not-allowed');
+}
+
+var CHIP = 'font-size: 13px; font-weight: 600; padding: 4px 9px; border-radius: 999px; white-space: nowrap; ';
+var CHIPS = {
+allergy: 'background: #F8E0D6; color: #7A2816',
+meds: 'background: #FBEBC8; color: #5A4210',
+nophotos: 'background: #E6E1EE; color: #3F3858',
+nap: 'background: #DCE8E0; color: #1F4538',
+plain: 'background: #F1ECE1; color: #3E4740',
+nomeal: 'background: transparent; color: #7A2816; border: 1px dashed #C9826F; padding: 3px 8px'
+};
+function soft(i) { return i % 2 === 0 ? ['#FBEBC8', '#5A4210'] : ['#DCE8E0', '#1F4538']; }
+var kids = kidsData.map(function (k, i) {
+var here = k.status === 'here';
+var pressed = sel.indexOf(k.id) >= 0;
+var chips = k.flags.map(function (f) { return { label: f[0], style: CHIP + CHIPS[f[1]] }; });
+if (here) {
+if (k.nap) chips.push({ label: k.nap, style: CHIP + CHIPS.nap });
+chips.push(k.meal ? { label: k.meal, style: CHIP + CHIPS.plain } : { label: 'No meal yet', style: CHIP + CHIPS.nomeal });
+if (k.change) chips.push({ label: k.change, style: CHIP + CHIPS.plain });
+}
+var sf = soft(i);
+return {
+name: k.name, ini: k.ini, chips: chips, pressed: pressed, notPressed: !pressed,
+statusLine: here ? (k.line || 'Here') : k.line,
+toggle: function () { self.setState({ sel: toggleIn(g('sel', sel), k.id) }); },
+tileStyle: 'height: 132px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; padding: 12px 14px; border-radius: 18px; text-align: left; font: inherit; color: inherit; cursor: pointer; ' +
+(pressed ? 'background: #EEF5EF; border: 2px solid #2D5B4B' : here ? 'background: #FFFCF6; border: 2px solid #EAE2D0' : 'background: transparent; border: 2px dashed #D6CCB6'),
+avStyle: 'width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; ' +
+(pressed ? 'background: #2D5B4B; color: #FFFCF6' : here ? 'background: ' + sf[0] + '; color: ' + sf[1] : 'background: #E7E0D0; color: #58625A'),
+nameStyle: 'font-size: 17px; font-weight: 700; ' + (here ? 'color: #1D2A23' : 'color: #58625A')
+};
+});
+
+var hereCount = hereIds.length;
+var inRatio = hereCount <= educators * 6;
+var nappers = kidsData.filter(function (k) { return k.status === 'here' && k.nap && k.nap.indexOf('Napping') === 0; });
+
+var LOG = [
+{ time: '10:35 am', child: 'Noah T.', what: 'Nap · Fell asleep' },
+{ time: '10:30 am', child: 'Maya R.', what: 'Nap · Fell asleep' },
+{ time: '10:30 am', child: 'Aria P.', what: 'Nap · Fell asleep' },
+{ time: '10:30 am', child: 'Ethan W.', what: 'Diaper · Wet' },
+{ time: '10:20 am', child: 'Leo S.', what: 'Diaper · BM' },
+{ time: '10:20 am', child: 'Aria P.', what: 'Diaper · Wet' },
+{ time: '10:15 am', child: 'Maya R.', what: 'Diaper · Wet' }
+];
+var log = added.concat(LOG).slice(0, 7);
+
+var tints = [['#E9D6B0', '#F7EBCF', '#D6BA84'], ['#CFE0D4', '#EEF5EF', '#A9C7B3'], ['#F2CDBB', '#FBE8DE', '#E0A88D'], ['#D8D4E6', '#F0EEF6', '#B5AFCF']];
+var hills = ['M0 120 L0 86 Q40 58 80 82 T160 72 L160 120 Z', 'M0 120 L0 92 Q50 64 96 88 T160 80 L160 120 Z', 'M0 120 L0 80 Q30 66 70 86 T160 70 L160 120 Z', 'M0 120 L0 90 Q44 70 88 90 T160 84 L160 120 Z'];
+function photo(i, tag, isNew) {
+var tt = tints[(i + 1) % 4];
+return {
+box: 'display: block; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: ' + tt[0] + (isNew ? '; outline: 3px solid #E8A73A; outline-offset: -3px' : ''),
+sun: tt[1], land: tt[2], cx: 40 + ((i * 41) % 90), hill: hills[(i * 3) % 4],
+tag: tag, tagStyle: 'font-size: 12px; font-weight: 600; ' + (isNew ? 'color: #5A4210' : 'color: #58625A')
+};
+}
+var BASE_TAGS = ['Zoe, Lily', 'Maya', 'Noah', 'Aria, Leo', 'Lily', 'Zoe'];
+var allPhotosData = uploads.concat(BASE_TAGS.map(function (tg, i) { return { tag: tg, i: i, isNew: false }; }));
+var allPhotos = allPhotosData.map(function (p, idx) { return photo(p.i !== undefined ? p.i : idx, p.tag, p.isNew); });
+
+function snapshot() { return { upd: upd, added: added, medDone: medDone, lastCheck: lastCheck, notes: notes, sentOrder: sentOrder }; }
+function flash(msg, canUndo, extra) {
+if (self._t) clearTimeout(self._t);
+self._t = setTimeout(function () { self.setState({ toast: null }); }, 10000);
+self.setState(Object.assign({ toast: msg, toastUndo: !!canUndo }, extra || {}));
+}
+function open(type) {
+var cur = g('sel', sel).filter(function (id) { return hereIds.indexOf(id) >= 0; });
+if (!cur.length) cur = hereIds.slice();
+var anyNapping = cur.some(function (id) { return byId[id].nap && byId[id].nap.indexOf('Napping') === 0; });
+self.setState({ sheet: type, sel: cur, when: 'Now', amount: null, diaper: null, note: '', incident: '', nap: anyNapping ? 'Woke up' : 'Fell asleep', toast: null });
+}
+function seg(opts, current, key, big) {
+return opts.map(function (label) {
+var on = label === current;
+var s = big
+? 'flex: 1; height: 64px; border-radius: 18px; font: inherit; font-size: 17px; font-weight: 700; '
+: 'height: 44px; padding: 0 18px; border-radius: 22px; font: inherit; font-size: 15px; font-weight: 600; ';
+s += on ? 'border: 1.5px solid #2D5B4B; background: #2D5B4B; color: #FFFCF6' : 'border: 1.5px solid #D6CCB6; background: #FFFCF6; color: #1D2A23';
+var o = {}; o[key] = label;
+return { label: label, pressed: on, style: s, pick: function () { self.setState(o); } };
+});
+}
+function addNotes(ids, textFor) {
+var nn = Object.assign({}, notes);
+var order = sentOrder.slice();
+ids.forEach(function (id) {
+nn[id] = { time: '10:55 am', text: textFor(id) };
+order = [id].concat(order.filter(function (x) { return x !== id; }));
+});
+return { notes: nn, sentOrder: order };
+}
+
+var TITLES = { meal: 'Meal', nap: 'Nap', diaper: 'Diaper', note: 'Note', incident: 'Incident' };
+var canSave = !!sheet && selHere.length > 0 &&
+(sheet !== 'meal' || !!amount) && (sheet !== 'diaper' || !!diaper) &&
+(sheet !== 'note' || note.trim().length > 0) && (sheet !== 'incident' || incident.trim().length > 0);
+
+function save() {
+if (!canSave) return;
+var nu = Object.assign({}, upd);
+var entries = [];
+selHere.forEach(function (id) {
+var cur = Object.assign({}, nu[id] || {});
+var what = '';
+if (sheet === 'meal') { cur.meal = 'Ate ' + t; what = meal + ' · ' + amount; }
+if (sheet === 'nap') {
+if (napChoice === 'Fell asleep') { cur.nap = 'Napping 0 min'; what = 'Nap · Fell asleep'; }
+else { cur.nap = ''; what = 'Nap · Woke up'; }
+}
+if (sheet === 'diaper') { cur.change = 'Change ' + t; what = 'Diaper · ' + diaper; }
+if (sheet === 'note') { what = 'Note sent'; }
+if (sheet === 'incident') { what = 'Incident · family told'; }
+nu[id] = cur;
+entries.push({ time: t, child: byId[id].name, what: what });
+});
+var cnt = selHere.length;
+var msg = '';
+var extra = { snap: snapshot(), upd: nu, added: entries.concat(added), sheet: null, sel: [] };
+if (sheet === 'meal') msg = meal + ' (' + amount.toLowerCase() + ') saved for ' + plural(cnt, 'child', 'children');
+if (sheet === 'nap') msg = 'Nap (' + napChoice.toLowerCase() + ') saved for ' + plural(cnt, 'child', 'children');
+if (sheet === 'diaper') msg = 'Diaper (' + diaper.toLowerCase() + ') saved for ' + plural(cnt, 'child', 'children');
+if (sheet === 'note') { msg = 'Note sent to ' + plural(cnt, 'family', 'families'); Object.assign(extra, addNotes(selHere, function () { return note.trim(); })); }
+if (sheet === 'incident') msg = 'Incident saved · family told, director asked to sign';
+flash(msg, true, extra);
+}
+
+var needNoteIds = hereIds.filter(function (id) { return !notes[id]; });
+var draftIds = hereIds.filter(function (id) { return (drafts[id] || '').trim().length > 0; });
+var groupHere = groupSel.filter(function (id) { return hereIds.indexOf(id) >= 0; });
+var canGroup = groupHere.length > 0 && groupText.trim().length > 0;
+var pickable = photoPick.filter(function (id) { return hereIds.indexOf(id) >= 0 && !byId[id].noPhotos; });
+
+function tabStyle(on) {
+return 'display: flex; align-items: center; gap: 8px; height: 48px; box-sizing: border-box; padding: 0; border: 0; border-bottom: 3px solid ' + (on ? '#2D5B4B' : 'transparent') + '; background: transparent; font: inherit; font-size: 15px; font-weight: ' + (on ? '700; color: #1F4538' : '600; color: #58625A') + '; cursor: pointer';
+}
+function modeStyle(on) {
+return 'height: 44px; padding: 0 18px; border-radius: 22px; font: inherit; font-size: 15px; font-weight: 700; ' + (on ? 'border: 1.5px solid #1D2A23; background: #1D2A23; color: #FFFCF6' : 'border: 1.5px solid #D6CCB6; background: #FFFCF6; color: #1D2A23');
+}
+
+var qrPath = (function () {
+var N = 25, d = '';
+function finder(x, y) {
+return 'M' + x + ' ' + y + 'h7v7h-7zM' + (x + 1) + ' ' + (y + 1) + 'v5h5v-5zM' + (x + 2) + ' ' + (y + 2) + 'h3v3h-3z';
+}
+function inFinder(x, y) { return (x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9); }
+var seed = codeSeed * 9301 + pickable.length * 49297;
+for (var y = 0; y < N; y++) {
+for (var x = 0; x < N; x++) {
+if (inFinder(x, y)) continue;
+seed = (seed * 1103515245 + 12345) % 2147483648;
+if ((seed >> 8) % 100 < 47) d += 'M' + x + ' ' + y + 'h1v1h-1z';
+}
+}
+return 'M0 0h7v7h-7zM1 1v5h5v-5zM2 2h3v3h-3z' + finder(N - 7, 0) + finder(0, N - 7) + d;
+})();
+
+function scheduleArrival(ids) {
+if (self._arr) clearTimeout(self._arr);
+if (!ids.length) return;
+self._arr = setTimeout(function () {
+var cur = (self.state && self.state.uploads) || [];
+var tag = joinNames(ids);
+var news = [{ tag: tag, i: cur.length + 6, isNew: true }, { tag: tag, i: cur.length + 7, isNew: true }];
+flash('2 new photos of ' + tag, false, { uploads: news.concat(cur.map(function (p) { return Object.assign({}, p, { isNew: false }); })) });
+}, 7000);
+}
+
+var staff = ['Priya S.', 'Marcus L.'];
+var pinDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'back', '0', 'ok'];
+
+return {
+ratioLabel: inRatio ? 'In ratio · ' + hereCount + ' here, 1:6' : 'Short · ' + hereCount + ' here needs ' + Math.ceil(hereCount / 6),
+ratioIcon: inRatio ? 'M5 12.5l4.5 4.5L19 7' : 'M12 4v10M12 18v.5',
+ratioStyle: 'display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 14px; font-weight: 700; ' + (inRatio ? 'background: #DCE8E0; color: #1F4538' : 'background: #F8E0D6; color: #7A2816'),
+educators: educators,
+eduMinus: function () { self.setState({ educators: Math.max(0, educators - 1) }); },
+eduPlus: function () { self.setState({ educators: educators + 1 }); },
+me: me, meIni: me.charAt(0),
+
+isRoomTab: tab === 'room', isNotesTab: tab === 'notes', isPhotosTab: tab === 'photos',
+roomCurrent: tab === 'room' ? 'page' : 'false', notesCurrent: tab === 'notes' ? 'page' : 'false', photosCurrent: tab === 'photos' ? 'page' : 'false',
+tabRoomStyle: tabStyle(tab === 'room'), tabNotesStyle: tabStyle(tab === 'notes'), tabPhotosStyle: tabStyle(tab === 'photos'),
+goRoom: function () { self.setState({ tab: 'room', sheet: null }); },
+goNotes: function () { self.setState({ tab: 'notes', sheet: null }); },
+goPhotos: function () { self.setState({ tab: 'photos', sheet: null }); },
+notesBadge: needNoteIds.length ? needNoteIds.length + ' to write' : 'all done',
+notesBadgeStyle: 'font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; ' + (needNoteIds.length ? 'background: #FBEBC8; color: #5A4210' : 'background: #DCE8E0; color: #1F4538'),
+
+medOpen: !medDone,
+recordDose: function () {
+flash('Dose recorded for Leo S. · 10:55 am', true, { snap: snapshot(), medDone: true, added: [{ time: '10:55 am', child: 'Leo S.', what: 'Medication · Amoxicillin 5 mL' }].concat(added) });
+},
+napBannerStyle: 'height: 84px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; padding: 0 12px 0 16px; border-radius: 20px; background: #DCE8E0; ' + (medDone ? 'grid-column: 1 / -1' : ''),
+napTitle: nappers.length ? plural(nappers.length, 'child', 'children') + ' napping' : 'No one napping',
+napLine: nappers.length ? nappers.map(function (k) { return k.name.split(' ')[0]; }).join(', ') + ' · ' + lastCheck : 'Start a nap from the action bar',
+checkAsleep: function () {
+if (!nappers.length) { flash('No one is napping right now', false); return; }
+flash('Sleep check saved for ' + plural(nappers.length, 'child', 'children'), true, { snap: snapshot(), lastCheck: 'Last check just now · next check by 11:10 am' });
+},
+selLabel: sel.length ? plural(sel.length, 'child', 'children') + ' selected' : 'Tap children to select them',
+allHere: function () { self.setState({ sel: hereIds.slice() }); },
+clear: function () { self.setState({ sel: [] }); },
+kids: kids,
+latestSix: allPhotos.slice(0, 6),
+log: log,
+hasToast: !!toast, toast: toast || '', toastUndo: toastUndo,
+toastStyle: 'position: absolute; left: 50%; bottom: ' + (tab === 'room' ? 100 : 28) + 'px; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; padding: 6px 6px 6px 20px; min-height: 52px; box-sizing: border-box; border-radius: 26px; background: #1D2A23; color: #FFFCF6; font-size: 15px; font-weight: 600; white-space: nowrap; box-shadow: 0 10px 30px rgba(29, 42, 35, 0.25)' + (toastUndo ? '' : '; padding-right: 20px'),
+undo: function () {
+var s = self.state && self.state.snap;
+if (self._t) clearTimeout(self._t);
+if (s) self.setState({ upd: s.upd, added: s.added, medDone: s.medDone, lastCheck: s.lastCheck, notes: s.notes, sentOrder: s.sentOrder, snap: null, toast: null });
+},
+forLabel: sel.length ? 'For ' + plural(sel.length, 'child', 'children') : 'For everyone here',
+checkInOut: function () {
+if (!sel.length) { flash('Tap the children who are arriving or leaving first', false); return; }
+var nu = Object.assign({}, upd);
+var entries = [];
+sel.forEach(function (id) {
+var k = byId[id];
+if (k.status === 'here') { nu[id] = Object.assign({}, nu[id] || {}, { status: 'out', line: 'Checked out 10:55 am' }); entries.push({ time: '10:55 am', child: k.name, what: 'Checked out' }); }
+else { nu[id] = Object.assign({}, nu[id] || {}, { status: 'here', line: 'Checked in 10:55 am' }); entries.push({ time: '10:55 am', child: k.name, what: 'Checked in' }); }
+});
+flash('Check in / out saved for ' + plural(sel.length, 'child', 'children'), true, { snap: snapshot(), upd: nu, sel: [], added: entries.concat(added) });
+},
+openMeal: function () { open('meal'); },
+openNap: function () { open('nap'); },
+openDiaper: function () { open('diaper'); },
+openNote: function () { open('note'); },
+openIncident: function () { open('incident'); },
+photosAction: function () {
+var cur = (sel.length ? sel : hereIds).filter(function (id) { return hereIds.indexOf(id) >= 0; });
+var ok = cur.filter(function (id) { return !byId[id].noPhotos; });
+var left = cur.filter(function (id) { return byId[id].noPhotos; });
+scheduleArrival(ok);
+var extra = { tab: 'photos', photoPick: ok, sel: [], codeSeed: codeSeed + 1 };
+if (left.length) flash(joinNames(left) + ' left out: no photo consent', false, extra);
+else self.setState(Object.assign({ toast: null }, extra));
+},
+
+sheetOpen: !!sheet,
+sheetTitle: sheet ? TITLES[sheet] : '',
+sheetSub: selHere.length ? 'Saving for ' + selHere.map(first).join(', ') : 'Pick at least one child',
+closeSheet: function () { self.setState({ sheet: null }); },
+chips: hereIds.map(function (id) {
+var on = selHere.indexOf(id) >= 0;
+return { name: byId[id].name, pressed: on, style: chipStyle(on, false), toggle: function () { self.setState({ sel: toggleIn(g('sel', sel), id) }); } };
+}),
+whenOpts: seg(['Now', '10 min ago', '20 min ago', '30 min ago'], when, 'when', false),
+isMeal: sheet === 'meal', isNap: sheet === 'nap', isDiaper: sheet === 'diaper', isNote: sheet === 'note', isIncident: sheet === 'incident',
+mealOpts: seg(['Breakfast', 'AM snack', 'Lunch', 'PM snack'], meal, 'meal', false),
+menu: menu,
+onMenu: function (e) { self.setState({ menu: e.target.value }); },
+amountOpts: seg(['All', 'Most', 'Some', 'None'], amount, 'amount', true),
+napOpts: seg(['Fell asleep', 'Woke up'], napChoice, 'nap', true),
+napHint: nappers.length ? nappers.map(function (k) { return k.name.split(' ')[0]; }).join(', ') + ' already napping' : 'no one is napping yet',
+diaperOpts: seg(['Wet', 'BM', 'Dry', 'Potty success'], diaper, 'diaper', true),
+note: note,
+onNote: function (e) { self.setState({ note: e.target.value }); },
+phrases: ['Had a great day', 'Played outside in the morning', 'Needs more diapers, please', 'Was a bit tired today'].map(function (p) {
+return { label: p, pick: function () { var cur = g('note', note); self.setState({ note: cur ? cur.replace(/\s*$/, '') + ' ' + p + '.' : p + '.' }); } };
+}),
+incident: incident,
+onIncident: function (e) { self.setState({ incident: e.target.value }); },
+cannotSave: !canSave,
+save: save,
+saveLabel: 'Save for ' + plural(selHere.length, 'child', 'children'),
+saveStyle: primaryStyle(canSave),
+
+isEach: notesMode === 'each', isGroup: notesMode === 'group',
+modeEach: function () { self.setState({ notesMode: 'each' }); },
+modeGroup: function () { self.setState({ notesMode: 'group' }); },
+modeEachStyle: modeStyle(notesMode === 'each'),
+modeGroupStyle: modeStyle(notesMode === 'group'),
+noteRows: hereIds.map(function (id, i) {
+var n = notes[id];
+var sf = soft(i);
+return {
+name: byId[id].name, ini: byId[id].ini, fieldId: 'note-' + id,
+avStyle: 'width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; background: ' + sf[0] + '; color: ' + sf[1],
+last: n ? n.time + ' · ' + (n.text.length > 38 ? n.text.slice(0, 38) + '…' : n.text) : 'No note yet today',
+lastStyle: 'font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ' + (n ? 'color: #58625A' : 'color: #7A2816; font-weight: 600'),
+draft: drafts[id] || '',
+onDraft: function (e) { var d = Object.assign({}, g('drafts', drafts)); d[id] = e.target.value; self.setState({ drafts: d }); }
+};
+}),
+eachHint: draftIds.length ? plural(draftIds.length, 'note', 'notes') + ' ready · empty boxes are skipped' : 'Write in any boxes, then send them all at once.',
+cannotSendEach: draftIds.length === 0,
+sendEachStyle: primaryStyle(draftIds.length > 0),
+sendEach: function () {
+if (!draftIds.length) return;
+var r = addNotes(draftIds, function (id) { return drafts[id].trim(); });
+flash('Notes sent to ' + plural(draftIds.length, 'family', 'families'), true, Object.assign({ snap: snapshot(), drafts: {} }, r));
+},
+groupChips: hereIds.map(function (id) {
+var on = groupHere.indexOf(id) >= 0;
+return { name: byId[id].name, pressed: on, style: chipStyle(on, false), toggle: function () { self.setState({ groupSel: toggleIn(g('groupSel', groupSel), id) }); } };
+}),
+groupAll: function () { self.setState({ groupSel: hereIds.slice() }); },
+groupNone: function () { self.setState({ groupSel: [] }); },
+groupText: groupText,
+onGroupText: function (e) { self.setState({ groupText: e.target.value }); },
+groupPhrases: ['Had a great day', 'Played outside in the morning', 'Needs more diapers, please', 'Was a bit tired today'].map(function (p) {
+return { label: p, pick: function () { var cur = g('groupText', groupText); self.setState({ groupText: cur ? cur.replace(/\s*$/, '') + ' ' + p + '.' : p + '.' }); } };
+}),
+cannotSendGroup: !canGroup,
+sendGroupStyle: primaryStyle(canGroup),
+sendGroupLabel: 'Send to ' + plural(groupHere.length, 'family', 'families'),
+sendGroup: function () {
+if (!canGroup) return;
+var r = addNotes(groupHere, function () { return groupText.trim(); });
+flash('Note sent to ' + plural(groupHere.length, 'family', 'families'), true, Object.assign({ snap: snapshot(), groupText: '', groupSel: [] }, r));
+},
+allNoted: needNoteIds.length === 0,
+needNote: needNoteIds.map(function (id) { return { name: byId[id].name }; }),
+sentNotes: sentOrder.filter(function (id) { return notes[id]; }).slice(0, 5).map(function (id) {
+var n = notes[id];
+return { name: byId[id].name, time: n.time, short: n.text.length > 70 ? n.text.slice(0, 70) + '…' : n.text };
+}),
+
+photoChips: hereIds.map(function (id) {
+var k = byId[id];
+var on = pickable.indexOf(id) >= 0;
+return {
+name: k.noPhotos ? first(id) + ' · no photos' : k.name, pressed: on, disabled: !!k.noPhotos,
+style: chipStyle(on, !!k.noPhotos),
+toggle: function () {
+if (k.noPhotos) return;
+var next = toggleIn(g('photoPick', photoPick), id).filter(function (x) { return !byId[x].noPhotos; });
+scheduleArrival(next);
+self.setState({ photoPick: next, codeSeed: codeSeed + 1 });
+}
+};
+}),
+noPick: pickable.length === 0, hasPick: pickable.length > 0,
+qrPath: qrPath,
+scanTitle: 'Scan to upload photos of ' + joinNames(pickable),
+expiry: '11:10 am',
+newCode: function () { scheduleArrival(pickable); flash('New code made · works until 11:10 am', false, { codeSeed: codeSeed + 1 }); },
+deviceUpload: function () {
+var tag = joinNames(pickable);
+var news = [0, 1, 2].map(function (j) { return { tag: tag, i: uploads.length + 10 + j, isNew: true }; });
+flash('3 photos of ' + tag + ' uploaded', false, { uploads: news.concat(uploads.map(function (p) { return Object.assign({}, p, { isNew: false }); })) });
+},
+photoCount: plural(allPhotos.length, 'photo', 'photos'),
+allPhotos: allPhotos,
+
+pinOpen: pinOpen,
+openPin: function () { self.setState({ pinOpen: true, pin: '', pinWho: me === 'Priya' ? 'Marcus L.' : 'Priya S.' }); },
+closePin: function () { self.setState({ pinOpen: false, pin: '' }); },
+staffOpts: staff.map(function (s) {
+var on = s === pinWho;
+return { label: s, pressed: on, style: 'flex: 1; height: 52px; border-radius: 16px; font: inherit; font-size: 16px; font-weight: 700; ' + (on ? 'border: 1.5px solid #2D5B4B; background: #2D5B4B; color: #FFFCF6' : 'border: 1.5px solid #D6CCB6; background: #FFFCF6; color: #1D2A23'), pick: function () { self.setState({ pinWho: s, pin: '' }); } };
+}),
+pinAria: pin.length + ' of 4 digits entered',
+pinDots: [0, 1, 2, 3].map(function (i) {
+return { style: 'width: 16px; height: 16px; border-radius: 50%; border: 2px solid #2D5B4B; background: ' + (i < pin.length ? '#2D5B4B' : 'transparent') };
+}),
+pinKeys: pinDigits.map(function (dg) {
+var base = 'height: 60px; border-radius: 16px; border: 0; font: inherit; font-size: 22px; font-weight: 700; ';
+if (dg === 'back') return { label: '⌫', aria: 'Delete digit', style: base + 'background: transparent; color: #3E4740', press: function () { self.setState({ pin: g('pin', pin).slice(0, -1) }); } };
+if (dg === 'ok') return { label: 'OK', aria: 'Sign in', style: base + 'font-size: 17px; background: ' + (pin.length === 4 ? '#2D5B4B; color: #FFFCF6' : '#E2D9C6; color: #58625A'), press: function () {
+if (g('pin', pin).length < 4) return;
+var who = g('pinWho', pinWho).split(' ')[0];
+flash('Signed in as ' + who, false, { me: who, pinOpen: false, pin: '' });
+} };
+return { label: dg, aria: dg, style: base + 'background: #F1ECE1; color: #1D2A23', press: function () { var cur = g('pin', pin); if (cur.length < 4) self.setState({ pin: cur + dg }); } };
+})
+};
+}
+}
+</script>
+<div id="app"></div>
+<script>NestdayDC.mount('RoomSheet');</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nestday · Photos</title>
+<meta name="theme-color" content="#F4EEE2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nestday">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="runtime/nestday-runtime.js"></script>
+</head>
+<body class="kind-phone">
+<template data-dc-template="Photos"><x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F4EEE2}
+a{color:#2D5B4B}a:hover{color:#1F4538}
+</style>
+</helmet>
+<div style="width: 390px; height: 1600px; box-sizing: border-box; background: #F4EEE2; color: #1D2A23; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column">
+
+<header style="display: flex; flex-direction: column; gap: 12px; padding: 20px 20px 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<div aria-hidden="true" style="width: 48px; height: 48px; border-radius: 50%; background: #E8A73A; color: #1D2A23; display: flex; align-items: center; justify-content: center; font-family: 'Young Serif', Georgia, serif; font-size: 18px; flex-shrink: 0">MR</div>
+<div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0">
+<div style="font-family: 'Young Serif', Georgia, serif; font-size: 24px; line-height: 1.1">Maya R.</div>
+<div style="font-size: 14px; color: #58625A">Sunflower Room · 19 mo–3 yrs</div>
+</div>
+<button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #D6CCB6; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: #1D2A23">Sign out</button>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #58625A">
+<span>Signed in as Daniel</span>
+<span style="display: flex; align-items: center; gap: 6px; color: #1F4538; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2D5B4B"></span>Here since 7:52 am</span>
+</div>
+</header>
+
+<main style="display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 24px">
+<h1 style="margin: 4px 4px 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 30px">Photos</h1>
+
+<div style="background: #DCE8E0; color: #1F4538; border-radius: 18px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"></path><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg>
+<p style="margin: 0; font-size: 14px; line-height: 1.45">Full-size downloads are free. Children whose families said no to photos are never shown.</p>
+</div>
+
+<button type="button" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 50px; border-radius: 25px; border: 1.5px solid #2D5B4B; background: transparent; color: #1F4538; font: inherit; font-size: 15px; font-weight: 700"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Save all of this week's photos</button>
+
+<section style="background: #FFFCF6; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Today · 11:48 am</h2>
+<span style="font-size: 14px; color: #58625A">4 photos</span>
+</div>
+<p style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-size: 17px; line-height: 1.45">Sponge painting at the art table. Maya tried every colour.</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{latest}}" as="p" hint-placeholder-count="4">
+<a href="PhotoViewer.dc.html" aria-label="{{p.label}}" style="{{p.box}}"><svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; display: block" aria-hidden="true"><circle cx="{{p.cx}}" cy="36" r="14" fill="{{p.sun}}"></circle><path d="{{p.hill}}" fill="{{p.land}}"></path></svg></a>
+</sc-for>
+</div>
+<span style="font-size: 14px; color: #58625A">From Priya</span>
+</section>
+
+<sc-for list="{{days}}" as="d" hint-placeholder-count="3">
+<section style="display: flex; flex-direction: column; gap: 10px; padding: 4px 4px 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 20px">{{d.title}}</h2>
+<span style="font-size: 14px; color: #58625A">{{d.count}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px">
+<sc-for list="{{d.photos}}" as="p" hint-placeholder-count="3">
+<a href="PhotoViewer.dc.html" aria-label="{{p.label}}" style="{{p.box}}"><svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; display: block" aria-hidden="true"><circle cx="{{p.cx}}" cy="36" r="14" fill="{{p.sun}}"></circle><path d="{{p.hill}}" fill="{{p.land}}"></path></svg></a>
+</sc-for>
+</div>
+</section>
+</sc-for>
+</main>
+
+<footer style="margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0 16px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 16px">Nestday</span>
+<span style="font-size: 12px; color: #58625A">Powered by Dantia.ca</span>
+</footer>
+
+<nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 8px 22px; background: #FFFCF6; border-top: 1px solid #E2D9C6">
+<a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></span>Today</a>
+<a href="Photos.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #1F4538; font-size: 12px; font-weight: 700"><span style="width: 56px; height: 30px; border-radius: 15px; background: #DCE8E0; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-9 9"></path></svg></span>Photos</a>
+<a href="Messages.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span>Messages</a>
+<a href="Fees.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6"></path></svg></span>Fees</a>
+<a href="#profile" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span>Profile</a>
+</nav>
+</div>
+</x-dc></template>
+<script type="text/x-dc" data-dc-name="Photos">
+class Component extends DCLogic {
+renderVals() {
+var tints = [
+['#E9D6B0', '#F7EBCF', '#D6BA84'],
+['#CFE0D4', '#EEF5EF', '#A9C7B3'],
+['#F2CDBB', '#FBE8DE', '#E0A88D'],
+['#D8D4E6', '#F0EEF6', '#B5AFCF']
+];
+var hills = [
+'M0 120 L0 86 Q40 58 80 82 T160 72 L160 120 Z',
+'M0 120 L0 92 Q50 64 96 88 T160 80 L160 120 Z',
+'M0 120 L0 80 Q30 66 70 86 T160 70 L160 120 Z',
+'M0 120 L0 90 Q44 70 88 90 T160 84 L160 120 Z'
+];
+function make(n, offset, radius, where) {
+var out = [];
+for (var i = 0; i < n; i++) {
+var t = tints[(i + offset) % 4];
+out.push({
+label: 'Open photo ' + (i + 1) + ' of ' + n + ', ' + where,
+box: 'display: block; aspect-ratio: 4 / 3; border-radius: ' + radius + 'px; overflow: hidden; background: ' + t[0],
+sun: t[1], land: t[2], cx: 40 + ((i * 37 + offset * 23) % 90), hill: hills[(i + offset * 2) % 4]
+});
+}
+return out;
+}
+return {
+latest: make(4, 0, 12, 'today'),
+days: [
+{ title: 'Yesterday · Thu 24 Sep', count: '6 photos', photos: make(6, 1, 10, 'Thursday') },
+{ title: 'Wed 23 Sep', count: '3 photos', photos: make(3, 2, 10, 'Wednesday') },
+{ title: 'Mon 21 Sep', count: '5 photos', photos: make(5, 3, 10, 'Monday') }
+]
+};
+}
+}
+</script>
+<div id="app"></div>
+<script>NestdayDC.mount('Photos');</script>
+</body>
+</html>

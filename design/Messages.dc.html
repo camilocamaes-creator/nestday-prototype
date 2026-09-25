@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nestday · Messages</title>
+<meta name="theme-color" content="#F4EEE2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nestday">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="runtime/nestday-runtime.js"></script>
+</head>
+<body class="kind-phone">
+<template data-dc-template="Messages"><x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F4EEE2}
+a{color:#2D5B4B}a:hover{color:#1F4538}
+</style>
+</helmet>
+<div style="width: 390px; height: 1120px; box-sizing: border-box; background: #F4EEE2; color: #1D2A23; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column">
+
+<header style="display: flex; flex-direction: column; gap: 12px; padding: 20px 20px 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<div aria-hidden="true" style="width: 48px; height: 48px; border-radius: 50%; background: #E8A73A; color: #1D2A23; display: flex; align-items: center; justify-content: center; font-family: 'Young Serif', Georgia, serif; font-size: 18px; flex-shrink: 0">MR</div>
+<div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0">
+<div style="font-family: 'Young Serif', Georgia, serif; font-size: 24px; line-height: 1.1">Maya R.</div>
+<div style="font-size: 14px; color: #58625A">Sunflower Room · 19 mo–3 yrs</div>
+</div>
+<button type="button" style="height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid #D6CCB6; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: #1D2A23">Sign out</button>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #58625A">
+<span>Signed in as Daniel</span>
+<span style="display: flex; align-items: center; gap: 6px; color: #1F4538; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2D5B4B"></span>Here since 7:52 am</span>
+</div>
+</header>
+
+<main style="display: flex; flex-direction: column; gap: 14px; padding: 8px 16px 16px; flex-grow: 1; min-height: 0">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 4px 0">
+<h1 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 30px">Messages</h1>
+<span style="font-size: 14px; color: #58625A">Sunflower Room educators</span>
+</div>
+
+<section aria-label="Pinned announcement" style="background: #FBEBC8; border-radius: 20px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 36px; height: 36px; border-radius: 50%; background: #E8A73A; color: #1D2A23; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h4l6 4V6L7 10z"></path><path d="M17 9a4 4 0 0 1 0 6"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6B4A0E">Pinned · Karen, Director</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.4; font-weight: 600">We're closed Monday 12 October for Thanksgiving.</p>
+</div>
+</section>
+
+<section aria-label="Conversation" style="display: flex; flex-direction: column; gap: 10px; flex-grow: 1; overflow: hidden">
+<sc-for list="{{items}}" as="m" hint-placeholder-count="7">
+<sc-if value="{{m.isDay}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; font-weight: 600; color: #58625A"><span style="flex-grow: 1; height: 1px; background: #E2D9C6"></span>{{m.text}}<span style="flex-grow: 1; height: 1px; background: #E2D9C6"></span></div>
+</sc-if>
+<sc-if value="{{m.isStaff}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; max-width: 300px">
+<span style="font-size: 13px; color: #58625A"><strong style="color: #1D2A23">{{m.who}}</strong> · {{m.time}}</span>
+<div style="background: #FFFCF6; border-radius: 4px 18px 18px 18px; padding: 12px 14px; font-size: 15px; line-height: 1.45">{{m.text}}</div>
+</div>
+</sc-if>
+<sc-if value="{{m.isMine}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end; align-self: flex-end; max-width: 300px">
+<div style="background: #2D5B4B; color: #FFFCF6; border-radius: 18px 4px 18px 18px; padding: 12px 14px; font-size: 15px; line-height: 1.45">{{m.text}}</div>
+<span style="font-size: 13px; color: #58625A">{{m.time}}{{m.seen}}</span>
+</div>
+</sc-if>
+</sc-for>
+</section>
+
+<p style="margin: 0; text-align: center; font-size: 13px; color: #58625A; line-height: 1.4">Educators usually reply within an hour during care hours, 7 am to 6 pm.</p>
+
+<form onSubmit="{{send}}" style="display: flex; gap: 8px; align-items: center; background: #FFFCF6; border: 1px solid #E2D9C6; border-radius: 28px; padding: 5px 5px 5px 18px">
+<label for="composer" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Message the Sunflower Room</label>
+<input id="composer" type="text" placeholder="Message the room" value="{{draft}}" onChange="{{onDraft}}" style="flex-grow: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 16px; color: #1D2A23; height: 44px; outline: none">
+<button type="submit" aria-label="Send" style="display: flex; align-items: center; justify-content: center; gap: 6px; height: 46px; padding: 0 18px; border-radius: 23px; border: 0; background: #2D5B4B; color: #FFFCF6; font: inherit; font-size: 15px; font-weight: 700"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l16-8-6 16-3-7z"></path></svg>Send</button>
+</form>
+</main>
+
+<footer style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0 14px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 16px">Nestday</span>
+<span style="font-size: 12px; color: #58625A">Powered by Dantia.ca</span>
+</footer>
+
+<nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 8px 22px; background: #FFFCF6; border-top: 1px solid #E2D9C6">
+<a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></span>Today</a>
+<a href="Photos.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-9 9"></path></svg></span>Photos</a>
+<a href="Messages.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #1F4538; font-size: 12px; font-weight: 700"><span style="width: 56px; height: 30px; border-radius: 15px; background: #DCE8E0; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></span>Messages</a>
+<a href="Fees.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6"></path></svg></span>Fees</a>
+<a href="#profile" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 52px; text-decoration: none; color: #58625A; font-size: 12px; font-weight: 500"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span>Profile</a>
+</nav>
+</div>
+</x-dc></template>
+<script type="text/x-dc" data-dc-name="Messages">
+class Component extends DCLogic {
+renderVals() {
+var st = this.state || {};
+var self = this;
+var base = [
+{ kind: 'day', text: 'Yesterday' },
+{ kind: 'mine', text: 'Could you keep an eye on Maya’s cough? She was up a bit last night.', time: '4:55 pm', seen: '' },
+{ kind: 'staff', who: 'Priya', text: 'Will do. She had lots of energy at outside time and we didn’t notice a cough.', time: '5:02 pm' },
+{ kind: 'day', text: 'Today' },
+{ kind: 'staff', who: 'Priya', text: 'Morning! Maya settled in quickly and is helping with snack.', time: '9:10 am' },
+{ kind: 'mine', text: 'Love that, thank you!', time: '9:24 am', seen: ' · Seen' },
+{ kind: 'staff', who: 'Priya', text: 'She ate most of her lunch, peas first. Photos from art are up.', time: '11:52 am' }
+];
+var sent = (st.sent || []).map(function (t) { return { kind: 'mine', text: t, time: 'Just now', seen: '' }; });
+var items = base.concat(sent).map(function (m) {
+return Object.assign({}, m, { isDay: m.kind === 'day', isStaff: m.kind === 'staff', isMine: m.kind === 'mine', seen: m.seen || '' });
+});
+return {
+items: items,
+draft: st.draft || '',
+onDraft: function (e) { self.setState({ draft: e.target.value }); },
+send: function (e) {
+if (e && e.preventDefault) e.preventDefault();
+var text = (self.state && self.state.draft || '').trim();
+if (!text) return;
+self.setState({ draft: '', sent: ((self.state && self.state.sent) || []).concat([text]) });
+}
+};
+}
+}
+</script>
+<div id="app"></div>
+<script>NestdayDC.mount('Messages');</script>
+</body>
+</html>

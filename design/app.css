@@ -1,0 +1,23 @@
+/* Makes the fixed-size design screens behave like real pages on each device. */
+html, body { margin: 0; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+
+/* Phone screens: fill the phone width, grow with content, keep the tab bar on screen */
+body.kind-phone #app > * {
+  width: 100% !important;
+  max-width: 520px;
+  margin: 0 auto !important;
+  height: auto !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+body.kind-phone nav[aria-label="Main"] {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Tablet and computer screens: shown at their designed size, centred */
+body.kind-tablet, body.kind-desktop { background: #E9E2D3; }
+body.kind-tablet #app, body.kind-desktop #app { display: flex; justify-content: center; }

@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=1440">
+<title>Nestday · Director</title>
+<meta name="theme-color" content="#F4EEE2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nestday">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="runtime/nestday-runtime.js"></script>
+</head>
+<body class="kind-desktop">
+<template data-dc-template="Director"><x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F4EEE2}
+a{color:#2D5B4B}a:hover{color:#1F4538}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; position: relative; overflow: hidden; background: #F4EEE2; color: #1D2A23; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex">
+
+<aside style="width: 256px; flex-shrink: 0; box-sizing: border-box; background: #1D2A23; color: #F4EEE2; display: flex; flex-direction: column; padding: 28px 16px 20px">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 0 12px">
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px; line-height: 1.1">Nestday</span>
+<span style="font-size: 12px; color: #B9C2BA">Powered by Dantia.ca</span>
+</div>
+<div style="margin: 24px 12px 16px; padding: 12px 14px; border-radius: 14px; background: #26332C; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 14px; font-weight: 700">Sunflower Early Learning Centre</span>
+<span style="font-size: 13px; color: #B9C2BA">Airdrie AB</span>
+</div>
+<nav aria-label="Director" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="7">
+<button type="button" onClick="{{n.go}}" aria-current="{{n.current}}" style="{{n.style}}">
+<span style="flex-grow: 1; text-align: left">{{n.label}}</span>
+<sc-if value="{{n.planned}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; background: #34423A; color: #C9D2CA">Planned</span></sc-if>
+<sc-if value="{{n.hasCount}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #E8A73A; color: #1D2A23">{{n.count}}</span></sc-if>
+</button>
+</sc-for>
+</nav>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 50%; background: #E8A73A; color: #1D2A23; display: flex; align-items: center; justify-content: center; font-weight: 700">K</span>
+<span style="display: flex; flex-direction: column; flex-grow: 1"><span style="font-size: 15px; font-weight: 700">Karen</span><span style="font-size: 13px; color: #B9C2BA">Director</span></span>
+<button type="button" onClick="{{signOut}}" style="height: 40px; padding: 0 12px; border-radius: 20px; border: 1px solid #45534B; background: transparent; color: #F4EEE2; font: inherit; font-size: 13px; font-weight: 600">Sign out</button>
+</div>
+</aside>
+
+<main style="flex-grow: 1; min-width: 0; overflow-y: auto; padding: 32px 40px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<sc-if value="{{isToday}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+<h1 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 38px">Good morning, Karen</h1>
+<span style="font-size: 16px; color: #58625A">Friday 25 September · 10:55 am</span>
+</div>
+<button type="button" onClick="{{openAnnounce}}" style="display: flex; align-items: center; gap: 8px; height: 50px; padding: 0 22px; border-radius: 25px; border: 0; background: #2D5B4B; color: #FFFCF6; font: inherit; font-size: 15px; font-weight: 700"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h4l6 4V6L7 10z"></path><path d="M17 9a4 4 0 0 1 0 6"></path></svg>Send announcement</button>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<div style="background: #FFFCF6; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; color: #58625A">Children here</span><span style="font-family: 'Young Serif', Georgia, serif; font-size: 36px">58 <span style="font-size: 18px; color: #58625A">of 64</span></span></div>
+<div style="background: #FFFCF6; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; color: #58625A">Educators on shift</span><span style="font-family: 'Young Serif', Georgia, serif; font-size: 36px">13</span></div>
+<div style="background: #FFFCF6; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; color: #58625A">Rooms in ratio</span><span style="font-family: 'Young Serif', Georgia, serif; font-size: 36px">5 <span style="font-size: 18px; color: #58625A">of 5</span></span></div>
+<div style="{{attnCardStyle}}"><span style="font-size: 14px; color: #5A4210">Need your attention</span><span style="font-family: 'Young Serif', Georgia, serif; font-size: 36px">{{attnCount}}</span></div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: start">
+<section style="background: #FFFCF6; border-radius: 22px; padding: 20px 22px 8px">
+<h2 style="margin: 0 0 8px; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 22px">Rooms</h2>
+<dc-table style="width: 100%; border-collapse: collapse; font-size: 15px">
+<dc-thead>
+<dc-tr style="text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">
+<dc-th style="padding: 10px 0; font-weight: 700">Room</dc-th><dc-th style="padding: 10px 0; font-weight: 700">Age group</dc-th><dc-th style="padding: 10px 0; font-weight: 700">Children</dc-th><dc-th style="padding: 10px 0; font-weight: 700">Educators</dc-th><dc-th style="padding: 10px 0; font-weight: 700">Ratio</dc-th>
+</dc-tr>
+</dc-thead>
+<dc-tbody>
+<sc-for list="{{rooms}}" as="r" hint-placeholder-count="5">
+<dc-tr style="border-top: 1px solid #EDE6D6">
+<dc-td style="padding: 13px 0; font-weight: 700">{{r.name}}</dc-td>
+<dc-td style="padding: 13px 0; color: #3E4740">{{r.age}}</dc-td>
+<dc-td style="padding: 13px 0; font-variant-numeric: tabular-nums">{{r.kids}}</dc-td>
+<dc-td style="padding: 13px 0; font-variant-numeric: tabular-nums">{{r.edu}}</dc-td>
+<dc-td style="padding: 13px 0"><span style="font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #DCE8E0; color: #1F4538">{{r.ratio}}</span></dc-td>
+</dc-tr>
+</sc-for>
+</dc-tbody>
+</dc-table>
+</section>
+
+<section style="background: #FFFCF6; border-radius: 22px; padding: 20px 22px; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0 0 8px; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 22px">Needs your attention</h2>
+<sc-if value="{{attnEmpty}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 16px 0; font-size: 16px; color: #1F4538; font-weight: 600">Nothing needs you right now.</p>
+</sc-if>
+<sc-for list="{{attention}}" as="a" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #EDE6D6">
+<span style="{{a.dotStyle}}"></span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0">
+<span style="font-size: 15px; font-weight: 700">{{a.title}}</span>
+<span style="font-size: 13px; color: #58625A; line-height: 1.35">{{a.detail}}</span>
+</span>
+<button type="button" onClick="{{a.act}}" style="height: 40px; padding: 0 14px; border-radius: 20px; border: 1.5px solid #2D5B4B; background: transparent; color: #1F4538; font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; flex-shrink: 0">{{a.action}}</button>
+</div>
+</sc-for>
+</section>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<section style="background: #FFFCF6; border-radius: 22px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #58625A">Reports</span>
+<h2 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 21px">September affordability grant claim</h2>
+<span style="font-size: 15px; color: #3E4740">Attendance complete to yesterday: <strong>16 of 21</strong> operating days</span>
+<span style="height: 10px; border-radius: 5px; background: #EDE6D6; overflow: hidden"><span style="display: block; width: 76%; height: 100%; background: #2D5B4B"></span></span>
+</section>
+<section style="background: #FFFCF6; border-radius: 22px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="flex-grow: 1; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #58625A">Parent fees · September</span>
+<button type="button" onClick="{{sendReminders}}" disabled="{{remindersSent}}" style="{{remindStyle}}">{{remindLabel}}</button>
+</div>
+<span style="font-family: 'Young Serif', Georgia, serif; font-size: 28px">$19,575.00 <span style="font-size: 16px; color: #58625A">of $20,880.00 collected</span></span>
+<span style="height: 10px; border-radius: 5px; background: #EDE6D6; overflow: hidden"><span style="display: block; width: 94%; height: 100%; background: #E8A73A"></span></span>
+<span style="font-size: 15px; color: #3E4740">60 families paid · 4 outstanding</span>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{isFamilies}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+<h1 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 36px">Families and logins</h1>
+<span style="font-size: 16px; color: #58625A">64 children · {{guardianCount}} guardians · {{activeGuardians}} active logins</span>
+</div>
+<button type="button" onClick="{{openGuardian}}" style="display: flex; align-items: center; gap: 8px; height: 50px; padding: 0 22px; border-radius: 25px; border: 0; background: #2D5B4B; color: #FFFCF6; font: inherit; font-size: 15px; font-weight: 700"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add a guardian</button>
+</div>
+
+<div style="display: flex; gap: 12px; align-items: flex-end">
+<div style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1">
+<label for="fam-search" style="font-size: 13px; font-weight: 700; color: #58625A">Search by child or guardian</label>
+<input id="fam-search" type="search" value="{{q}}" onChange="{{onQ}}" placeholder="Try Maya or Hannah" style="height: 48px; box-sizing: border-box; padding: 0 16px; border-radius: 14px; border: 1.5px solid #D6CCB6; background: #FFFCF6; font: inherit; font-size: 16px; color: #1D2A23">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; width: 200px">
+<label for="fam-room" style="font-size: 13px; font-weight: 700; color: #58625A">Room</label>
+<select id="fam-room" value="{{roomFilter}}" onChange="{{onRoomFilter}}" style="height: 48px; padding: 0 12px; border-radius: 14px; border: 1.5px solid #D6CCB6; background: #FFFCF6; font: inherit; font-size: 15px; color: #1D2A23">
+<option value="All rooms">All rooms</option><option value="Seedlings">Seedlings</option><option value="Sprouts">Sprouts</option><option value="Sunflower">Sunflower</option><option value="Maple">Maple</option><option value="Oak">Oak</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; width: 200px">
+<label for="fam-status" style="font-size: 13px; font-weight: 700; color: #58625A">Login status</label>
+<select id="fam-status" value="{{statusFilter}}" onChange="{{onStatusFilter}}" style="height: 48px; padding: 0 12px; border-radius: 14px; border: 1.5px solid #D6CCB6; background: #FFFCF6; font: inherit; font-size: 15px; color: #1D2A23">
+<option value="Any status">Any status</option><option value="Active">Active</option><option value="Invite sent">Invite sent</option><option value="Not invited">Not invited</option><option value="Locked">Locked</option>
+</select>
+</div>
+</div>
+
+<section style="background: #FFFCF6; border-radius: 22px; padding: 8px 22px">
+<dc-table style="width: 100%; border-collapse: collapse; font-size: 15px">
+<dc-thead>
+<dc-tr style="text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">
+<dc-th style="padding: 12px 0; font-weight: 700">Child</dc-th><dc-th style="padding: 12px 0; font-weight: 700">Guardian</dc-th><dc-th style="padding: 12px 0; font-weight: 700">Login status</dc-th><dc-th style="padding: 12px 0; font-weight: 700">Last sign-in</dc-th><dc-th style="padding: 12px 0; font-weight: 700; text-align: right">Action</dc-th>
+</dc-tr>
+</dc-thead>
+<dc-tbody>
+<sc-for list="{{families}}" as="f" hint-placeholder-count="10">
+<dc-tr style="border-top: 1px solid #EDE6D6">
+<dc-td style="padding: 10px 0"><span style="display: flex; flex-direction: column"><strong>{{f.child}}</strong><span style="font-size: 13px; color: #58625A">{{f.room}}</span></span></dc-td>
+<dc-td style="padding: 10px 0"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{f.guardian}}</span><span style="font-size: 13px; color: #58625A">{{f.emailShown}}</span></span></dc-td>
+<dc-td style="padding: 10px 0"><span style="{{f.badge}}">{{f.status}}</span></dc-td>
+<dc-td style="padding: 10px 0; color: #3E4740">{{f.last}}</dc-td>
+<dc-td style="padding: 10px 0; text-align: right"><button type="button" onClick="{{f.act}}" disabled="{{f.disabled}}" style="{{f.btnStyle}}">{{f.action}}</button></dc-td>
+</dc-tr>
+</sc-for>
+</dc-tbody>
+</dc-table>
+<sc-if value="{{noFamilies}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 20px 0; font-size: 15px; color: #58625A">No guardians match. Try another name or clear the filters.</p>
+</sc-if>
+</section>
+<span style="font-size: 14px; color: #58625A">{{familyFoot}}</span>
+</sc-if>
+
+<sc-if value="{{isStaff}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+<h1 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 36px">Staff accounts</h1>
+<span style="font-size: 16px; color: #58625A">{{staffCount}} people · {{staffActive}} with active logins · Educators use a 4-digit PIN on the room tablets</span>
+</div>
+<button type="button" onClick="{{openStaff}}" style="display: flex; align-items: center; gap: 8px; height: 50px; padding: 0 22px; border-radius: 25px; border: 0; background: #2D5B4B; color: #FFFCF6; font: inherit; font-size: 15px; font-weight: 700"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add a staff member</button>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; background: #F8E0D6; color: #7A2816; font-size: 15px; font-weight: 600">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.5"></path></svg>
+First aid: 2 certificates expire within 30 days and 1 has expired.
+</div>
+<section style="background: #FFFCF6; border-radius: 22px; padding: 8px 22px">
+<dc-table style="width: 100%; border-collapse: collapse; font-size: 15px">
+<dc-thead>
+<dc-tr style="text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #58625A">
+<dc-th style="padding: 12px 0; font-weight: 700">Name</dc-th><dc-th style="padding: 12px 0; font-weight: 700">Role and room</dc-th><dc-th style="padding: 12px 0; font-weight: 700">Level</dc-th><dc-th style="padding: 12px 0; font-weight: 700">First aid</dc-th><dc-th style="padding: 12px 0; font-weight: 700">Login</dc-th><dc-th style="padding: 12px 0; font-weight: 700; text-align: right">Actions</dc-th>
+</dc-tr>
+</dc-thead>
+<dc-tbody>
+<sc-for list="{{staff}}" as="s" hint-placeholder-count="8">
+<dc-tr style="border-top: 1px solid #EDE6D6">
+<dc-td style="padding: 10px 0"><span style="display: flex; flex-direction: column"><strong>{{s.name}}</strong><span style="font-size: 13px; color: #58625A">{{s.email}}</span></span></dc-td>
+<dc-td style="padding: 10px 0"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{s.role}}</span><span style="font-size: 13px; color: #58625A">{{s.room}}</span></span></dc-td>
+<dc-td style="padding: 10px 0">{{s.level}}</dc-td>
+<dc-td style="padding: 10px 0"><span style="{{s.aidBadge}}">{{s.aid}}</span></dc-td>
+<dc-td style="padding: 10px 0"><span style="display: flex; flex-direction: column; gap: 3px; align-items: flex-start"><span style="{{s.badge}}">{{s.status}}</span><span style="font-size: 13px; color: #58625A">{{s.last}}</span></span></dc-td>
+<dc-td style="padding: 10px 0"><span style="display: flex; gap: 6px; justify-content: flex-end">
+<sc-for list="{{s.actions}}" as="b" hint-placeholder-count="2">
+<button type="button" onClick="{{b.act}}" style="{{b.style}}">{{b.label}}</button>
+</sc-for>
+</span></dc-td>
+</dc-tr>
+</sc-for>
+</dc-tbody>
+</dc-table>
+</section>
+</sc-if>
+
+<sc-if value="{{isPlanned}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 12px">
+<h1 style="margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 36px">{{plannedTitle}}</h1>
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #FBEBC8; color: #5A4210">Planned</span>
+</div>
+<section style="max-width: 640px; background: #FFFCF6; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font-size: 16px; color: #3E4740">This page isn't designed yet. It will hold:</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 16px; line-height: 1.45">
+<sc-for list="{{plannedItems}}" as="p" hint-placeholder-count="4"><li>{{p.text}}</li></sc-for>
+</ul>
+</section>
+</sc-if>
+</main>
+
+<sc-if value="{{drawerOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(20, 26, 22, 0.45); display: flex; justify-content: flex-end">
+<section role="dialog" aria-label="{{drawerTitle}}" style="width: 480px; height: 100%; box-sizing: border-box; background: #FFFCF6; padding: 28px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto">
+<div style="display: flex; align-items: center; gap: 12px">
+<h2 style="margin: 0; flex-grow: 1; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 28px">{{drawerTitle}}</h2>
+<button type="button" aria-label="Close" onClick="{{closeDrawer}}" style="width: 44px; height: 44px; border-radius: 50%; border: 0; background: #F1ECE1; color: #1D2A23; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+
+<sc-if value="{{isGuardianForm}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="g-child" style="font-size: 13px; font-weight: 700; color: #58625A">Child</label>
+<select id="g-child" value="{{gChild}}" onChange="{{onGChild}}" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+<option value="Maya R. · Sunflower">Maya R. · Sunflower</option><option value="Noah T. · Sunflower">Noah T. · Sunflower</option><option value="Aria P. · Sunflower">Aria P. · Sunflower</option><option value="Leo S. · Sunflower">Leo S. · Sunflower</option><option value="Zoe M. · Sunflower">Zoe M. · Sunflower</option><option value="Ethan W. · Sunflower">Ethan W. · Sunflower</option><option value="Lily C. · Sunflower">Lily C. · Sunflower</option><option value="Omar H. · Sunflower">Omar H. · Sunflower</option><option value="Ava B. · Sunflower">Ava B. · Sunflower</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="g-name" style="font-size: 13px; font-weight: 700; color: #58625A">Full name</label>
+<input id="g-name" type="text" value="{{gName}}" onChange="{{onGName}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="g-email" style="font-size: 13px; font-weight: 700; color: #58625A">Email for login</label>
+<input id="g-email" type="email" value="{{gEmail}}" onChange="{{onGEmail}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="g-rel" style="font-size: 13px; font-weight: 700; color: #58625A">Relationship</label>
+<select id="g-rel" value="{{gRel}}" onChange="{{onGRel}}" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+<option value="Parent">Parent</option><option value="Grandparent">Grandparent</option><option value="Guardian">Guardian</option><option value="Other">Other</option>
+</select>
+</div>
+</sc-if>
+
+<sc-if value="{{isStaffForm}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px; grid-column: 1 / -1">
+<label for="s-name" style="font-size: 13px; font-weight: 700; color: #58625A">Full name</label>
+<input id="s-name" type="text" value="{{sName}}" onChange="{{onSName}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; grid-column: 1 / -1">
+<label for="s-email" style="font-size: 13px; font-weight: 700; color: #58625A">Work email</label>
+<input id="s-email" type="email" value="{{sEmail}}" onChange="{{onSEmail}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="s-role" style="font-size: 13px; font-weight: 700; color: #58625A">Role</label>
+<select id="s-role" value="{{sRole}}" onChange="{{onSRole}}" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 15px; color: #1D2A23">
+<option value="Educator">Educator</option><option value="Lead educator">Lead educator</option><option value="Cook">Cook</option><option value="Assistant director">Assistant director</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="s-room" style="font-size: 13px; font-weight: 700; color: #58625A">Main room</label>
+<select id="s-room" value="{{sRoom}}" onChange="{{onSRoom}}" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 15px; color: #1D2A23">
+<option value="Seedlings">Seedlings</option><option value="Sprouts">Sprouts</option><option value="Sunflower">Sunflower</option><option value="Maple">Maple</option><option value="Oak">Oak</option><option value="Kitchen">Kitchen</option><option value="Office">Office</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="s-level" style="font-size: 13px; font-weight: 700; color: #58625A">Certification level</label>
+<select id="s-level" value="{{sLevel}}" onChange="{{onSLevel}}" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 15px; color: #1D2A23">
+<option value="Level 1">Level 1</option><option value="Level 2">Level 2</option><option value="Level 3">Level 3</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="s-aid" style="font-size: 13px; font-weight: 700; color: #58625A">First aid valid until</label>
+<input id="s-aid" type="date" value="{{sAid}}" onChange="{{onSAid}}" style="height: 48px; box-sizing: border-box; padding: 0 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 15px; color: #1D2A23">
+</div>
+</div>
+</sc-if>
+
+<fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 4px">
+<legend style="font-size: 13px; font-weight: 700; color: #58625A; margin-bottom: 6px">{{permLegend}}</legend>
+<sc-for list="{{perms}}" as="p" hint-placeholder-count="5">
+<label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 15px; cursor: pointer">
+<input type="checkbox" checked="{{p.on}}" onChange="{{p.toggle}}" style="width: 20px; height: 20px; accent-color: #2D5B4B; margin: 0">{{p.label}}</label>
+</sc-for>
+</fieldset>
+
+<div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px">
+<button type="button" onClick="{{submitDrawer}}" disabled="{{cannotSubmit}}" style="{{submitStyle}}">Email login invite</button>
+<span style="font-size: 13px; color: #58625A; text-align: center">{{inviteNote}}</span>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{announceOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(20, 26, 22, 0.45); display: flex; align-items: center; justify-content: center">
+<section role="dialog" aria-label="Send announcement" style="width: 560px; box-sizing: border-box; background: #FFFCF6; border-radius: 26px; padding: 26px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h2 style="margin: 0; flex-grow: 1; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 28px">Send announcement</h2>
+<button type="button" aria-label="Close" onClick="{{closeAnnounce}}" style="width: 44px; height: 44px; border-radius: 50%; border: 0; background: #F1ECE1; color: #1D2A23; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="ann-aud" style="font-size: 13px; font-weight: 700; color: #58625A">Send to</label>
+<select id="ann-aud" value="{{annAudience}}" onChange="{{onAnnAudience}}" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; color: #1D2A23">
+<option value="Whole centre">Whole centre</option><option value="Seedlings Room">Seedlings Room</option><option value="Sprouts Room">Sprouts Room</option><option value="Sunflower Room">Sunflower Room</option><option value="Maple Room">Maple Room</option><option value="Oak Room">Oak Room</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="ann-text" style="font-size: 13px; font-weight: 700; color: #58625A">Message</label>
+<textarea id="ann-text" rows="4" value="{{annText}}" onChange="{{onAnnText}}" style="box-sizing: border-box; padding: 12px 14px; border-radius: 12px; border: 1.5px solid #D6CCB6; background: #FFFFFF; font: inherit; font-size: 16px; line-height: 1.45; color: #1D2A23; resize: none"></textarea>
+</div>
+<span style="font-size: 13px; color: #58625A">It's pinned at the top of every family's Messages.</span>
+<div style="display: flex; justify-content: flex-end; gap: 10px">
+<button type="button" onClick="{{closeAnnounce}}" style="height: 50px; padding: 0 22px; border-radius: 25px; border: 1.5px solid #D6CCB6; background: transparent; font: inherit; font-size: 15px; font-weight: 700; color: #1D2A23">Cancel</button>
+<button type="button" onClick="{{sendAnnounce}}" style="height: 50px; padding: 0 24px; border-radius: 25px; border: 0; background: #2D5B4B; color: #FFFCF6; font: inherit; font-size: 15px; font-weight: 700">Send</button>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: absolute; left: calc(50% + 128px); bottom: 28px; transform: translateX(-50%); padding: 14px 22px; border-radius: 26px; background: #1D2A23; color: #FFFCF6; font-size: 15px; font-weight: 600; white-space: nowrap; box-shadow: 0 10px 30px rgba(29, 42, 35, 0.25)">{{toast}}</div>
+</sc-if>
+</div>
+</x-dc></template>
+<script type="text/x-dc" data-dc-name="Director">
+class Component extends DCLogic {
+componentWillUnmount() { if (this._t) clearTimeout(this._t); }
+renderVals() {
+var self = this;
+var st = this.state || {};
+function g(k, d) { return st[k] !== undefined ? st[k] : d; }
+var page = g('page', this.props.startPage || 'today');
+var toast = g('toast', null);
+var attn = g('attn', ['incident', 'med', 'logins', 'firstaid']);
+var remindersSent = g('remindersSent', false);
+var drawer = g('drawer', null);
+var announceOpen = g('announceOpen', false);
+var q = g('q', '');
+var roomFilter = g('roomFilter', 'All rooms');
+var statusFilter = g('statusFilter', 'Any status');
+
+function flash(msg, extra) {
+if (self._t) clearTimeout(self._t);
+self._t = setTimeout(function () { self.setState({ toast: null }); }, 4000);
+self.setState(Object.assign({ toast: msg }, extra || {}));
+}
+
+var FAM0 = [
+{ id: 1, child: 'Maya R.', room: 'Sunflower', guardian: 'Daniel R.', rel: 'Parent', email: 'daniel@nestday.test', status: 'Active', last: 'Today, 7:50 am' },
+{ id: 2, child: 'Maya R.', room: 'Sunflower', guardian: 'Elena R.', rel: 'Parent', email: 'elena.r@example.com', status: 'Invite sent', last: '—' },
+{ id: 3, child: 'Noah T.', room: 'Sunflower', guardian: 'Hannah T.', rel: 'Parent', email: 'hannah@nestday.test', status: 'Active', last: 'Yesterday, 5:12 pm' },
+{ id: 4, child: 'Aria P.', room: 'Sunflower', guardian: 'Sofia P.', rel: 'Parent', email: 'sofia.p@example.com', status: 'Active', last: 'Today, 8:03 am' },
+{ id: 5, child: 'Leo S.', room: 'Sunflower', guardian: 'Mark S.', rel: 'Parent', email: 'mark.s@example.com', status: 'Active', last: 'Wed 23 Sep' },
+{ id: 6, child: 'Zoe M.', room: 'Sunflower', guardian: 'Grace M.', rel: 'Grandparent', email: '', status: 'Not invited', last: '—' },
+{ id: 7, child: 'Ethan W.', room: 'Sunflower', guardian: 'Olivia W.', rel: 'Parent', email: 'olivia.w@example.com', status: 'Locked', last: 'Mon 21 Sep' },
+{ id: 8, child: 'Lily C.', room: 'Sunflower', guardian: 'James C.', rel: 'Parent', email: 'james.c@example.com', status: 'Invite sent', last: '—' },
+{ id: 9, child: 'Omar H.', room: 'Sunflower', guardian: 'Amira H.', rel: 'Parent', email: 'amira.h@example.com', status: 'Active', last: 'Today, 6:40 am' },
+{ id: 10, child: 'Ava B.', room: 'Sunflower', guardian: 'Ben B.', rel: 'Parent', email: 'ben.b@example.com', status: 'Active', last: 'Today, 7:15 am' },
+{ id: 11, child: 'Jonah K.', room: 'Seedlings', guardian: 'Priyanka K.', rel: 'Parent', email: 'priyanka.k@example.com', status: 'Not invited', last: '—' },
+{ id: 12, child: 'Mila D.', room: 'Maple', guardian: 'Chris D.', rel: 'Parent', email: 'chris.d@example.com', status: 'Active', last: 'Thu 24 Sep' }
+];
+var fam = g('fam', FAM0);
+var STAFF0 = [
+{ id: 1, name: 'Karen', email: 'karen@nestday.test', role: 'Director', room: 'Office', level: 'Level 3', aid: '4 May 2027', aidState: 'ok', status: 'Active', last: 'Today, 7:05 am' },
+{ id: 2, name: 'Anika P.', email: 'anika.p@example.com', role: 'Assistant director', room: 'Office', level: 'Level 3', aid: '19 Jan 2027', aidState: 'ok', status: 'Active', last: 'Today, 7:40 am' },
+{ id: 3, name: 'Priya S.', email: 'priya@nestday.test', role: 'Educator', room: 'Sunflower', level: 'Level 2', aid: '14 Mar 2027', aidState: 'ok', status: 'Active', last: 'Today, 7:30 am' },
+{ id: 4, name: 'Marcus L.', email: 'marcus.l@example.com', role: 'Educator', room: 'Sunflower', level: 'Level 1', aid: '12 Oct 2026', aidState: 'soon', status: 'Active', last: 'Today, 8:55 am' },
+{ id: 5, name: 'Jasmine O.', email: 'jasmine.o@example.com', role: 'Lead educator', room: 'Seedlings', level: 'Level 3', aid: '3 Feb 2027', aidState: 'ok', status: 'Active', last: 'Today, 6:58 am' },
+{ id: 6, name: 'Tom B.', email: 'tom.b@example.com', role: 'Educator', room: 'Sprouts', level: 'Level 2', aid: '20 Oct 2026', aidState: 'soon', status: 'Invite sent', last: '—' },
+{ id: 7, name: 'Rachel D.', email: 'rachel.d@example.com', role: 'Cook', room: 'Kitchen', level: '—', aid: '8 Sep 2026', aidState: 'expired', status: 'Active', last: 'Today, 9:10 am' },
+{ id: 8, name: 'Kevin M.', email: 'kevin.m@example.com', role: 'Educator', room: 'Maple', level: 'Level 1', aid: '30 Nov 2026', aidState: 'ok', status: 'Access off', last: 'Fri 28 Aug' }
+];
+var staffList = g('staff', STAFF0);
+
+var BADGE = 'display: inline-block; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; ';
+var STATUS = {
+'Active': 'background: #DCE8E0; color: #1F4538',
+'Invite sent': 'background: #FBEBC8; color: #5A4210',
+'Not invited': 'background: #ECE6D9; color: #3E4740',
+'Locked': 'background: #F8E0D6; color: #7A2816',
+'Access off': 'background: #ECE6D9; color: #3E4740'
+};
+var BTN = 'height: 40px; padding: 0 14px; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; ';
+var BTN_OUT = BTN + 'border: 1.5px solid #2D5B4B; background: transparent; color: #1F4538; cursor: pointer';
+var BTN_SOLID = BTN + 'border: 0; background: #2D5B4B; color: #FFFCF6; cursor: pointer';
+var BTN_RED = BTN + 'border: 1.5px solid #B8604A; background: transparent; color: #7A2816; cursor: pointer';
+var BTN_OFF = BTN + 'border: 1.5px dashed #D6CCB6; background: transparent; color: #58625A; cursor: not-allowed';
+
+function setFam(id, patch, msg) {
+var next = fam.map(function (f) { return f.id === id ? Object.assign({}, f, patch) : f; });
+flash(msg, { fam: next });
+}
+function setStaff(id, patch, msg) {
+var next = staffList.map(function (s) { return s.id === id ? Object.assign({}, s, patch) : s; });
+flash(msg, { staff: next });
+}
+
+var ql = q.trim().toLowerCase();
+var famShown = fam.filter(function (f) {
+if (roomFilter !== 'All rooms' && f.room !== roomFilter) return false;
+if (statusFilter !== 'Any status' && f.status !== statusFilter) return false;
+if (ql && (f.child + ' ' + f.guardian + ' ' + f.email).toLowerCase().indexOf(ql) < 0) return false;
+return true;
+});
+var families = famShown.map(function (f) {
+var action = 'Manage', style = BTN_OUT, disabled = false, act;
+var first = f.guardian.split(' ')[0];
+if (f.status === 'Active') act = function () { flash('Guardian details for ' + f.guardian + ' open here'); };
+if (f.status === 'Invite sent') { action = 'Resend invite'; act = function () { flash('Invite sent again to ' + f.email); }; }
+if (f.status === 'Not invited') {
+if (f.email) { action = 'Send invite'; style = BTN_SOLID; act = function () { setFam(f.id, { status: 'Invite sent' }, 'Login invite emailed to ' + first); }; }
+else { action = 'Add email first'; style = BTN_OFF; disabled = true; act = function () {}; }
+}
+if (f.status === 'Locked') { action = 'Reset access'; style = BTN_RED; act = function () { setFam(f.id, { status: 'Invite sent', last: '—' }, 'Reset link emailed to ' + first); }; }
+return {
+child: f.child, room: f.room + ' Room', guardian: f.guardian + ' · ' + f.rel, emailShown: f.email || 'No email yet',
+status: f.status, badge: BADGE + STATUS[f.status], last: f.last, action: action, btnStyle: style, disabled: disabled, act: act
+};
+});
+
+var AID = { ok: 'background: #DCE8E0; color: #1F4538', soon: 'background: #FBEBC8; color: #5A4210', expired: 'background: #F8E0D6; color: #7A2816' };
+var staff = staffList.map(function (s) {
+var actions = [];
+var first = s.name.split(' ')[0];
+if (s.status === 'Active' && s.role !== 'Director') {
+actions.push({ label: 'Reset PIN', style: BTN_OUT, act: function () { flash('New PIN set up link sent to ' + first); } });
+actions.push({ label: 'Turn off access', style: BTN_RED, act: function () { setStaff(s.id, { status: 'Access off' }, first + ' is signed out everywhere and can’t sign in'); } });
+}
+if (s.status === 'Invite sent') actions.push({ label: 'Resend invite', style: BTN_OUT, act: function () { flash('Invite sent again to ' + s.email); } });
+if (s.status === 'Access off') actions.push({ label: 'Turn access back on', style: BTN_SOLID, act: function () { setStaff(s.id, { status: 'Active' }, first + ' can sign in again'); } });
+return {
+name: s.name, email: s.email, role: s.role, room: s.room === 'Office' || s.room === 'Kitchen' ? s.room : s.room + ' Room', level: s.level,
+aid: (s.aidState === 'expired' ? 'Expired ' : s.aidState === 'soon' ? 'Expires ' : 'Valid to ') + s.aid,
+aidBadge: BADGE + AID[s.aidState],
+status: s.status, badge: BADGE + STATUS[s.status], last: s.last === '—' ? 'Never signed in' : 'Last in ' + s.last, actions: actions
+};
+});
+
+var ATTN = {
+incident: { title: 'Incident waiting for parent signature', detail: 'Noah T. · Sunflower · bumped his knee on the climber, yesterday 3:40 pm', action: 'Mark signed', color: '#B8604A',
+act: function () { flash('Incident marked signed', { attn: attn.filter(function (a) { return a !== 'incident'; }) }); } },
+med: { title: 'Medication consent expiring in 7 days', detail: 'Leo S. · Amoxicillin · consent ends Fri 2 Oct', action: 'Remind family', color: '#E8A73A',
+act: function () { flash('Reminder sent to Mark S.', { attn: attn.filter(function (a) { return a !== 'med'; }) }); } },
+logins: { title: 'Guardians who haven’t set up their login', detail: 'Elena R., Grace M., James C. and 2 more', action: 'Open families', color: '#E8A73A',
+act: function () { self.setState({ page: 'families', statusFilter: 'Any status', q: '' }); } },
+firstaid: { title: 'First aid certificates expiring within 30 days', detail: 'Marcus L. (12 Oct), Tom B. (20 Oct)', action: 'Open staff accounts', color: '#B8604A',
+act: function () { self.setState({ page: 'staff' }); } }
+};
+var attention = attn.map(function (k) {
+var a = ATTN[k];
+return { title: a.title, detail: a.detail, action: a.action, act: a.act, dotStyle: 'width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: ' + a.color };
+});
+
+var NAV = [
+['today', 'Today', false], ['rooms', 'Rooms', true], ['families', 'Families and logins', false], ['staff', 'Staff accounts', false],
+['fees', 'Fees and billing', true], ['reports', 'Reports and grant claim', true], ['settings', 'Settings', true]
+];
+var nav = NAV.map(function (n) {
+var on = n[0] === page;
+return {
+label: n[1], planned: n[2], current: on ? 'page' : 'false',
+hasCount: n[0] === 'today' && attn.length > 0, count: attn.length,
+go: function () { self.setState({ page: n[0] }); },
+style: 'display: flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 12px; border-radius: 12px; border: 0; font: inherit; font-size: 15px; cursor: pointer; ' +
+(on ? 'background: #F4EEE2; color: #1D2A23; font-weight: 700' : 'background: transparent; color: ' + (n[2] ? '#B9C2BA' : '#F4EEE2') + '; font-weight: 600')
+};
+});
+var PLANNED = {
+rooms: ['Rooms', ['Room setup and age groups', 'Capacity and ratio rules', 'Assigning staff to rooms']],
+fees: ['Fees and billing', ['Invoices for each family', 'Pre-authorized debit', 'Payment reminders', 'Receipts']],
+reports: ['Reports and grant claim', ['Attendance export for the Alberta affordability grant claim', 'Incident log', 'Medication log']],
+settings: ['Settings', ['Centre details', 'Menu for the week', 'Sleep-check interval', 'Care hours']]
+};
+
+var gForm = { child: g('gChild', 'Maya R. · Sunflower'), name: g('gName', ''), email: g('gEmail', ''), rel: g('gRel', 'Parent') };
+var gPerms = g('gPerms', [true, true, true, false, false]);
+var sForm = { name: g('sName', ''), email: g('sEmail', ''), role: g('sRole', 'Educator'), room: g('sRoom', 'Sunflower'), level: g('sLevel', 'Level 1'), aid: g('sAid', '') };
+var sPerms = g('sPerms', [true, false, true, true, false]);
+var G_PERMS = ['See photos and daily reports', 'Pick up the child', 'Get incident and medication alerts', 'See and pay fees', 'Consent to photos on behalf of the child'];
+var S_PERMS = ['Log daily reports and photos', 'Give and record medication', 'Check children in and out', 'Message families', 'See fees and billing'];
+var isG = drawer === 'guardian';
+var permList = isG ? gPerms : sPerms;
+var permKey = isG ? 'gPerms' : 'sPerms';
+var canSubmit = isG ? (gForm.name.trim() && gForm.email.indexOf('@') > 0) : (sForm.name.trim() && sForm.email.indexOf('@') > 0);
+function field(key) { return function (e) { var o = {}; o[key] = e.target.value; self.setState(o); }; }
+
+return {
+nav: nav,
+signOut: function () { flash('Signed out · this prototype keeps you here'); },
+isToday: page === 'today', isFamilies: page === 'families', isStaff: page === 'staff', isPlanned: !!PLANNED[page],
+plannedTitle: PLANNED[page] ? PLANNED[page][0] : '',
+plannedItems: PLANNED[page] ? PLANNED[page][1].map(function (x) { return { text: x }; }) : [],
+
+attnCount: attn.length,
+attnCardStyle: 'border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; background: ' + (attn.length ? '#FBEBC8' : '#DCE8E0'),
+attention: attention, attnEmpty: attn.length === 0,
+rooms: [
+{ name: 'Seedlings', age: 'Under 12 months', kids: '7 of 8', edu: '3', ratio: 'OK · 1:3' },
+{ name: 'Sprouts', age: '12 to 19 months', kids: '11 of 12', edu: '3', ratio: 'OK · 1:4' },
+{ name: 'Sunflower', age: '19 months to 3 years', kids: '7 of 9', edu: '2', ratio: 'OK · 1:6' },
+{ name: 'Maple', age: '3 to 4½ years', kids: '17 of 18', edu: '3', ratio: 'OK · 1:8' },
+{ name: 'Oak', age: '3 to 4½ years', kids: '16 of 17', edu: '2', ratio: 'OK · 1:8' }
+],
+remindersSent: remindersSent,
+remindLabel: remindersSent ? 'Reminders sent' : 'Send reminders',
+remindStyle: remindersSent ? BTN_OFF : BTN_OUT,
+sendReminders: function () { if (!remindersSent) flash('Reminders sent to 4 families', { remindersSent: true }); },
+
+announceOpen: announceOpen,
+openAnnounce: function () { self.setState({ announceOpen: true }); },
+closeAnnounce: function () { self.setState({ announceOpen: false }); },
+annAudience: g('annAudience', 'Whole centre'),
+onAnnAudience: field('annAudience'),
+annText: g('annText', 'We’re closed Monday 12 October for Thanksgiving.'),
+onAnnText: field('annText'),
+sendAnnounce: function () { flash('Announcement sent to ' + g('annAudience', 'Whole centre').toLowerCase().replace('whole centre', 'the whole centre'), { announceOpen: false }); },
+
+guardianCount: 112 + (fam.length - FAM0.length),
+activeGuardians: 97 + fam.filter(function (f) { return f.status === 'Active'; }).length - 7,
+q: q, onQ: field('q'),
+roomFilter: roomFilter, onRoomFilter: field('roomFilter'),
+statusFilter: statusFilter, onStatusFilter: field('statusFilter'),
+families: families, noFamilies: families.length === 0,
+familyFoot: 'Showing ' + families.length + ' of ' + (112 + fam.length - FAM0.length) + ' guardians in this sample',
+
+staffCount: 16 + (staffList.length - STAFF0.length),
+staffActive: staffList.filter(function (s) { return s.status === 'Active'; }).length + 8,
+staff: staff,
+
+drawerOpen: !!drawer,
+drawerTitle: isG ? 'Add a guardian' : 'Add a staff member',
+closeDrawer: function () { self.setState({ drawer: null }); },
+openGuardian: function () { self.setState({ drawer: 'guardian', gName: '', gEmail: '' }); },
+openStaff: function () { self.setState({ drawer: 'staff', sName: '', sEmail: '' }); },
+isGuardianForm: isG, isStaffForm: drawer === 'staff',
+gChild: gForm.child, onGChild: field('gChild'),
+gName: gForm.name, onGName: field('gName'),
+gEmail: gForm.email, onGEmail: field('gEmail'),
+gRel: gForm.rel, onGRel: field('gRel'),
+sName: sForm.name, onSName: field('sName'),
+sEmail: sForm.email, onSEmail: field('sEmail'),
+sRole: sForm.role, onSRole: field('sRole'),
+sRoom: sForm.room, onSRoom: field('sRoom'),
+sLevel: sForm.level, onSLevel: field('sLevel'),
+sAid: sForm.aid, onSAid: field('sAid'),
+permLegend: isG ? 'What this guardian can do' : 'Permissions',
+perms: (isG ? G_PERMS : S_PERMS).map(function (label, i) {
+return { label: label, on: !!permList[i], toggle: function () { var p = permList.slice(); p[i] = !p[i]; var o = {}; o[permKey] = p; self.setState(o); } };
+}),
+cannotSubmit: !canSubmit,
+submitStyle: 'height: 54px; border-radius: 27px; border: 0; font: inherit; font-size: 16px; font-weight: 700; ' + (canSubmit ? 'background: #2D5B4B; color: #FFFCF6; cursor: pointer' : 'background: #E2D9C6; color: #58625A; cursor: not-allowed'),
+inviteNote: 'They set their own password from the email. The link expires after 7 days.',
+submitDrawer: function () {
+if (!canSubmit) return;
+if (isG) {
+var parts = gForm.child.split(' · ');
+var row = { id: Date.now(), child: parts[0], room: parts[1], guardian: gForm.name.trim(), rel: gForm.rel, email: gForm.email.trim(), status: 'Invite sent', last: '—' };
+flash('Login invite emailed to ' + row.guardian.split(' ')[0], { fam: [row].concat(fam), drawer: null, q: '', roomFilter: 'All rooms', statusFilter: 'Any status' });
+} else {
+var aidTxt = sForm.aid ? new Date(sForm.aid + 'T12:00:00').toLocaleDateString('en-CA', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Not entered';
+var srow = { id: Date.now(), name: sForm.name.trim(), email: sForm.email.trim(), role: sForm.role, room: sForm.room, level: sForm.level, aid: aidTxt, aidState: 'ok', status: 'Invite sent', last: '—' };
+flash('Login invite emailed to ' + srow.name.split(' ')[0], { staff: staffList.concat([srow]), drawer: null });
+}
+},
+
+hasToast: !!toast, toast: toast || ''
+};
+}
+}
+</script>
+<div id="app"></div>
+<script>NestdayDC.mount('Director');</script>
+</body>
+</html>

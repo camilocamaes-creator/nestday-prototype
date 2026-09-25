@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nestday prototype</title>
+<meta name="theme-color" content="#F4EEE2">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+  :root { --bg: #F4EEE2; --card: #FFFCF6; --ink: #1D2A23; --muted: #58625A; --pine: #2D5B4B; --pine-soft: #DCE8E0; --gold-soft: #FBEBC8; --line: #E2D9C6; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Hanken Grotesk', system-ui, sans-serif; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 40px 20px 56px; display: flex; flex-direction: column; gap: 28px; }
+  h1 { margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(34px, 6vw, 48px); }
+  h2 { margin: 0; font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 24px; }
+  p { margin: 0; line-height: 1.5; }
+  .lead { color: var(--muted); font-size: 17px; max-width: 640px; }
+  .top { display: flex; gap: 24px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+  .qr { background: var(--card); border-radius: 20px; padding: 16px; display: flex; gap: 14px; align-items: center; max-width: 360px; }
+  .qr svg { width: 120px; height: 120px; flex-shrink: 0; }
+  .qr p { font-size: 14px; color: var(--muted); }
+  .qr strong { color: var(--ink); display: block; font-size: 15px; margin-bottom: 4px; }
+  .group { display: flex; flex-direction: column; gap: 12px; }
+  .group-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .device { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--pine-soft); color: #1F4538; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  a.card { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; min-height: 44px; border-radius: 18px; background: var(--card); border: 1.5px solid transparent; text-decoration: none; color: var(--ink); }
+  a.card:hover, a.card:focus-visible { border-color: var(--pine); outline: none; }
+  a.card strong { font-size: 16px; }
+  a.card span { font-size: 14px; color: var(--muted); line-height: 1.4; }
+  .note { background: var(--gold-soft); border-radius: 18px; padding: 16px 18px; font-size: 15px; color: #5A4210; }
+  footer { text-align: center; display: flex; flex-direction: column; gap: 2px; }
+  footer b { font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 16px; }
+  footer span { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <h1>Nestday prototype</h1>
+      <p class="lead">Clickable screens for parents, educators and directors, with the sample data from the spec (Sunflower Early Learning Centre, Airdrie). Nothing is saved: reload a screen to reset it.</p>
+    </div>
+    <div class="qr" id="qr" hidden>
+      <div id="qr-code" aria-hidden="true"></div>
+      <p><strong>Open on your phone</strong>Scan with your camera to open the parent app on your phone.</p>
+    </div>
+  </div>
+
+  <section class="group">
+    <div class="group-head"><h2>Parent</h2><span class="device">Phone</span></div>
+    <div class="cards">
+      <a class="card" href="Main.dc.html"><strong>Today</strong><span>Maya's live feed. Start here, then use the tab bar.</span></a>
+      <a class="card" href="Photos.dc.html"><strong>Photos</strong><span>Grouped by upload and by day. Tap a photo to open it.</span></a>
+      <a class="card" href="Messages.dc.html"><strong>Messages</strong><span>Pinned announcement and the room chat. Try sending one.</span></a>
+      <a class="card" href="Fees.dc.html"><strong>Fees</strong><span>Balance, next payment, past payments, tax receipt.</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>Educator</h2><span class="device">Room tablet</span></div>
+    <div class="cards">
+      <a class="card" href="Room.dc.html"><strong>Room tablet app</strong><span>Room, Notes and Photos · QR tabs. Tap Priya to switch educator with a PIN.</span></a>
+      <a class="card" href="RoomSheet.dc.html"><strong>Room with Meal sheet open</strong><span>The same app, opened on the entry sheet.</span></a>
+      <a class="card" href="Upload.dc.html"><strong>Phone upload page</strong><span>What the QR code opens. Choose photos uses your real camera roll.</span></a>
+      <a class="card" href="Upload.dc.html?linkState=expired"><strong>Upload link expired</strong><span>Also try <code>?linkState=invalid</code> or <code>no%20consent</code>.</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>Director</h2><span class="device">Computer</span></div>
+    <div class="cards">
+      <a class="card" href="Director.dc.html"><strong>Director app</strong><span>Today, Families and logins, Staff accounts.</span></a>
+      <a class="card" href="Director.dc.html?startPage=families"><strong>Families and logins</strong><span>Search, filters, invites and the Add a guardian form.</span></a>
+      <a class="card" href="Director.dc.html?startPage=staff"><strong>Staff accounts</strong><span>First aid expiry, PINs and access.</span></a>
+    </div>
+  </section>
+
+  <p class="note">The tablet screens are 1180 px wide and the director screens 1440 px. They work best on an iPad in landscape or on a computer.</p>
+
+  <footer><b>Nestday</b><span>Powered by Dantia.ca</span></footer>
+</div>
+<script src="vendor/qrcode.js"></script>
+<script>
+  // Show a QR code for the parent app when the prototype is hosted somewhere a phone can reach.
+  (function () {
+    var host = location.hostname;
+    if (location.protocol === 'file:' || host === 'localhost' || host === '127.0.0.1') return;
+    try {
+      var url = new URL('Main.dc.html', location.href).href;
+      var qr = qrcode(0, 'M');
+      qr.addData(url);
+      qr.make();
+      document.getElementById('qr-code').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+      document.getElementById('qr').hidden = false;
+    } catch (e) {}
+  })();
+</script>
+</body>
+</html>
