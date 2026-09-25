@@ -107,6 +107,30 @@ label.field input,label.field select{height:46px;border:1px solid var(--line2);b
 .logbtns button{height:54px;border-radius:12px;border:1px solid var(--line2);background:#F7F9F6;font-weight:700}
 .feed{max-height:300px;overflow:auto;font-size:14px}
 .feed div{padding:8px 0;border-bottom:1px solid #EEF1ED}
+.tile{align-items:flex-start;min-height:84px}
+.tile .tb{display:flex;flex-direction:column;gap:4px;min-width:0}
+.tile.sel .ini{font-size:20px}
+.flagt{font-size:11px;font-weight:700;color:#8E3512;background:var(--warn-soft);border-radius:10px;padding:1px 6px;margin-left:2px}
+.badges{display:flex;flex-wrap:wrap;gap:4px}
+.bd{font-size:12px;background:#EEF1ED;color:#3C4846;border-radius:10px;padding:2px 8px;white-space:nowrap}
+.bd.miss{background:var(--sun-soft);color:#6B5412}
+.bd.napb{background:#E3EEF6;color:#2C4F8A;font-weight:700}
+.bd.off{background:transparent;color:var(--muted);padding-left:0}
+.due{display:flex;gap:12px;align-items:center;justify-content:space-between;border-radius:14px;padding:12px 16px;border:1px solid}
+.due.meds{background:var(--sun-soft);border-color:#F2D27A}
+.due.nap{background:#E3EEF6;border-color:#BCD3EA}
+.due.late{background:var(--warn-soft);border-color:#E8B9A4;color:var(--warn)}
+.due .btn{flex-shrink:0}
+.actionbar{position:sticky;bottom:0;z-index:5;background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.06);padding:10px 24px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.actionbar .abl{font-weight:700;margin-right:auto}
+.ab{height:52px;min-width:92px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:#F7F9F6;font-weight:700}
+.ab.warnb{background:var(--warn-soft);color:var(--warn);border-color:#E8B9A4}
+.sheetbg{position:fixed;inset:0;background:rgba(20,30,30,.45);z-index:20}
+.sheet{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(640px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:18px 18px 0 0;padding:20px;z-index:21;display:flex;flex-direction:column;gap:14px}
+.srow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.srow .sl{width:100%;font-size:13px;font-weight:700;color:var(--muted)}
+.undobar{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1E2A2A;color:#fff;border-radius:12px;padding:10px 12px 10px 16px;display:flex;gap:14px;align-items:center;z-index:30;font-size:15px}
+.undobar button{background:var(--sun);color:#1E2A2A;border:0;border-radius:8px;padding:8px 14px;font-weight:700}
 .etabs{display:flex;gap:4px;padding:10px 24px 0;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto}
 .etabs button{border:0;background:none;padding:10px 14px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
 .etabs button[aria-current="page"]{color:var(--brand);border-bottom-color:var(--brand)}
@@ -178,6 +202,10 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
   .qrwrap{grid-template-columns:1fr;justify-items:center}
   .noterow{grid-template-columns:1fr}
   .etabs{padding:6px 12px 0}
+  .actionbar{padding:8px 12px}
+  .actionbar .abl{width:100%}
+  .ab{flex:1;min-width:0;padding:0 8px;height:48px}
+  .due{flex-direction:column;align-items:flex-start}
   .two{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:no-preference){.toast{animation:up .2s ease-out}@keyframes up{from{opacity:0;transform:translate(-50%,8px)}}}
@@ -310,7 +338,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
   let user = loadUser();
   if (!D.uploads) D.uploads = [];
   let ui = { role: 'parent', err: '', tab: 'today', dtab: 'today', sel: ['maya', 'noah', 'aria'], light: null, email: '', pw: '',
-    etab: 'room', noteMode: 'each', noteSel: [], photoKids: [], qrExp: 0, keep: {}, up: { files: [], stage: 'pick', sent: 0, busy: false } };
+    etab: 'room', sheet: null, undo: null, noteMode: 'each', noteSel: [], photoKids: [], qrExp: 0, keep: {}, up: { files: [], stage: 'pick', sent: 0, busy: false } };
 
   // ---------- shared storage (claude.ai copy only) ----------
   // On the claude.ai test link the page gets a shared database and file storage, so a phone upload
@@ -484,7 +512,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       if (f.type === 'seed') html += '<section class="card stack feeditem"><div class="row"><span class="flabel">Photos · ' + first.length + '</span><span class="spacer"></span><span class="small muted">10:42 am</span></div><div class="grid3">' + first.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div><div class="fcap">' + esc(D.notes[c.id]) + '</div><div class="small muted">From Priya K.</div></section>';
     });
     flush();
-    return '<div class="sumrow" aria-label="Today so far"><span><b class="num">' + (count('Meal') + count('Breakfast') + count('Lunch')) + '</b> meals</span><span><b class="num">' + nPhotos + '</b> photos</span><span><b class="num">' + count('Note') + '</b> notes</span><span><b class="num">' + (count('Diaper') + count('Toilet')) + '</b> changes</span></div>' +
+    return '<div class="sumrow" aria-label="Today so far"><span><b class="num">' + (count('Meal') + count('Breakfast') + count('Lunch') + count('AM snack') + count('PM snack')) + '</b> meals</span><span><b class="num">' + nPhotos + '</b> photos</span><span><b class="num">' + count('Note') + '</b> notes</span><span><b class="num">' + (count('Diaper') + count('Toilet')) + '</b> changes</span></div>' +
       html +
       '<section class="card" style="background:var(--sky);border:0"><b>Reminder from the Sunflower Room</b><div>Please send a spare set of clothes on Friday. We\'re doing water play.</div></section>' +
       '<section class="card"><div class="row"><b>Latest message</b><span class="spacer"></span><span class="small muted">' + esc(lastMsg.t) + '</span></div><div>' + (lastMsg.me ? '<b>You:</b> ' : '<b>' + esc(lastMsg.w) + ':</b> ') + esc(lastMsg.v) + '</div></section>' +
@@ -545,7 +573,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     const need = Math.max(1, Math.ceil(here / 6));
     const ok = D.educators >= need;
     const missing = hereKids().filter(k => !notedToday(k.id)).length;
-    const tabs = [['room', 'Room'], ['notes', 'Notes' + (missing ? ' · ' + missing + ' to write' : '')], ['photos', 'Photos']];
+    const tabs = [['room', 'Room'], ['notes', 'Notes' + (missing ? ' · ' + missing + ' to write' : '')], ['photos', 'Photos · QR upload']];
     const body = ui.etab === 'notes' ? eduNotes() : ui.etab === 'photos' ? eduPhotos() : eduRoom();
     return '<header class="topbar"><h1>Sunflower Room</h1><span class="muted">Toddlers · Thu 24 Sep</span><span class="spacer"></span>' +
       '<span class="pill ' + (ok ? 'ok' : 'bad') + '" style="font-size:14px;padding:6px 12px" role="status">' + (ok ? 'In ratio' : 'OUT OF RATIO') + ' · ' + here + ' children, ' + D.educators + (D.educators === 1 ? ' educator' : ' educators') + ' (1:6 needs ' + need + ')</span>' +
@@ -637,23 +665,87 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     return '<div class="phone"><div class="phead"><div class="row"><span class="logo" style="font-size:18px">Nestday</span><span class="spacer"></span><span class="small" style="color:#D7EAE3">Sunflower Room</span></div><h1 style="font-size:26px">Upload photos</h1></div><main class="pbody">' + body + '<div class="pfoot">' + dantia() + '</div></main></div>';
   }
 
+  // ---------- educator room: roster first, tap children, then one action ----------
+  // Pattern from Famly and Brightwheel: the room's children are the home screen, each tile shows
+  // the last meal, change and nap, and an action bar at the bottom logs for everyone selected.
+  const MENU = { 'Breakfast': 'oatmeal, pears', 'AM snack': 'crackers, cheese', 'Lunch': 'pasta, peas, milk', 'PM snack': 'apple slices, yogurt' };
+  const MEALS = Object.keys(MENU).concat(['Meal']);
+  const CHECK_MIN = 15; // sleep check interval; a centre setting in the real product
+  function lastOf(id, kinds) { for (let i = D.log.length - 1; i >= 0; i--) { const l = D.log[i]; if (l.kid === id && kinds.includes(l.k)) return l; } return null; }
+  function minsAgo(ts) { const m = Math.max(0, Math.round((Date.now() - ts) / 60000)); return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + (m % 60) + ' min'; }
+
+  function napBanner() {
+    const ids = Object.keys(D.naps || {}).filter(id => kid(id) && kid(id).here);
+    if (!ids.length) return '';
+    const last = Math.min.apply(null, ids.map(id => D.naps[id].check));
+    const due = last + CHECK_MIN * 60000;
+    const late = Date.now() > due;
+    return '<div class="due ' + (late ? 'late' : 'nap') + '" role="status"><div><b>' + ids.length + (ids.length === 1 ? ' child napping' : ' children napping') + '</b> · ' + ids.map(id => esc(kid(id).first)).join(', ') +
+      '<div class="small">' + (late ? 'Sleep check overdue since ' + fmtT(new Date(due)) : 'Last check ' + minsAgo(last) + ' ago · next check by ' + fmtT(new Date(due))) + '</div></div><button class="btn small" data-a="napcheck">Check all asleep</button></div>';
+  }
+
+  function medsBanner() {
+    if (D.medsDone) return '';
+    return '<div class="due meds"><div><b>Medication due 11:00 am</b> · Leo S., Salbutamol 2 puffs<div class="small">Parent consent on file until 30 Nov.</div></div><button class="btn small" data-a="meds">Record dose</button></div>';
+  }
+
+  function tile(k) {
+    const on = ui.sel.includes(k.id);
+    const meal = lastOf(k.id, MEALS), ch = lastOf(k.id, ['Diaper', 'Toilet']), nap = D.naps && D.naps[k.id];
+    let badges = '';
+    if (!k.here) badges = '<span class="bd off">' + esc(k.note || 'Not checked in') + '</span>';
+    else {
+      if (nap) badges += '<span class="bd napb">Napping ' + minsAgo(nap.start) + '</span>';
+      badges += meal ? '<span class="bd">Ate ' + esc(meal.t) + '</span>' : '<span class="bd miss">No meal yet</span>';
+      if (ch) badges += '<span class="bd">Change ' + esc(ch.t) + '</span>';
+    }
+    return '<button class="kid tile' + (on ? ' sel' : '') + (k.here ? '' : ' out') + '" data-a="pick" data-id="' + k.id + '" aria-pressed="' + on + '">' +
+      '<span class="ini">' + (on ? '✓' : esc(k.ini)) + '</span><span class="tb"><b>' + esc(k.name) + '</b>' + (k.flag ? ' <span class="flagt">' + esc(k.flag) + '</span>' : '') + '<span class="badges">' + badges + '</span></span></button>';
+  }
+
   function eduRoom() {
-    const selNames = ui.sel.map(id => kid(id).first).join(', ') || 'no one selected';
-    const feed = D.log.slice().reverse().slice(0, 12).map(l => '<div><b>' + esc(l.t) + '</b> · ' + esc(kid(l.kid).first) + ' · ' + esc(l.k) + ': ' + esc(l.v) + '</div>').join('');
-    return '<div class="wrap"><div class="stack">' +
-      '<div class="row"><b>Children · ' + ui.sel.length + ' selected</b><span class="spacer"></span><button class="btn small ghost" data-a="selall">Select all here</button><button class="btn small" data-a="checkin">Check in / out selected</button></div>' +
-      '<div class="kids">' + D.kids.map(k => '<button class="kid' + (ui.sel.includes(k.id) ? ' sel' : '') + (k.here ? '' : ' out') + '" data-a="pick" data-id="' + k.id + '" aria-pressed="' + ui.sel.includes(k.id) + '">' +
-        '<span class="ini">' + esc(k.ini) + '</span><span><b>' + esc(k.name) + '</b><br><span class="small muted">' + (k.here ? 'In ' + esc(k.inAt) : esc(k.note || 'Checked out')) + '</span></span><span class="flag">' + esc(k.flag) + '</span></button>').join('') + '</div>' +
-      '<section class="card"><b>Room log</b><div class="feed" aria-live="polite">' + feed + '</div></section></div>' +
-      '<aside class="stack">' + ((D.uploads || []).length ? '<section class="card stack"><div class="row"><b>Photos today · ' + D.uploads.length + '</b><span class="spacer"></span><button class="btn small ghost" data-a="gophotos">See all</button></div><div class="grid3">' + D.uploads.slice(-6).reverse().map(u => '<img src="' + uploadSrc(u) + '" alt="Photo from the room" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px">').join('') + '</div></section>' : '') + '<section class="card stack"><b>Log for ' + esc(selNames) + '</b>' +
-      '<label class="field">Details (optional)<input id="detail" data-keep placeholder="e.g. ate all, pasta and peas"></label>' +
-      '<div class="logbtns">' + ['Meal', 'Nap', 'Diaper', 'Activity', 'Outside'].map(t => '<button data-a="log" data-k="' + t + '">' + t + '</button>').join('') +
-      '<button data-a="incident" style="background:var(--warn-soft);color:var(--warn);border-color:#E8B9A4">Incident</button></div>' +
-      '<div class="small muted">One tap logs the same entry for every selected child who is here.</div>' +
-      '<div class="row"><button class="btn small ghost" style="flex:1" data-a="gonotes">Write notes</button><button class="btn small ghost" style="flex:1" data-a="gophotos">Upload photos</button></div></section>' +
-      (D.medsDone ? '<section class="card" style="background:var(--brand-soft);border:0"><b>Leo S. · Salbutamol given</b><div class="small">Recorded by ' + esc(user.name) + '</div></section>' :
-        '<section class="card stack" style="background:var(--sun-soft);border-color:#F2D27A"><span class="small" style="font-weight:700;color:#6B5412">DUE AT 11:00 AM</span><b>Leo S. · Salbutamol, 2 puffs</b><span class="small">Parent consent on file until 30 Nov.</span><button class="btn" style="background:#1E2A2A" data-a="meds">Record dose</button></section>') +
-      '<div style="padding:8px 4px">' + dantia() + '</div></aside></div>';
+    const n = ui.sel.length;
+    const feed = D.log.slice().reverse().slice(0, 10).map(l => '<div><b>' + esc(l.t) + '</b> · ' + esc((kid(l.kid) || {}).first || '') + ' · ' + esc(l.k) + ': ' + esc(l.v) + '</div>').join('');
+    const acts = [['meal', 'Meal'], ['nap', 'Nap'], ['diaper', 'Diaper'], ['note', 'Note'], ['photo', 'Photos'], ['incident', 'Incident']];
+    return '<div class="wrap"><div class="stack">' + medsBanner() + napBanner() +
+      '<div class="row"><b>' + (n ? n + ' selected' : 'Tap children to select them') + '</b><span class="spacer"></span><button class="btn small ghost" data-a="selall">All here</button><button class="btn small ghost" data-a="selnone">Clear</button></div>' +
+      '<div class="kids">' + D.kids.map(tile).join('') + '</div></div>' +
+      '<aside class="stack">' + ((D.uploads || []).length ? '<section class="card stack"><div class="row"><b>Photos today · ' + D.uploads.length + '</b><span class="spacer"></span><button class="btn small ghost" data-a="gophotos">See all</button></div><div class="grid3">' + D.uploads.slice(-6).reverse().map(u => '<img src="' + uploadSrc(u) + '" alt="Photo from the room" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px">').join('') + '</div></section>' : '') +
+      '<section class="card"><b>Room log</b><div class="feed" aria-live="polite">' + (feed || '<div class="muted">Nothing yet.</div>') + '</div></section>' +
+      '<div style="padding:8px 4px">' + dantia() + '</div></aside></div>' +
+      '<div class="actionbar" role="toolbar" aria-label="Log for selected children"><span class="abl">' + (n ? 'For ' + n + (n === 1 ? ' child' : ' children') : 'Pick an action, or tap children first') + '</span>' +
+      '<button class="ab" data-a="checkin">Check in / out</button>' +
+      acts.map(([t, l]) => '<button class="ab' + (t === 'incident' ? ' warnb' : '') + '" data-a="sheet" data-t="' + t + '">' + l + '</button>').join('') + '</div>' +
+      (ui.sheet ? sheetView() : '') + undoBar();
+  }
+
+  function undoBar() {
+    if (!ui.undo || Date.now() > ui.undo.until) return '';
+    return '<div class="undobar" role="status">' + esc(ui.undo.label) + '<button data-a="undo">Undo</button></div>';
+  }
+
+  function sheetView() {
+    const t = ui.sheet.type;
+    const titles = { meal: 'Meal', nap: 'Nap', diaper: 'Diaper or potty', note: 'Note to families', incident: 'Incident report' };
+    const chip = (a, v, cur, label) => '<button class="chip' + (cur === v ? ' on' : '') + '" data-a="' + a + '" data-v="' + esc(v) + '" aria-pressed="' + (cur === v) + '">' + esc(label || v) + '</button>';
+    const kids = hereKids().map(k => '<button class="chip' + (ui.sel.includes(k.id) ? ' on' : '') + '" data-a="pick" data-id="' + k.id + '" aria-pressed="' + ui.sel.includes(k.id) + '">' + esc(k.first) + '</button>').join('');
+    const times = [0, 10, 20, 30].map(m => chip('sago', String(m), String(ui.sheet.ago), m ? m + ' min ago' : 'Now')).join('');
+    let body = '';
+    if (t === 'meal') body = '<div class="srow"><span class="sl">Which meal</span>' + Object.keys(MENU).map(m => chip('smeal', m, ui.sheet.meal)).join('') + '</div>' +
+      '<div class="small muted">From this week\'s menu: ' + esc(MENU[ui.sheet.meal]) + '</div>' +
+      '<div class="srow"><span class="sl">How much</span>' + ['All', 'Most', 'Some', 'None'].map(v => chip('samt', v, ui.sheet.amt)).join('') + '</div>';
+    if (t === 'diaper') body = '<div class="srow"><span class="sl">Type</span>' + ['Wet', 'BM', 'Dry', 'Potty success'].map(v => chip('skind', v, ui.sheet.kind)).join('') + '</div>';
+    if (t === 'nap') body = '<div class="srow"><span class="sl">What happened</span>' + chip('snap', 'start', ui.sheet.nap, 'Fell asleep') + chip('snap', 'end', ui.sheet.nap, 'Woke up') + '</div><div class="small muted">While children nap, a banner reminds you to check them every ' + CHECK_MIN + ' minutes.</div>';
+    if (t === 'note') body = '<label class="field">Note<textarea id="sheetnote" data-keep rows="3" placeholder="e.g. We planted seeds in the garden today."></textarea></label>' +
+      '<div class="row" style="flex-wrap:wrap;gap:6px">' + ['Had a great day', 'Played outside in the morning', 'Needs more diapers, please', 'Was a bit tired today'].map(p => '<button class="chip" data-a="phrase" data-target="sheetnote" data-p="' + esc(p) + '">+ ' + esc(p) + '</button>').join('') + '</div>' +
+      '<div class="small muted">For a different note for each child, use the Notes tab.</div>';
+    if (t === 'incident') body = '<label class="field">What happened<textarea id="sheetinc" data-keep rows="3" placeholder="e.g. Bumped knee on the slide at 10:40. Ice pack given, no swelling."></textarea></label><div class="small muted">The family is told right away and the director gets it to sign.</div>';
+    const n = ui.sel.filter(id => kid(id).here).length;
+    return '<div class="sheetbg" data-a="sheetclose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="' + titles[t] + '">' +
+      '<div class="row"><h2 style="font-size:22px">' + titles[t] + '</h2><span class="spacer"></span><button class="btn small ghost" data-a="sheetclose">Cancel</button></div>' +
+      '<div class="srow"><span class="sl">Children</span>' + kids + '</div>' +
+      '<div class="srow"><span class="sl">When</span>' + times + '</div>' + body +
+      '<button class="btn" style="height:52px;font-size:17px" data-a="sheetsave"' + (n ? '' : ' disabled') + '>' + (n ? 'Save for ' + n + (n === 1 ? ' child' : ' children') : 'Pick at least one child') + '</button></div>';
   }
 
   function viewDirector() {
@@ -814,6 +906,71 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     if (a === 'nope') { toast('Not built in the prototype yet'); }
     if (a === 'absent') { const c = kid(user.child); c.note = 'Absent · reported by ' + user.name.split(' ')[0]; save(); toast('The room has been told ' + c.first + ' is away today'); render(); }
     if (a === 'pick') { const id = b.dataset.id; ui.sel = ui.sel.includes(id) ? ui.sel.filter(x => x !== id) : ui.sel.concat(id); render(); }
+    if (a === 'selnone') { ui.sel = []; render(); }
+    if (a === 'sheet') {
+      const t = b.dataset.t;
+      if (!ui.sel.filter(id => kid(id).here).length) ui.sel = hereKids().map(k => k.id);
+      if (t === 'photo') {
+        const ok = ui.sel.filter(id => kid(id).here && !noPhotos(kid(id)));
+        const left = ui.sel.filter(id => kid(id).here && noPhotos(kid(id)));
+        ui.photoKids = ok; ui.qrExp = Math.floor(Date.now() / 60000) + 15; ui.etab = 'photos';
+        if (left.length) toast(left.map(id => kid(id).first).join(', ') + ' left out: no photo consent');
+        render(); return;
+      }
+      const napping = ui.sel.filter(id => D.naps && D.naps[id]).length;
+      const h = new Date().getHours() * 60 + new Date().getMinutes();
+      ui.sheet = { type: t, ago: 0, meal: h < 600 ? 'Breakfast' : h < 690 ? 'AM snack' : h < 870 ? 'Lunch' : 'PM snack', amt: 'All', kind: 'Wet', nap: napping > ui.sel.length / 2 ? 'end' : 'start' };
+      ui.keep.sheetnote = ''; ui.keep.sheetinc = '';
+      render(); return;
+    }
+    if (a === 'sheetclose') { ui.sheet = null; render(); return; }
+    if (a === 'sago') { ui.sheet.ago = +b.dataset.v; render(); return; }
+    if (a === 'smeal') { ui.sheet.meal = b.dataset.v; render(); return; }
+    if (a === 'samt') { ui.sheet.amt = b.dataset.v; render(); return; }
+    if (a === 'skind') { ui.sheet.kind = b.dataset.v; render(); return; }
+    if (a === 'snap') { ui.sheet.nap = b.dataset.v; render(); return; }
+    if (a === 'sheetsave') {
+      const sh = ui.sheet, ids = ui.sel.filter(id => kid(id).here);
+      if (!ids.length) return;
+      const at = Date.now() - sh.ago * 60000, t = fmtT(new Date(at));
+      const before = { naps: JSON.stringify(D.naps || {}), inc: D.incidents.length };
+      const added = [];
+      const push = e => { D.log.push(e); added.push(e); };
+      let label = '';
+      if (sh.type === 'meal') { ids.forEach(id => push({ kid: id, t, k: sh.meal, v: sh.amt + ' · ' + MENU[sh.meal] })); label = sh.meal + ' (' + sh.amt.toLowerCase() + ')'; }
+      if (sh.type === 'diaper') { ids.forEach(id => push({ kid: id, t, k: sh.kind === 'Potty success' ? 'Toilet' : 'Diaper', v: sh.kind })); label = sh.kind; }
+      if (sh.type === 'nap') {
+        D.naps = D.naps || {};
+        ids.forEach(id => {
+          if (sh.nap === 'start') { D.naps[id] = { start: at, check: at }; push({ kid: id, t, k: 'Nap', v: 'Fell asleep' }); }
+          else { const n0 = D.naps[id]; delete D.naps[id]; push({ kid: id, t, k: 'Nap', v: 'Woke up' + (n0 ? ', slept ' + minsAgo(n0.start).replace(' min', ' min') : '') }); }
+        });
+        label = sh.nap === 'start' ? 'Nap started' : 'Woke up';
+      }
+      if (sh.type === 'note') {
+        const v = (document.getElementById('sheetnote') || {}).value.trim();
+        if (!v) { toast('Write the note first'); return; }
+        ids.forEach(id => push({ kid: id, t, k: 'Note', v, by: user.name })); label = 'Note'; ui.keep.sheetnote = '';
+      }
+      if (sh.type === 'incident') {
+        const v = (document.getElementById('sheetinc') || {}).value.trim();
+        if (!v) { toast('Describe what happened first'); return; }
+        ids.forEach(id => push({ kid: id, t, k: 'Incident', v }));
+        D.incidents.push({ t, v: 'Sunflower Room · ' + ids.map(id => kid(id).first).join(', ') + ' · ' + v, signed: false });
+        label = 'Incident'; ui.keep.sheetinc = '';
+      }
+      ui.sheet = null;
+      ui.undo = { added, before, until: Date.now() + 10000, label: label + ' saved for ' + ids.length + (ids.length === 1 ? ' child' : ' children') };
+      setTimeout(() => { if (ui.undo && Date.now() > ui.undo.until) { ui.undo = null; render(); } }, 10200);
+      save(); render(); return;
+    }
+    if (a === 'undo' && ui.undo) {
+      const u = ui.undo;
+      D.log = D.log.filter(l => !u.added.includes(l));
+      D.naps = JSON.parse(u.before.naps); D.incidents.length = u.before.inc;
+      ui.undo = null; save(); toast('Undone'); render(); return;
+    }
+    if (a === 'napcheck') { Object.keys(D.naps || {}).forEach(id => { D.naps[id].check = Date.now(); }); save(); toast('Sleep check recorded'); render(); return; }
     if (a === 'selall') { ui.sel = D.kids.filter(k => k.here).map(k => k.id); render(); }
     if (a === 'checkin') {
       ui.sel.forEach(id => { const k = kid(id); k.here = !k.here; if (k.here) { k.inAt = now(); k.by = ''; k.note = ''; } else { k.note = 'Checked out ' + now(); } });
@@ -841,7 +998,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     if (a === 'nsel') { const id = b.dataset.id; ui.noteSel = ui.noteSel.includes(id) ? ui.noteSel.filter(x => x !== id) : ui.noteSel.concat(id); render(); }
     if (a === 'nall') { ui.noteSel = hereKids().map(k => k.id); render(); }
     if (a === 'nnone') { ui.noteSel = []; render(); }
-    if (a === 'phrase') { const t = document.getElementById('gnote'); t.value = (t.value.trim() ? t.value.trim() + ' ' : '') + b.dataset.p + '.'; t.focus(); }
+    if (a === 'phrase') { const t = document.getElementById(b.dataset.target || 'gnote'); t.value = (t.value.trim() ? t.value.trim() + ' ' : '') + b.dataset.p + '.'; t.focus(); }
     if (a === 'sendeach') {
       let n = 0;
       hereKids().forEach(k => { const el = document.getElementById('note-' + k.id); const v = el && el.value.trim(); if (v) { D.log.push({ kid: k.id, t: now(), k: 'Note', v, by: user.name }); ui.keep['note-' + k.id] = ''; n++; } });
@@ -971,6 +1128,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
 
   render();
   startShared();
+  setInterval(() => { if (user && user.role === 'educator' && ui.etab === 'room' && !ui.sheet && !document.activeElement.matches('input,textarea')) render(); }, 60000);
 })();
 </script>
 </body>
