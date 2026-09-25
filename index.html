@@ -134,6 +134,13 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
 .thumb .bar span{display:block;height:100%;background:var(--brand)}
 .donecheck{width:64px;height:64px;border-radius:50%;background:var(--brand-soft);color:var(--brand-ink);font-size:34px;font-weight:800;display:flex;align-items:center;justify-content:center}
 .ph img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.sumrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:12px;color:var(--muted)}
+.sumrow span{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 4px}
+.sumrow b{display:block;font-family:var(--display);font-size:20px;color:var(--ink)}
+.flabel{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand-ink)}
+.fcap{font-size:16px;line-height:1.45}
+.feeditem.note{background:#FFFDF6;border-color:#F2E3B3}
+.fnote{font-size:17px;line-height:1.5}
 .lightbox img{width:100%;border-radius:10px;display:block;max-height:70vh;object-fit:contain;background:#111}
 .dir{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:calc(100vh - 36px)}
 .side{background:var(--brand-dark);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px}
@@ -429,21 +436,56 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
   }
 
+  // "8:30 am" -> minutes after midnight, for ordering the feed.
+  function mins(t) {
+    const m = /(\d{1,2}):(\d{2})\s*(am|pm)/i.exec(t || '');
+    if (!m) return 0;
+    let h = +m[1] % 12; if (m[3].toLowerCase() === 'pm') h += 12;
+    return h * 60 + +m[2];
+  }
+
+  // Photos sent together (same send) form one batch with one caption.
+  function batches(id) {
+    const out = [], byKey = {};
+    kidUploads(id).forEach(x => {
+      const key = x.u.batch || (x.u.t + '|' + (x.u.cap || '') + '|' + x.u.by);
+      if (!byKey[key]) { byKey[key] = { t: x.u.t, cap: x.u.cap || '', by: x.u.by, items: [] }; out.push(byKey[key]); }
+      byKey[key].items.push(x);
+    });
+    return out;
+  }
+
+  function photoCard(c, b) {
+    return '<section class="card stack feeditem"><div class="row"><span class="flabel">Photos · ' + b.items.length + '</span><span class="spacer"></span><span class="small muted">' + esc(b.t) + '</span></div>' +
+      '<div class="grid3">' + b.items.map(x => '<button class="ph" data-a="photo" data-k="up:' + x.i + '"><img src="' + uploadSrc(x.u) + '" alt="Photo of ' + esc(c.first) + (b.cap ? ': ' + esc(b.cap) : '') + '"></button>').join('') + '</div>' +
+      (b.cap ? '<div class="fcap">' + esc(b.cap) + '</div>' : '') + '<div class="small muted">From ' + esc(b.by) + '</div></section>';
+  }
+
   function parentToday(c) {
     const items = D.log.filter(l => l.kid === c.id);
     const first = D.photos[c.id][0][1];
     const lastMsg = D.messages[c.id][D.messages[c.id].length - 1];
-    const mine = kidUploads(c.id);
-    const lastUp = mine.length ? mine[mine.length - 1].u : null;
-    const upCard = lastUp ? '<section class="card stack"><div class="row"><b>' + mine.length + (mine.length === 1 ? ' photo' : ' photos') + ' from the room</b><span class="spacer"></span><span class="small muted">' + esc(lastUp.t) + '</span></div>' +
-      '<div class="grid3">' + mine.slice(-6).reverse().map(x => '<button class="ph" data-a="photo" data-k="up:' + x.i + '"><img src="' + uploadSrc(x.u) + '" alt="Photo of ' + esc(c.first) + '"></button>').join('') + '</div>' +
-      (lastUp.cap ? '<div>' + esc(lastUp.cap) + '</div>' : '') + '<div class="row small"><span class="muted">From ' + esc(lastUp.by) + '</span><span class="spacer"></span><button class="btn small ghost" data-a="tab" data-t="photos">All photos</button></div></section>' : '';
-    return upCard + '<section class="card stack"><div class="row"><b>' + first.length + ' new photos</b><span class="spacer"></span><span class="small muted">10:42 am</span></div>' +
-      '<div class="grid3">' + first.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div>' +
-      '<div>' + esc(D.notes[c.id]) + '</div><div class="row small"><span class="muted">From Priya K., educator</span><span class="spacer"></span><button class="btn small ghost" data-a="tab" data-t="photos">All photos</button></div></section>' +
-      '<section class="card tl" style="padding:4px 16px" aria-label="Today\'s timeline">' +
-      (items.length ? items.map(l => '<div><span class="t num">' + esc(l.t) + '</span><span class="k">' + esc(l.k) + '</span><span>' + esc(l.v) + '</span></div>').join('') : '<div><span class="muted">Nothing logged yet today.</span></div>') +
-      '</section>' +
+    const bs = batches(c.id);
+    const nPhotos = bs.reduce((n, b) => n + b.items.length, 0) + first.length;
+    const count = k => items.filter(l => l.k === k).length;
+    // Newest first: notes and photos as cards, care entries (meals, naps...) as compact rows.
+    const feed = [];
+    items.forEach((l, i) => { if (l.k !== 'Photos') feed.push({ m: mins(l.t), o: i, type: l.k === 'Note' ? 'note' : 'care', l }); });
+    bs.forEach((b, i) => feed.push({ m: mins(b.t), o: 1000 + i, type: 'photos', b }));
+    feed.push({ m: mins('10:42 am'), o: -1, type: 'seed' });
+    feed.sort((a, b) => (b.m - a.m) || (b.o - a.o));
+    let html = '', care = [];
+    const flush = () => { if (care.length) { html += '<section class="card tl feeditem" style="padding:4px 16px">' + care.map(l => '<div><span class="t num">' + esc(l.t) + '</span><span class="k">' + esc(l.k) + '</span><span>' + esc(l.v) + '</span></div>').join('') + '</section>'; care = []; } };
+    feed.forEach(f => {
+      if (f.type === 'care') { care.push(f.l); return; }
+      flush();
+      if (f.type === 'note') html += '<section class="card stack feeditem note"><div class="row"><span class="flabel">Note from ' + esc(f.l.by || 'Priya K.') + '</span><span class="spacer"></span><span class="small muted">' + esc(f.l.t) + '</span></div><div class="fnote">' + esc(f.l.v) + '</div></section>';
+      if (f.type === 'photos') html += photoCard(c, f.b);
+      if (f.type === 'seed') html += '<section class="card stack feeditem"><div class="row"><span class="flabel">Photos · ' + first.length + '</span><span class="spacer"></span><span class="small muted">10:42 am</span></div><div class="grid3">' + first.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div><div class="fcap">' + esc(D.notes[c.id]) + '</div><div class="small muted">From Priya K.</div></section>';
+    });
+    flush();
+    return '<div class="sumrow" aria-label="Today so far"><span><b class="num">' + (count('Meal') + count('Breakfast') + count('Lunch')) + '</b> meals</span><span><b class="num">' + nPhotos + '</b> photos</span><span><b class="num">' + count('Note') + '</b> notes</span><span><b class="num">' + (count('Diaper') + count('Toilet')) + '</b> changes</span></div>' +
+      html +
       '<section class="card" style="background:var(--sky);border:0"><b>Reminder from the Sunflower Room</b><div>Please send a spare set of clothes on Friday. We\'re doing water play.</div></section>' +
       '<section class="card"><div class="row"><b>Latest message</b><span class="spacer"></span><span class="small muted">' + esc(lastMsg.t) + '</span></div><div>' + (lastMsg.me ? '<b>You:</b> ' : '<b>' + esc(lastMsg.w) + ':</b> ') + esc(lastMsg.v) + '</div></section>' +
       '<div class="row"><button class="btn" style="flex:1" data-a="tab" data-t="messages">Message the room</button>' +
@@ -453,10 +495,8 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
   function kidUploads(id) { return (D.uploads || []).map((u, i) => ({ u, i })).filter(x => x.u.kids.includes(id)); }
 
   function parentPhotos(c) {
-    const mine = kidUploads(c.id);
     return '<div class="card" style="background:var(--sun-soft);border-color:#F2D27A;font-size:14px">Full-size downloads are free. Tap a photo to open it. Children whose families said no to photos are never shown.</div>' +
-      (mine.length ? '<section class="stack" style="gap:8px"><div class="row"><b>Just uploaded</b><span class="spacer"></span><span class="small muted">' + mine.length + ' photos</span></div><div class="grid3">' +
-        mine.slice().reverse().map(x => '<button class="ph" data-a="photo" data-k="up:' + x.i + '"><img src="' + uploadSrc(x.u) + '" alt="Photo of ' + esc(c.first) + '"></button>').join('') + '</div></section>' : '') +
+      batches(c.id).slice().reverse().map(b => photoCard(c, b)).join('') +
       D.photos[c.id].map(([label, keys]) => '<section class="stack" style="gap:8px"><div class="row"><b>' + esc(label) + '</b><span class="spacer"></span><span class="small muted">' + keys.length + ' photos</span></div>' +
         '<div class="grid3">' + keys.map(k => '<button class="ph" data-a="photo" data-k="' + k + '">' + svg(k) + '</button>').join('') + '</div></section>').join('');
   }
@@ -804,7 +844,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
     if (a === 'phrase') { const t = document.getElementById('gnote'); t.value = (t.value.trim() ? t.value.trim() + ' ' : '') + b.dataset.p + '.'; t.focus(); }
     if (a === 'sendeach') {
       let n = 0;
-      hereKids().forEach(k => { const el = document.getElementById('note-' + k.id); const v = el && el.value.trim(); if (v) { D.log.push({ kid: k.id, t: now(), k: 'Note', v }); ui.keep['note-' + k.id] = ''; n++; } });
+      hereKids().forEach(k => { const el = document.getElementById('note-' + k.id); const v = el && el.value.trim(); if (v) { D.log.push({ kid: k.id, t: now(), k: 'Note', v, by: user.name }); ui.keep['note-' + k.id] = ''; n++; } });
       if (!n) { toast('Write at least one note first'); return; }
       save(); toast(n + (n === 1 ? ' note sent' : ' notes sent') + ' to families'); render();
     }
@@ -812,7 +852,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       const v = document.getElementById('gnote').value.trim();
       if (!ui.noteSel.length) { toast('Pick at least one child'); return; }
       if (!v) { toast('Write the note first'); return; }
-      ui.noteSel.forEach(id => D.log.push({ kid: id, t: now(), k: 'Note', v }));
+      ui.noteSel.forEach(id => D.log.push({ kid: id, t: now(), k: 'Note', v, by: user.name }));
       ui.keep.gnote = ''; save(); toast('Note sent to ' + ui.noteSel.length + (ui.noteSel.length === 1 ? ' family' : ' families')); render();
     }
     if (a === 'pkid') { const id = b.dataset.id; ui.photoKids = ui.photoKids.includes(id) ? ui.photoKids.filter(x => x !== id) : ui.photoKids.concat(id); ui.qrExp = Math.floor(Date.now() / 60000) + 15; render(); }
@@ -827,12 +867,13 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:10p
       const cap = (document.getElementById('upcap') || {}).value || '';
       ui.up.stage = 'sending'; render();
       const files = ui.up.files.slice();
+      const batchId = String(Date.now());
       (async () => {
         const by = user && user.role === 'educator' ? user.name : 'Room phone';
         let ok = 0;
         for (let i = 0; i < files.length; i++) {
           const f = files[i];
-          const rec = { kids: p.kids, t: now(), cap: cap.trim(), by, ts: Date.now() + i };
+          const rec = { kids: p.kids, t: now(), cap: cap.trim(), by, ts: Date.now() + i, batch: batchId };
           try {
             if (SH) {
               let asset = null;
