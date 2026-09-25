@@ -324,7 +324,7 @@ label.field input,label.field select,textarea{border-radius:14px;border:1.5px so
 </style>
 </head>
 <body>
-<div class="banner"><span>Test prototype with fake data. Nothing leaves this browser.</span> <button type="button" data-a="reset">Reset demo data</button><span class="qs">Switch to: <button type="button" data-a="as" data-i="2">Priya (educator)</button><button type="button" data-a="as" data-i="0">Daniel (Maya's dad)</button><button type="button" data-a="as" data-i="1">Hannah (Noah's mom)</button><button type="button" data-a="as" data-i="3">Karen (director)</button></span></div>
+<div class="banner"><span>Test prototype with fake data. Nothing leaves this browser.</span> <button type="button" data-a="reset">Reset demo data</button><span class="qs" id="installTip" hidden></span><span class="qs">Switch to: <button type="button" data-a="as" data-i="2">Priya (educator)</button><button type="button" data-a="as" data-i="0">Daniel (Maya's dad)</button><button type="button" data-a="as" data-i="1">Hannah (Noah's mom)</button><button type="button" data-a="as" data-i="3">Karen (director)</button></span></div>
 <div id="app"></div>
 
 <script>
@@ -1280,6 +1280,7 @@ label.field input,label.field select,textarea{border-radius:14px;border:1.5px so
 
   render();
   startShared();
+  (function () { const el = document.getElementById('installTip'); if (!el || isStandalone() || !isTouch()) return; el.hidden = false; el.innerHTML = isIOS() ? 'To use it like an app: in Safari tap <b>Share</b>, then <b>Add to Home Screen</b>.' : 'To use it like an app: in Chrome tap the menu (three dots), then <b>Install app</b>.'; })();
   if ('serviceWorker' in navigator && /github\.io$/.test(location.hostname)) navigator.serviceWorker.register('sw.js').catch(() => {});
   setInterval(() => { if (user && user.role === 'educator' && ui.etab === 'room' && !ui.sheet && !document.activeElement.matches('input,textarea')) render(); }, 60000);
 })();
